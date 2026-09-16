@@ -1,20 +1,31 @@
 import React, { useState } from 'react';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { Header } from './components/Header';
 import { LandingHero } from './components/LandingHero';
 import { HowItWorks } from './components/HowItWorks';
 import { FeatureGrid } from './components/FeatureGrid';
 import { FinalCTA } from './components/FinalCTA';
 import { Footer } from './components/Footer';
+import { SignupPage } from './components/SignupPage';
+import { LoginPage } from './components/LoginPage';
+import { Dashboard } from './components/Dashboard';
 
-export default function App() {
+function AppContent() {
+  const { user, loading } = useAuth();
+  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'signup' | 'login' | 'dashboard'
   const [modalState, setModalState] = useState({ open: false, title: '', message: '' });
 
+  const navigateTo = (view) => {
+    setCurrentView(view);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleCreatePoll = () => {
-    setModalState({
-      open: true,
-      title: 'Create a Poll',
-      message: 'Poll creation is opening soon! You will be able to type your question, add options, and instantly get a shareable link.',
-    });
+    if (user) {
+      navigateTo('dashboard');
+    } else {
+      navigateTo('signup');
+    }
   };
 
   const handleEnterCode = (code = '') => {
@@ -22,32 +33,78 @@ export default function App() {
       open: true,
       title: code ? `Poll Code #${code}` : 'Enter Poll Code',
       message: code
-        ? `Joining poll code #${code}... You will be able to cast votes directly from any smartphone or browser.`
+        ? `Joining poll code #${code}... You can cast votes directly from any smartphone or browser.`
         : 'Enter your 6-digit poll code to join an active poll directly from any smartphone or browser.',
     });
   };
 
+  // Protect creator area: if state is 'dashboard' but user is not logged in after auth check finishes
+  if (currentView === 'dashboard' && !user && !loading) {
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Header
+          onCreatePoll={handleCreatePoll}
+          onEnterCode={handleEnterCode}
+          onNavigate={navigateTo}
+        />
+        <LoginPage
+          onNavigateToSignup={() => navigateTo('signup')}
+          onLoginSuccess={() => navigateTo('dashboard')}
+        />
+        <Footer />
+      </div>
+    );
+  }
+
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Header
         onCreatePoll={handleCreatePoll}
         onEnterCode={handleEnterCode}
+        onNavigate={navigateTo}
       />
       
-      <main style={{ flex: 1 }}>
-        <LandingHero
-          onCreatePoll={handleCreatePoll}
-          onEnterCode={handleEnterCode}
-        />
-        
-        <HowItWorks />
-        
-        <FeatureGrid />
-        
-        <FinalCTA
-          onCreatePoll={handleCreatePoll}
-          onEnterCode={handleEnterCode}
-        />
+      <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        {currentView === 'signup' && (
+          <SignupPage
+            onNavigateToLogin={() => navigateTo('login')}
+            onSignupSuccess={() => navigateTo('dashboard')}
+          />
+        )}
+
+        {currentView === 'login' && (
+          <LoginPage
+            onNavigateToSignup={() => navigateTo('signup')}
+            onLoginSuccess={() => navigateTo('dashboard')}
+          />
+        )}
+
+        {currentView === 'dashboard' && (
+          <Dashboard
+            onCreatePollClick={() => {
+              setModalState({
+                open: true,
+                title: 'Create a Poll',
+                message: 'Poll builder is ready for backend integration! You are authenticated as a creator.',
+              });
+            }}
+          />
+        )}
+
+        {currentView === 'landing' && (
+          <>
+            <LandingHero
+              onCreatePoll={handleCreatePoll}
+              onEnterCode={handleEnterCode}
+            />
+            <HowItWorks />
+            <FeatureGrid />
+            <FinalCTA
+              onCreatePoll={handleCreatePoll}
+              onEnterCode={handleEnterCode}
+            />
+          </>
+        )}
       </main>
 
       <Footer />
@@ -91,6 +148,15 @@ export default function App() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+}
+

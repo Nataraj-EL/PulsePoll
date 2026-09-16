@@ -17,6 +17,7 @@ type Config struct {
 	RedisPassword string
 	CORSOrigin    string
 	Environment   string
+	JWTSecret     string
 }
 
 // LoadConfig initializes configuration from environment variables with sensible defaults
@@ -34,6 +35,7 @@ func LoadConfig() *Config {
 		RedisPassword: getEnv("REDIS_PASSWORD", ""),
 		CORSOrigin:    getEnv("CORS_ORIGIN", "http://localhost:5173"),
 		Environment:   getEnv("ENVIRONMENT", "development"),
+		JWTSecret:     getEnv("JWT_SECRET", "pulsepoll-production-secure-jwt-secret-key-2026"),
 	}
 
 	// Sanitize port

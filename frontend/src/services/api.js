@@ -5,37 +5,89 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1';
 
 /**
- * Fetch health status of backend service and connected databases (MongoDB, Redis)
- * @returns {Promise<Object>}
+ * Universal helper for API HTTP requests with credentials (cookies)
  */
-export async function fetchHealthStatus() {
-  try {
-    const response = await fetch(`${API_BASE_URL}/health`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
-    });
+async function apiFetch(endpoint, options = {}) {
+  const defaultHeaders = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  };
 
-    const data = await response.json();
+  const config = {
+    ...options,
+    headers: {
+      ...defaultHeaders,
+      ...options.headers,
+    },
+    // CRITICAL: Send and receive HTTP-Only session cookies across origins
+    credentials: 'include',
+  };
+
+  try {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+    const data = await response.json().catch(() => ({}));
+
     return {
       ok: response.ok,
       status: response.status,
       data,
     };
-  } catch (error) {
+  } catch (err) {
     return {
       ok: false,
       status: 0,
-      error: error.message || 'Failed to connect to backend server',
+      error: err.message || 'Network error connecting to server',
       data: {
-        status: 'disconnected',
-        environment: 'unknown',
-        services: {
-          mongodb: { status: 'disconnected', latency_ms: 0, error: 'Backend unreachable' },
-          redis: { status: 'disconnected', latency_ms: 0, error: 'Backend unreachable' },
-        },
+        error: 'Network Error',
+        message: 'Unable to reach backend server. Please check your internet connection.',
       },
     };
   }
+}
+
+/**
+ * Register a new creator account
+ */
+export async function signupUser({ name, email, password }) {
+  return apiFetch('/auth/signup', {
+    method: 'POST',
+    body: JSON.stringify({ name, email, password }),
+  });
+}
+
+/**
+ * Authenticate returning user
+ */
+export async function loginUser({ email, password }) {
+  return apiFetch('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
+  });
+}
+
+/**
+ * Logout authenticated session
+ */
+export async function logoutUser() {
+  return apiFetch('/auth/logout', {
+    method: 'POST',
+  });
+}
+
+/**
+ * Fetch current authenticated user profile
+ */
+export async function getCurrentUser() {
+  return apiFetch('/auth/me', {
+    method: 'GET',
+  });
+}
+
+/**
+ * Infrastructure health check
+ */
+export async function fetchHealthStatus() {
+  return apiFetch('/health', {
+    method: 'GET',
+  });
 }

@@ -16,6 +16,8 @@ import (
 	"pulsepoll/backend/internal/database"
 	"pulsepoll/backend/internal/handlers"
 	"pulsepoll/backend/internal/middleware"
+	"pulsepoll/backend/internal/repository"
+	"pulsepoll/backend/internal/service"
 )
 
 func main() {
@@ -50,7 +52,6 @@ func main() {
 			}
 		}()
 	}
-	_ = mongoDB // Available for future repository layers
 
 	// 3. Initialize Redis Connection
 	redisClient, err := database.ConnectRedis(ctx, cfg.RedisAddr, cfg.RedisPassword)
@@ -64,31 +65,61 @@ func main() {
 		}()
 	}
 
-	// 4. Setup Gin Router & Middleware
+	// 4. Initialize Data Repositories & Services
+	var userRepo repository.UserRepository
+	var authService service.AuthService
+
+	if mongoDB != nil {
+		userRepo = repository.NewUserRepository(mongoDB)
+		if err := userRepo.InitIndexes(ctx); err != nil {
+			log.Printf("⚠️ Notice: User indexes initialization warning: %v", err)
+		}
+		authService = service.NewAuthService(userRepo, cfg.JWTSecret)
+	} else {
+		log.Println("⚠️ Notice: Running without active MongoDB connection (DB operations will fail gracefully)")
+	}
+
+	// 5. Setup Gin Router & Middleware
 	router := gin.New()
 	router.Use(middleware.Logger())
 	router.Use(middleware.Recovery())
 	router.Use(middleware.CORS(cfg.CORSOrigin))
 
-	// 5. Register Handlers
+	// 6. Register Handlers & Routes
 	healthHandler := handlers.NewHealthHandler(mongoClient, redisClient, cfg.Environment)
 
 	apiV1 := router.Group("/api/v1")
 	{
+		// Infrastructure Health Check
 		apiV1.GET("/health", healthHandler.Check)
+
+		// Authentication Routes (if AuthService is available)
+		if authService != nil {
+			authHandler := handlers.NewAuthHandler(authService)
+
+			authGroup := apiV1.Group("/auth")
+			{
+				authGroup.POST("/signup", authHandler.Signup)
+				authGroup.POST("/login", authHandler.Login)
+				authGroup.POST("/logout", authHandler.Logout)
+
+				// Protected Auth Route
+				authGroup.GET("/me", middleware.RequireAuth(cfg.JWTSecret), authHandler.Me)
+			}
+		}
 	}
 
 	// Root route for quick verification
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"app":     "PulsePoll API",
-			"version": "1.0.0-sprint1",
+			"version": "1.0.0-auth",
 			"status":  "running",
-			"docs":    "/api/v1/health",
+			"health":  "/api/v1/health",
 		})
 	})
 
-	// 6. Start HTTP Server with Graceful Shutdown
+	// 7. Start HTTP Server with Graceful Shutdown
 	srv := &http.Server{
 		Addr:         cfg.Port,
 		Handler:      router,
