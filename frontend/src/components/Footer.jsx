@@ -24,14 +24,14 @@ export function Footer() {
             alt="GUVI Logo"
             style={{ height: '20px', width: 'auto' }}
           />
-          <div style={{ width: '1px', height: '16px', backgroundColor: '#cbd5e1' }}></div>
+          <div style={{ width: '1px', height: '14px', backgroundColor: '#cbd5e1' }}></div>
           <img
             src="/hcl-logo.png"
             alt="HCL Logo"
-            style={{ height: '20px', width: 'auto' }}
+            style={{ height: '11px', width: 'auto' }}
           />
-          <div style={{ width: '1px', height: '16px', backgroundColor: '#cbd5e1' }}></div>
-          <span style={{ fontWeight: 800, color: 'var(--guvi-dark)', fontSize: '1rem' }}>
+          <div style={{ width: '1px', height: '14px', backgroundColor: '#cbd5e1' }}></div>
+          <span style={{ fontWeight: 800, color: 'var(--guvi-dark)', fontSize: '0.95rem' }}>
             Pulse<span style={{ color: 'var(--guvi-green)' }}>Poll</span>
           </span>
         </div>

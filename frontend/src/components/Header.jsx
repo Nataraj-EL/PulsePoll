@@ -36,24 +36,25 @@ export function Header({ onCreatePoll, onEnterCode }) {
           {/* Thin, visually appealing separating bar */}
           <div style={{ width: '1px', height: '18px', backgroundColor: '#cbd5e1' }}></div>
 
-          {/* Attached HCL Logo - Sized so H, C, L match G, U, V, I */}
+          {/* Attached HCL Logo - Sized to 12px so H-C-L matches G-U-V-I letter height */}
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <img
               src="/hcl-logo.png"
               alt="HCL Logo"
-              style={{ height: '24px', width: 'auto', display: 'block', objectFit: 'contain' }}
+              style={{ height: '12px', width: 'auto', display: 'block', objectFit: 'contain' }}
             />
           </div>
 
           {/* Thin, visually appealing separating bar */}
           <div style={{ width: '1px', height: '18px', backgroundColor: '#cbd5e1' }}></div>
 
-          {/* Clean PulsePoll Brand Text (Icon Removed as requested) */}
+          {/* PulsePoll Product Name - Sized to match optical letter scale */}
           <span style={{
-            fontSize: '1.25rem',
+            fontSize: '1.1rem',
             fontWeight: 800,
             color: 'var(--guvi-dark)',
             letterSpacing: '-0.02em',
+            lineHeight: 1,
           }}>
             Pulse<span style={{ color: 'var(--guvi-green)' }}>Poll</span>
           </span>
