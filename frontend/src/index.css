@@ -1,0 +1,156 @@
+:root {
+  /* HCL GUVI Inspired Brand Colors */
+  --guvi-green: #0ad652;
+  --guvi-green-hover: #08b846;
+  --guvi-green-light: #e6fceb;
+  --guvi-dark: #141415;
+  --guvi-navy: #1e1e22;
+  --guvi-border: #e2e8f0;
+  
+  /* Neutral Palette */
+  --color-bg: #f6f6f9;
+  --color-surface: #ffffff;
+  --color-text-main: #1e293b;
+  --color-text-muted: #64748b;
+  --color-text-light: #94a3b8;
+  
+  /* Accent Colors */
+  --color-blue-accent: #2563eb;
+  --color-orange-accent: #f97316;
+
+  /* Typography & Layout */
+  --font-family: 'DM Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Card Styling */
+.guvi-card {
+  background: var(--color-surface);
+  border: 1px solid var(--guvi-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 28px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.guvi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Button System */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-guvi-primary {
+  background: linear-gradient(180deg, #56f68f 0%, #0ad652 100%);
+  color: #0d381c;
+  box-shadow: 0 3px 6px rgba(10, 214, 82, 0.25);
+}
+
+.btn-guvi-primary:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 12px rgba(10, 214, 82, 0.35);
+}
+
+.btn-guvi-secondary {
+  background-color: var(--guvi-dark);
+  color: #ffffff;
+}
+
+.btn-guvi-secondary:hover {
+  background-color: #2a2a30;
+  transform: translateY(-1px);
+}
+
+.btn-guvi-outline {
+  background-color: transparent;
+  border: 1.5px solid var(--guvi-border);
+  color: var(--color-text-main);
+}
+
+.btn-guvi-outline:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+/* Badge System */
+.guvi-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.825rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.guvi-badge-green {
+  background-color: var(--guvi-green-light);
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+/* Live Result Bar Animation */
+.progress-bar-fill {
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+}
