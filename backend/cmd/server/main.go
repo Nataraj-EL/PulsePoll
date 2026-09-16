@@ -67,7 +67,9 @@ func main() {
 
 	// 4. Initialize Data Repositories & Services
 	var userRepo repository.UserRepository
+	var pollRepo repository.PollRepository
 	var authService service.AuthService
+	var pollService service.PollService
 
 	if mongoDB != nil {
 		userRepo = repository.NewUserRepository(mongoDB)
@@ -75,6 +77,12 @@ func main() {
 			log.Printf("⚠️ Notice: User indexes initialization warning: %v", err)
 		}
 		authService = service.NewAuthService(userRepo, cfg.JWTSecret)
+
+		pollRepo = repository.NewPollRepository(mongoDB)
+		if err := pollRepo.InitIndexes(ctx); err != nil {
+			log.Printf("⚠️ Notice: Poll indexes initialization warning: %v", err)
+		}
+		pollService = service.NewPollService(pollRepo)
 	} else {
 		log.Println("⚠️ Notice: Running without active MongoDB connection (DB operations will fail gracefully)")
 	}
@@ -105,6 +113,23 @@ func main() {
 
 				// Protected Auth Route
 				authGroup.GET("/me", middleware.RequireAuth(cfg.JWTSecret), authHandler.Me)
+			}
+		}
+
+		// Poll Routes (if PollService is available)
+		if pollService != nil {
+			pollHandler := handlers.NewPollHandler(pollService)
+			requireAuth := middleware.RequireAuth(cfg.JWTSecret)
+
+			pollsGroup := apiV1.Group("/polls")
+			{
+				// Protected Creator Endpoints
+				pollsGroup.POST("", requireAuth, pollHandler.Create)
+				pollsGroup.GET("", requireAuth, pollHandler.GetUserPolls)
+				pollsGroup.POST("/:id/publish", requireAuth, pollHandler.Publish)
+
+				// Public / Creator Access Endpoint
+				pollsGroup.GET("/:id", pollHandler.GetByID)
 			}
 		}
 	}

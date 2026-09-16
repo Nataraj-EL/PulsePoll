@@ -91,3 +91,45 @@ export async function fetchHealthStatus() {
     method: 'GET',
   });
 }
+
+/**
+ * Create a new poll
+ */
+export async function createPoll({ question, options, choiceType, publish = true }) {
+  return apiFetch('/polls', {
+    method: 'POST',
+    body: JSON.stringify({
+      question,
+      options,
+      choice_type: choiceType,
+      publish,
+    }),
+  });
+}
+
+/**
+ * Fetch polls created by current user
+ */
+export async function getUserPolls() {
+  return apiFetch('/polls', {
+    method: 'GET',
+  });
+}
+
+/**
+ * Fetch single poll by ID or Code
+ */
+export async function getPollByIdOrCode(idOrCode) {
+  return apiFetch(`/polls/${idOrCode}`, {
+    method: 'GET',
+  });
+}
+
+/**
+ * Publish a draft poll
+ */
+export async function publishPoll(pollId) {
+  return apiFetch(`/polls/${pollId}/publish`, {
+    method: 'POST',
+  });
+}
