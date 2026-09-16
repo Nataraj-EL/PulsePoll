@@ -16,44 +16,66 @@ export function Header({ onCreatePoll, onEnterCode }) {
         justifyContent: 'space-between',
         height: '72px',
       }}>
-        {/* HCL GUVI Branding & Product Descriptor */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          {/* Official HCL GUVI Brand Logo */}
+        {/* Header Branding Structure: Guvi Logo | HCL Logo | PulsePoll */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          {/* Official GUVI Logo */}
           <a
             href="https://www.guvi.in"
             target="_blank"
             rel="noopener noreferrer"
-            title="HCL GUVI"
-            style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}
+            title="GUVI Official Site"
+            style={{ display: 'flex', alignItems: 'center' }}
           >
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/0/08/GUVI_logo.png"
-              alt="HCL GUVI Logo"
-              style={{ height: '28px', width: 'auto', display: 'block' }}
+              alt="GUVI Logo"
+              style={{ height: '26px', width: 'auto', display: 'block' }}
             />
-            <span style={{
-              fontSize: '1rem',
-              fontWeight: 800,
-              color: '#0056b3',
-              letterSpacing: '0.04em',
-              lineHeight: 1,
-            }}>
-              HCL <span style={{ color: '#00b755' }}>GUVI</span>
-            </span>
           </a>
 
-          {/* Vertical Separator */}
-          <div style={{ width: '1px', height: '22px', backgroundColor: '#cbd5e1' }}></div>
+          {/* Thin, visually appealing separating bar */}
+          <div style={{ width: '1px', height: '20px', backgroundColor: '#d1d5db' }}></div>
 
-          {/* Product Descriptor (Replaces competing PulsePoll logo in header) */}
-          <span style={{
-            fontSize: '0.9rem',
-            fontWeight: 700,
-            color: 'var(--color-text-main)',
-            letterSpacing: '-0.01em',
-          }}>
-            Real-Time Audience Live Polling
-          </span>
+          {/* Attached Official HCL Logo */}
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img
+              src="/hcl-logo.png"
+              alt="HCL Logo"
+              style={{ height: '22px', width: 'auto', display: 'block', objectFit: 'contain' }}
+            />
+          </div>
+
+          {/* Thin, visually appealing separating bar */}
+          <div style={{ width: '1px', height: '20px', backgroundColor: '#d1d5db' }}></div>
+
+          {/* PulsePoll Product Name */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{
+              width: '28px',
+              height: '28px',
+              borderRadius: '8px',
+              background: 'linear-gradient(180deg, #56f68f 0%, #0ad652 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 6px rgba(10, 214, 82, 0.3)',
+            }}>
+              <span style={{
+                width: '7px',
+                height: '7px',
+                backgroundColor: '#063816',
+                borderRadius: '50%',
+              }}></span>
+            </div>
+            <span style={{
+              fontSize: '1.25rem',
+              fontWeight: 800,
+              color: 'var(--guvi-dark)',
+              letterSpacing: '-0.02em',
+            }}>
+              Pulse<span style={{ color: 'var(--guvi-green)' }}>Poll</span>
+            </span>
+          </div>
         </div>
 
         {/* Minimal Navigation */}
