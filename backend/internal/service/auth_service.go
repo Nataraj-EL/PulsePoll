@@ -17,10 +17,10 @@ import (
 )
 
 var (
-	ErrDuplicateEmail     = errors.New("an account with this email address already exists")
-	ErrInvalidCredentials = errors.New("invalid email address or password")
-	ErrUserNotFound       = errors.New("user account not found")
-	ErrInvalidInput       = errors.New("invalid input parameters")
+	ErrDuplicateEmail     = errors.New("An account with this email address already exists")
+	ErrInvalidCredentials = errors.New("Invalid email address or password")
+	ErrUserNotFound       = errors.New("User account not found")
+	ErrInvalidInput       = errors.New("Invalid input parameters")
 )
 
 var emailRegex = regexp.MustCompile(`^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$`)
