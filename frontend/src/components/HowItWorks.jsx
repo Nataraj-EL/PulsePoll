@@ -6,25 +6,21 @@ export function HowItWorks() {
       step: '01',
       title: 'Create a Poll',
       desc: 'Type your question and response options in seconds.',
-      icon: '✍️',
     },
     {
       step: '02',
       title: 'Share the Link',
       desc: 'Instantly get a unique shareable link or code for your audience.',
-      icon: '🔗',
     },
     {
       step: '03',
       title: 'Collect Votes',
       desc: 'Participants respond on any smartphone or browser—no signup required.',
-      icon: '📲',
     },
     {
       step: '04',
       title: 'See Results Live',
       desc: 'Watch incoming responses update on screen in real time.',
-      icon: '📊',
     },
   ];
 
@@ -33,7 +29,7 @@ export function HowItWorks() {
       <div className="container">
         <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 48px auto' }}>
           <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '12px' }}>
-            💡 Easy 4-Step Process
+            Easy 4-Step Process
           </span>
           <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: 'var(--guvi-dark)', letterSpacing: '-0.02em' }}>
             How It Works
@@ -51,18 +47,13 @@ export function HowItWorks() {
           {steps.map((s) => (
             <div key={s.step} className="guvi-card" style={{ position: 'relative' }}>
               <div style={{
-                position: 'absolute',
-                top: '20px',
-                right: '20px',
-                fontSize: '1.25rem',
+                fontSize: '1.5rem',
                 fontWeight: 800,
                 color: 'var(--guvi-green)',
-                opacity: 0.8,
+                marginBottom: '12px',
               }}>
                 {s.step}
               </div>
-
-              <div style={{ fontSize: '2.25rem', marginBottom: '16px' }}>{s.icon}</div>
               
               <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--guvi-dark)', marginBottom: '8px' }}>
                 {s.title}

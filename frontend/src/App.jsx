@@ -12,7 +12,7 @@ export default function App() {
   const handleCreatePoll = () => {
     setModalState({
       open: true,
-      title: '🚀 Create a Poll',
+      title: 'Create a Poll',
       message: 'Poll creation is opening soon! You will be able to type your question, add options, and instantly get a shareable link.',
     });
   };
@@ -20,7 +20,7 @@ export default function App() {
   const handleEnterCode = (code = '') => {
     setModalState({
       open: true,
-      title: code ? `📲 Poll Code #${code}` : '📲 Enter Poll Code',
+      title: code ? `Poll Code #${code}` : 'Enter Poll Code',
       message: code
         ? `Joining poll code #${code}... You will be able to cast votes directly from any smartphone or browser.`
         : 'Enter your 6-digit poll code to join an active poll directly from any smartphone or browser.',
@@ -86,7 +86,7 @@ export default function App() {
               className="btn btn-primary-dominant"
               style={{ width: '100%' }}
             >
-              Got it!
+              Got it
             </button>
           </div>
         </div>

@@ -3,24 +3,24 @@ import React from 'react';
 export function FeatureGrid() {
   const features = [
     {
+      number: '01',
       title: 'Shareable Poll Links',
-      desc: 'Get a unique link and code instantly to share with your audience across any channel.',
-      icon: '🔗',
+      desc: 'Get a unique link and code instantly to share across any channel.',
     },
     {
+      number: '02',
       title: 'No Participant Registration',
       desc: 'Voters tap the link or enter the code to respond immediately without creating an account.',
-      icon: '📲',
     },
     {
+      number: '03',
       title: 'Live Results',
       desc: 'Watch response counts and percentages update live as votes are cast.',
-      icon: '📊',
     },
     {
+      number: '04',
       title: 'Simple Poll Management',
       desc: 'Easily create, view, and manage your active polls from one simple dashboard.',
-      icon: '🛠️',
     },
   ];
 
@@ -29,7 +29,7 @@ export function FeatureGrid() {
       <div className="container">
         <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 48px auto' }}>
           <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '12px' }}>
-            🌟 Key Benefits
+            Key Benefits
           </span>
           <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: 'var(--guvi-dark)', letterSpacing: '-0.02em' }}>
             Everything You Need for Audience Polling
@@ -47,16 +47,12 @@ export function FeatureGrid() {
           {features.map((f, i) => (
             <div key={i} className="guvi-card" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <div style={{
-                width: '48px',
-                height: '48px',
-                borderRadius: '12px',
-                backgroundColor: 'var(--guvi-green-light)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.5rem',
+                fontSize: '0.85rem',
+                fontWeight: 800,
+                color: 'var(--guvi-green)',
+                letterSpacing: '0.05em',
               }}>
-                {f.icon}
+                {f.number}
               </div>
               <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--guvi-dark)' }}>
                 {f.title}

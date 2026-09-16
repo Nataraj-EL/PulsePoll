@@ -19,7 +19,7 @@ export function LandingHero({ onCreatePoll, onEnterCode }) {
           {/* User Badge */}
           <div style={{ marginBottom: '24px' }}>
             <span className="guvi-badge guvi-badge-green">
-              ✦ Live Audience Polling
+              Live Audience Polling
             </span>
           </div>
 
