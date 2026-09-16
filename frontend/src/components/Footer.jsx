@@ -17,26 +17,28 @@ export function Footer() {
         flexWrap: 'wrap',
         gap: '16px',
       }}>
-        {/* Footer Brand Logos: Guvi Logo | HCL Logo | PulsePoll */}
+        {/* Footer Brand Logos: GUVI Logo | HCL Logo | PulsePoll */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/0/08/GUVI_logo.png"
             alt="GUVI Logo"
             style={{ height: '20px', width: 'auto' }}
           />
-          <div style={{ width: '1px', height: '16px', backgroundColor: '#d1d5db' }}></div>
+          <div style={{ width: '1px', height: '16px', backgroundColor: '#cbd5e1' }}></div>
           <img
             src="/hcl-logo.png"
             alt="HCL Logo"
-            style={{ height: '18px', width: 'auto' }}
+            style={{ height: '20px', width: 'auto' }}
           />
-          <div style={{ width: '1px', height: '16px', backgroundColor: '#d1d5db' }}></div>
-          <span style={{ fontWeight: 800, color: 'var(--guvi-dark)' }}>PulsePoll</span>
+          <div style={{ width: '1px', height: '16px', backgroundColor: '#cbd5e1' }}></div>
+          <span style={{ fontWeight: 800, color: 'var(--guvi-dark)', fontSize: '1rem' }}>
+            Pulse<span style={{ color: 'var(--guvi-green)' }}>Poll</span>
+          </span>
         </div>
 
         {/* Minimal Copyright */}
         <div style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>
-          © {new Date().getFullYear()} PulsePoll. All rights reserved.
+          © {new Date().getFullYear()} HCL GUVI. All rights reserved.
         </div>
       </div>
     </footer>

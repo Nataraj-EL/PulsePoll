@@ -12,18 +12,18 @@ export default function App() {
   const handleCreatePoll = () => {
     setModalState({
       open: true,
-      title: '🚀 Create a New Poll',
-      message: 'Poll Creation Studio & Shareable Link Generator is scheduled for full activation in Sprint 2! You will be able to type questions, set 2-6 options, and instantly get your shareable poll link.',
+      title: '🚀 Create a Poll',
+      message: 'Poll creation is opening soon! You will be able to type your question, add options, and instantly get a shareable link.',
     });
   };
 
   const handleEnterCode = (code = '') => {
     setModalState({
       open: true,
-      title: code ? `📲 Enter Poll Code #${code}` : '📲 Enter Poll Code',
+      title: code ? `📲 Poll Code #${code}` : '📲 Enter Poll Code',
       message: code
-        ? `Joining room code #${code}... Mobile participant access without account creation will connect to your live poll session!`
-        : 'Enter your 6-digit room PIN code to join an active poll directly from any smartphone.',
+        ? `Joining poll code #${code}... You will be able to cast votes directly from any smartphone or browser.`
+        : 'Enter your 6-digit poll code to join an active poll directly from any smartphone or browser.',
     });
   };
 

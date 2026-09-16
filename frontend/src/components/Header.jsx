@@ -16,69 +16,50 @@ export function Header({ onCreatePoll, onEnterCode }) {
         justifyContent: 'space-between',
         height: '72px',
       }}>
-        {/* Header Branding Structure: Guvi Logo | HCL Logo | PulsePoll */}
+        {/* Header Brand Structure: GUVI Logo | HCL Logo | PulsePoll */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           {/* Official GUVI Logo */}
           <a
             href="https://www.guvi.in"
             target="_blank"
             rel="noopener noreferrer"
-            title="GUVI Official Site"
+            title="GUVI"
             style={{ display: 'flex', alignItems: 'center' }}
           >
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/0/08/GUVI_logo.png"
               alt="GUVI Logo"
-              style={{ height: '26px', width: 'auto', display: 'block' }}
+              style={{ height: '24px', width: 'auto', display: 'block' }}
             />
           </a>
 
           {/* Thin, visually appealing separating bar */}
-          <div style={{ width: '1px', height: '20px', backgroundColor: '#d1d5db' }}></div>
+          <div style={{ width: '1px', height: '18px', backgroundColor: '#cbd5e1' }}></div>
 
-          {/* Attached Official HCL Logo */}
+          {/* Attached HCL Logo - Sized so H, C, L match G, U, V, I */}
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <img
               src="/hcl-logo.png"
               alt="HCL Logo"
-              style={{ height: '22px', width: 'auto', display: 'block', objectFit: 'contain' }}
+              style={{ height: '24px', width: 'auto', display: 'block', objectFit: 'contain' }}
             />
           </div>
 
           {/* Thin, visually appealing separating bar */}
-          <div style={{ width: '1px', height: '20px', backgroundColor: '#d1d5db' }}></div>
+          <div style={{ width: '1px', height: '18px', backgroundColor: '#cbd5e1' }}></div>
 
-          {/* PulsePoll Product Name */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{
-              width: '28px',
-              height: '28px',
-              borderRadius: '8px',
-              background: 'linear-gradient(180deg, #56f68f 0%, #0ad652 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 6px rgba(10, 214, 82, 0.3)',
-            }}>
-              <span style={{
-                width: '7px',
-                height: '7px',
-                backgroundColor: '#063816',
-                borderRadius: '50%',
-              }}></span>
-            </div>
-            <span style={{
-              fontSize: '1.25rem',
-              fontWeight: 800,
-              color: 'var(--guvi-dark)',
-              letterSpacing: '-0.02em',
-            }}>
-              Pulse<span style={{ color: 'var(--guvi-green)' }}>Poll</span>
-            </span>
-          </div>
+          {/* Clean PulsePoll Brand Text (Icon Removed as requested) */}
+          <span style={{
+            fontSize: '1.25rem',
+            fontWeight: 800,
+            color: 'var(--guvi-dark)',
+            letterSpacing: '-0.02em',
+          }}>
+            Pulse<span style={{ color: 'var(--guvi-green)' }}>Poll</span>
+          </span>
         </div>
 
-        {/* Minimal Navigation */}
+        {/* Minimal User Navigation */}
         <nav style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           <a href="#how-it-works" style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.925rem' }}>
             How it Works
@@ -88,7 +69,7 @@ export function Header({ onCreatePoll, onEnterCode }) {
           </a>
         </nav>
 
-        {/* CTAs: Dominant "Create a Poll" + Secondary "Enter Poll Code" */}
+        {/* Action CTAs: Dominant "Create a Poll" + Secondary "Enter Poll Code" */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <button
             onClick={onEnterCode}
