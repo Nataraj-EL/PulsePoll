@@ -1,8 +1,27 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 
-export function Header({ onCreatePoll, onEnterCode, onNavigateDashboard, onNavigateLanding }) {
+export function Header({ onCreatePoll, onEnterCode, onNavigate, onNavigateDashboard, onNavigateLanding }) {
   const { user, isAuthenticated, logout } = useAuth();
+
+  const handleNavLanding = () => {
+    if (onNavigate) onNavigate('landing');
+    else if (onNavigateLanding) onNavigateLanding();
+  };
+
+  const handleNavDashboard = () => {
+    if (onNavigate) onNavigate('dashboard');
+    else if (onNavigateDashboard) onNavigateDashboard();
+  };
+
+  const handleNavLogin = () => {
+    if (onNavigate) onNavigate('login');
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    if (onNavigate) onNavigate('landing');
+  };
 
   return (
     <header style={{
@@ -53,7 +72,7 @@ export function Header({ onCreatePoll, onEnterCode, onNavigateDashboard, onNavig
 
           {/* PulsePoll Product Name */}
           <button
-            onClick={onNavigateLanding}
+            onClick={handleNavLanding}
             style={{
               background: 'none',
               border: 'none',
@@ -72,13 +91,13 @@ export function Header({ onCreatePoll, onEnterCode, onNavigateDashboard, onNavig
 
         {/* Minimal User Navigation */}
         <nav style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-          <button onClick={onNavigateLanding} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.925rem' }}>
+          <button onClick={handleNavLanding} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.925rem' }}>
             Home
           </button>
-          <a href="#how-it-works" style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.925rem' }}>
+          <a href="#how-it-works" onClick={handleNavLanding} style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.925rem' }}>
             How it Works
           </a>
-          <a href="#features" style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.925rem' }}>
+          <a href="#features" onClick={handleNavLanding} style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.925rem' }}>
             Features
           </a>
         </nav>
@@ -88,7 +107,7 @@ export function Header({ onCreatePoll, onEnterCode, onNavigateDashboard, onNavig
           {isAuthenticated ? (
             <>
               <button
-                onClick={onNavigateDashboard}
+                onClick={handleNavDashboard}
                 className="btn btn-secondary-subtle"
                 style={{ fontSize: '0.875rem', padding: '8px 16px' }}
               >
@@ -102,7 +121,7 @@ export function Header({ onCreatePoll, onEnterCode, onNavigateDashboard, onNavig
                 + Create Poll
               </button>
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', fontSize: '0.85rem', cursor: 'pointer', fontWeight: 600 }}
               >
                 Sign Out
@@ -111,13 +130,18 @@ export function Header({ onCreatePoll, onEnterCode, onNavigateDashboard, onNavig
           ) : (
             <>
               <button
+                onClick={handleNavLogin}
+                style={{ background: 'none', border: 'none', color: 'var(--color-text-main)', fontSize: '0.875rem', cursor: 'pointer', fontWeight: 600, padding: '8px 12px' }}
+              >
+                Sign In
+              </button>
+              <button
                 onClick={onEnterCode}
                 className="btn btn-secondary-subtle"
                 style={{ fontSize: '0.875rem', padding: '8px 16px' }}
               >
                 Enter Poll Code
               </button>
-
               <button
                 onClick={onCreatePoll}
                 className="btn btn-primary-dominant"

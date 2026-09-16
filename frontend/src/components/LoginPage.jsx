@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
-export function LoginPage({ onNavigateSignup, onSuccess }) {
+export function LoginPage({ onNavigateSignup, onNavigateToSignup, onSuccess, onLoginSuccess }) {
   const { login, error, clearError } = useAuth();
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [validationError, setValidationError] = useState('');
+
+  const handleSuccessCallback = onSuccess || onLoginSuccess;
+  const handleSignupNavCallback = onNavigateSignup || onNavigateToSignup;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +31,7 @@ export function LoginPage({ onNavigateSignup, onSuccess }) {
     setSubmitting(false);
 
     if (res.success) {
-      if (onSuccess) onSuccess();
+      if (handleSuccessCallback) handleSuccessCallback();
     }
   };
 
@@ -125,7 +128,7 @@ export function LoginPage({ onNavigateSignup, onSuccess }) {
           <div style={{ marginTop: '24px', textAlign: 'center', fontSize: '0.9rem', color: 'var(--color-text-muted)' }}>
             Need a creator account?{' '}
             <button
-              onClick={onNavigateSignup}
+              onClick={handleSignupNavCallback}
               style={{
                 background: 'none',
                 border: 'none',

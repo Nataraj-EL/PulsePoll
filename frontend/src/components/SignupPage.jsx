@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
-export function SignupPage({ onNavigateLogin, onSuccess }) {
+export function SignupPage({ onNavigateLogin, onNavigateToLogin, onSuccess, onSignupSuccess }) {
   const { signup, error, clearError } = useAuth();
   
   const [name, setName] = useState('');
@@ -9,6 +9,9 @@ export function SignupPage({ onNavigateLogin, onSuccess }) {
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [validationError, setValidationError] = useState('');
+
+  const handleSuccessCallback = onSuccess || onSignupSuccess;
+  const handleLoginNavCallback = onNavigateLogin || onNavigateToLogin;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +36,7 @@ export function SignupPage({ onNavigateLogin, onSuccess }) {
     setSubmitting(false);
 
     if (res.success) {
-      if (onSuccess) onSuccess();
+      if (handleSuccessCallback) handleSuccessCallback();
     }
   };
 
@@ -152,7 +155,7 @@ export function SignupPage({ onNavigateLogin, onSuccess }) {
           <div style={{ marginTop: '24px', textAlign: 'center', fontSize: '0.9rem', color: 'var(--color-text-muted)' }}>
             Already have a creator account?{' '}
             <button
-              onClick={onNavigateLogin}
+              onClick={handleLoginNavCallback}
               style={{
                 background: 'none',
                 border: 'none',

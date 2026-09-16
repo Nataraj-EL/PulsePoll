@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Header } from './components/Header';
 import { LandingHero } from './components/LandingHero';
@@ -20,6 +20,13 @@ function AppContent() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Automatically redirect away from protected dashboard if unauthenticated after loading finishes
+  useEffect(() => {
+    if (!loading && !user && currentView === 'dashboard') {
+      setCurrentView('login');
+    }
+  }, [loading, user, currentView]);
+
   const handleCreatePoll = () => {
     if (user) {
       navigateTo('dashboard');
@@ -38,20 +45,13 @@ function AppContent() {
     });
   };
 
-  // Protect creator area: if state is 'dashboard' but user is not logged in after auth check finishes
-  if (currentView === 'dashboard' && !user && !loading) {
+  if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-        <Header
-          onCreatePoll={handleCreatePoll}
-          onEnterCode={handleEnterCode}
-          onNavigate={navigateTo}
-        />
-        <LoginPage
-          onNavigateToSignup={() => navigateTo('signup')}
-          onLoginSuccess={() => navigateTo('dashboard')}
-        />
-        <Footer />
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f8fafc' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div className="pulse-indicator" style={{ margin: '0 auto 16px auto', width: '16px', height: '16px' }}></div>
+          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', fontWeight: 600 }}>Loading PulsePoll...</p>
+        </div>
       </div>
     );
   }
@@ -68,14 +68,18 @@ function AppContent() {
         {currentView === 'signup' && (
           <SignupPage
             onNavigateToLogin={() => navigateTo('login')}
+            onNavigateLogin={() => navigateTo('login')}
             onSignupSuccess={() => navigateTo('dashboard')}
+            onSuccess={() => navigateTo('dashboard')}
           />
         )}
 
         {currentView === 'login' && (
           <LoginPage
             onNavigateToSignup={() => navigateTo('signup')}
+            onNavigateSignup={() => navigateTo('signup')}
             onLoginSuccess={() => navigateTo('dashboard')}
+            onSuccess={() => navigateTo('dashboard')}
           />
         )}
 
