@@ -73,7 +73,7 @@ export function SignupPage({ onNavigateLogin, onNavigateToLogin, onSuccess, onSi
               marginBottom: '20px',
               fontWeight: 600,
             }}>
-              ⚠️ {(() => {
+              {(() => {
                 const msg = (validationError || error || '').trim();
                 return msg ? msg.charAt(0).toUpperCase() + msg.slice(1) : '';
               })()}

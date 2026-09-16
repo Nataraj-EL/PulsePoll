@@ -56,7 +56,7 @@ export function Dashboard({ onCreatePollClick }) {
           {/* Creator Profile Card */}
           <div className="guvi-card">
             <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--guvi-dark)', marginBottom: '16px' }}>
-              👤 Creator Profile
+              Creator Profile
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.925rem', color: 'var(--color-text-main)' }}>
               <div>
@@ -77,7 +77,7 @@ export function Dashboard({ onCreatePollClick }) {
           {/* Poll Management Placeholder */}
           <div className="guvi-card">
             <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--guvi-dark)', marginBottom: '16px' }}>
-              📊 Active Polls
+              Active Polls
             </h3>
             <div style={{
               padding: '32px 20px',
