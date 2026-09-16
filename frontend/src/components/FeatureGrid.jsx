@@ -3,23 +3,23 @@ import React from 'react';
 export function FeatureGrid() {
   const features = [
     {
-      title: 'Zero Participant Friction',
-      desc: 'Participants jump straight into voting via short 6-digit PIN codes or QR scans without creating an account.',
-      icon: '🔒',
+      title: 'Shareable Poll Links',
+      desc: 'Get a unique link and code instantly to share with your audience across any channel.',
+      icon: '🔗',
     },
     {
-      title: 'Real-Time Results Stream',
-      desc: 'Presenter dashboard updates dynamically as votes are cast, creating an engaging live audience feedback loop.',
-      icon: '⚡',
+      title: 'No Participant Registration',
+      desc: 'Voters tap the link or enter the code to respond immediately without creating an account.',
+      icon: '📲',
     },
     {
-      title: 'Instant QR & Share Links',
-      desc: 'Generate downloadable QR codes and short shareable URLs for classroom or conference presentations.',
-      icon: '🎯',
+      title: 'Live Results',
+      desc: 'Watch response counts and percentages update live as votes are cast.',
+      icon: '📊',
     },
     {
-      title: 'Intuitive Management',
-      desc: 'Clean, distraction-free presenter hub to activate polls, lock responses, or export session metrics.',
+      title: 'Simple Poll Management',
+      desc: 'Easily create, view, and manage your active polls from one simple dashboard.',
       icon: '🛠️',
     },
   ];
@@ -29,13 +29,13 @@ export function FeatureGrid() {
       <div className="container">
         <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 48px auto' }}>
           <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '12px' }}>
-            🌟 Key Advantages
+            🌟 Key Benefits
           </span>
           <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: 'var(--guvi-dark)', letterSpacing: '-0.02em' }}>
-            Built for High Engagement
+            Everything You Need for Audience Polling
           </h2>
           <p style={{ color: 'var(--color-text-muted)', fontSize: '1.05rem', marginTop: '8px' }}>
-            PulsePoll combines extreme ease of use with robust live response visualization.
+            Built for simple, fast, and engaging audience feedback.
           </p>
         </div>
 

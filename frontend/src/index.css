@@ -1,31 +1,27 @@
 :root {
-  /* HCL GUVI Inspired Brand Colors */
+  /* Official HCL GUVI Inspired Palette */
   --guvi-green: #0ad652;
   --guvi-green-hover: #08b846;
   --guvi-green-light: #e6fceb;
-  --guvi-dark: #141415;
-  --guvi-navy: #1e1e22;
+  --hcl-blue: #0056b3;
+  --guvi-dark: #1e1e22;
   --guvi-border: #e2e8f0;
   
   /* Neutral Palette */
-  --color-bg: #f6f6f9;
+  --color-bg: #f8fafc;
   --color-surface: #ffffff;
-  --color-text-main: #1e293b;
+  --color-text-main: #0f172a;
   --color-text-muted: #64748b;
   --color-text-light: #94a3b8;
   
-  /* Accent Colors */
-  --color-blue-accent: #2563eb;
-  --color-orange-accent: #f97316;
-
-  /* Typography & Layout */
+  /* Layout & Typography */
   --font-family: 'DM Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 20px;
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 6px 18px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.08);
 }
 
 * {
@@ -59,7 +55,7 @@ body {
 /* Card Styling */
 .guvi-card {
   background: var(--color-surface);
-  border: 1px solid var(--guvi-border);
+  border: 1.5px solid var(--guvi-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   padding: 28px;
@@ -88,37 +84,32 @@ body {
   white-space: nowrap;
 }
 
-.btn-guvi-primary {
+/* DOMINANT PRIMARY CTA */
+.btn-primary-dominant {
   background: linear-gradient(180deg, #56f68f 0%, #0ad652 100%);
-  color: #0d381c;
-  box-shadow: 0 3px 6px rgba(10, 214, 82, 0.25);
+  color: #063816;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(10, 214, 82, 0.35);
+  border: 1px solid #70f69f;
 }
 
-.btn-guvi-primary:hover {
+.btn-primary-dominant:hover {
   filter: brightness(1.05);
-  transform: translateY(-1px);
-  box-shadow: 0 5px 12px rgba(10, 214, 82, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(10, 214, 82, 0.45);
 }
 
-.btn-guvi-secondary {
-  background-color: var(--guvi-dark);
-  color: #ffffff;
-}
-
-.btn-guvi-secondary:hover {
-  background-color: #2a2a30;
-  transform: translateY(-1px);
-}
-
-.btn-guvi-outline {
+/* SECONDARY SUBTLE CTA */
+.btn-secondary-subtle {
   background-color: transparent;
-  border: 1.5px solid var(--guvi-border);
+  border: 1.5px solid #cbd5e1;
   color: var(--color-text-main);
+  font-weight: 600;
 }
 
-.btn-guvi-outline:hover {
+.btn-secondary-subtle:hover {
   background-color: #f1f5f9;
-  border-color: #cbd5e1;
+  border-color: #94a3b8;
 }
 
 /* Badge System */
@@ -139,18 +130,13 @@ body {
   border: 1px solid #a7f3d0;
 }
 
-/* Live Result Bar Animation */
+/* Progress bar transitions */
 .progress-bar-fill {
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Responsive Utilities */
 @media (max-width: 768px) {
   .container {
     padding: 0 16px;
-  }
-  
-  .btn {
-    width: 100%;
   }
 }

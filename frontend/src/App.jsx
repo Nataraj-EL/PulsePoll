@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { LandingHero } from './components/LandingHero';
-import { LivePollPreview } from './components/LivePollPreview';
 import { HowItWorks } from './components/HowItWorks';
 import { FeatureGrid } from './components/FeatureGrid';
 import { FinalCTA } from './components/FinalCTA';
@@ -10,52 +9,44 @@ import { Footer } from './components/Footer';
 export default function App() {
   const [modalState, setModalState] = useState({ open: false, title: '', message: '' });
 
-  const handleCreatePollClick = () => {
+  const handleCreatePoll = () => {
     setModalState({
       open: true,
-      title: '🚀 Poll Creation Studio',
-      message: 'Poll Creation workflow is scheduled for activation in Sprint 2! You can test live response voting right now in the Live Preview section below.',
+      title: '🚀 Create a New Poll',
+      message: 'Poll Creation Studio & Shareable Link Generator is scheduled for full activation in Sprint 2! You will be able to type questions, set 2-6 options, and instantly get your shareable poll link.',
     });
   };
 
-  const handleJoinPollClick = () => {
+  const handleEnterCode = (code = '') => {
     setModalState({
       open: true,
-      title: '📲 Join Live Session',
-      message: 'Please enter a 6-digit room PIN or try out room #849201 in the interactive preview below!',
-    });
-  };
-
-  const handleJoinWithPin = (pin) => {
-    setModalState({
-      open: true,
-      title: `📲 Joining Room #${pin}`,
-      message: `Connecting to room #${pin}... Live room session joining is ready for Sprint 2 active socket connections! Try out room #849201 in the live interactive demo below.`,
+      title: code ? `📲 Enter Poll Code #${code}` : '📲 Enter Poll Code',
+      message: code
+        ? `Joining room code #${code}... Mobile participant access without account creation will connect to your live poll session!`
+        : 'Enter your 6-digit room PIN code to join an active poll directly from any smartphone.',
     });
   };
 
   return (
     <>
       <Header
-        onCreatePoll={handleCreatePollClick}
-        onJoinPoll={handleJoinPollClick}
+        onCreatePoll={handleCreatePoll}
+        onEnterCode={handleEnterCode}
       />
       
       <main style={{ flex: 1 }}>
         <LandingHero
-          onCreatePoll={handleCreatePollClick}
-          onJoinWithPin={handleJoinWithPin}
+          onCreatePoll={handleCreatePoll}
+          onEnterCode={handleEnterCode}
         />
-        
-        <LivePollPreview />
         
         <HowItWorks />
         
         <FeatureGrid />
         
         <FinalCTA
-          onCreatePoll={handleCreatePollClick}
-          onJoinPoll={handleJoinPollClick}
+          onCreatePoll={handleCreatePoll}
+          onEnterCode={handleEnterCode}
         />
       </main>
 
@@ -78,7 +69,7 @@ export default function App() {
           padding: '20px',
         }} onClick={() => setModalState({ open: false, title: '', message: '' })}>
           <div className="guvi-card" style={{
-            maxWidth: '460px',
+            maxWidth: '440px',
             width: '100%',
             backgroundColor: '#ffffff',
             padding: '32px',
@@ -87,12 +78,12 @@ export default function App() {
             <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--guvi-dark)', marginBottom: '12px' }}>
               {modalState.title}
             </h3>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.975rem', lineHeight: 1.6, marginBottom: '24px' }}>
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '24px' }}>
               {modalState.message}
             </p>
             <button
               onClick={() => setModalState({ open: false, title: '', message: '' })}
-              className="btn btn-guvi-primary"
+              className="btn btn-primary-dominant"
               style={{ width: '100%' }}
             >
               Got it!

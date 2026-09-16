@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-export function Header({ onCreatePoll, onJoinPoll }) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+export function Header({ onCreatePoll, onEnterCode }) {
   return (
     <header style={{
       backgroundColor: '#ffffff',
@@ -18,82 +16,72 @@ export function Header({ onCreatePoll, onJoinPoll }) {
         justifyContent: 'space-between',
         height: '72px',
       }}>
-        {/* Brand Co-Branding Logo Area */}
+        {/* HCL GUVI Branding & Product Descriptor */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          {/* Official HCL GUVI Logo Asset */}
-          <a href="https://www.guvi.in" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center' }}>
+          {/* Official HCL GUVI Brand Logo */}
+          <a
+            href="https://www.guvi.in"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="HCL GUVI"
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}
+          >
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/0/08/GUVI_logo.png"
               alt="HCL GUVI Logo"
-              style={{ height: '30px', width: 'auto', display: 'block' }}
+              style={{ height: '28px', width: 'auto', display: 'block' }}
             />
+            <span style={{
+              fontSize: '1rem',
+              fontWeight: 800,
+              color: '#0056b3',
+              letterSpacing: '0.04em',
+              lineHeight: 1,
+            }}>
+              HCL <span style={{ color: '#00b755' }}>GUVI</span>
+            </span>
           </a>
 
           {/* Vertical Separator */}
-          <div style={{ width: '1px', height: '24px', backgroundColor: '#cbd5e1' }}></div>
+          <div style={{ width: '1px', height: '22px', backgroundColor: '#cbd5e1' }}></div>
 
-          {/* PulsePoll Brand Logo */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-            <div style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '8px',
-              background: 'linear-gradient(180deg, #56f68f 0%, #0ad652 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 2px 6px rgba(10, 214, 82, 0.3)',
-            }}>
-              <span style={{
-                width: '8px',
-                height: '8px',
-                backgroundColor: '#0d381c',
-                borderRadius: '50%',
-              }}></span>
-            </div>
-            <span style={{
-              fontSize: '1.25rem',
-              fontWeight: 800,
-              color: 'var(--guvi-dark)',
-              letterSpacing: '-0.02em',
-            }}>
-              Pulse<span style={{ color: 'var(--guvi-green)' }}>Poll</span>
-            </span>
-          </div>
+          {/* Product Descriptor (Replaces competing PulsePoll logo in header) */}
+          <span style={{
+            fontSize: '0.9rem',
+            fontWeight: 700,
+            color: 'var(--color-text-main)',
+            letterSpacing: '-0.01em',
+          }}>
+            Real-Time Audience Live Polling
+          </span>
         </div>
 
-        {/* Desktop Navigation Links */}
-        <nav style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '28px',
-        }} className="desktop-nav">
+        {/* Minimal Navigation */}
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           <a href="#how-it-works" style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.925rem' }}>
             How it Works
-          </a>
-          <a href="#live-demo" style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.925rem' }}>
-            Live Preview
           </a>
           <a href="#features" style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.925rem' }}>
             Features
           </a>
         </nav>
 
-        {/* CTA Actions */}
+        {/* CTAs: Dominant "Create a Poll" + Secondary "Enter Poll Code" */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <button
-            onClick={onJoinPoll}
-            className="btn btn-guvi-outline"
+            onClick={onEnterCode}
+            className="btn btn-secondary-subtle"
             style={{ fontSize: '0.875rem', padding: '8px 16px' }}
           >
-            Join Poll
+            Enter Poll Code
           </button>
+          
           <button
             onClick={onCreatePoll}
-            className="btn btn-guvi-primary"
-            style={{ fontSize: '0.875rem', padding: '8px 18px' }}
+            className="btn btn-primary-dominant"
+            style={{ fontSize: '0.875rem', padding: '8px 20px' }}
           >
-            + Create Poll
+            Create a Poll
           </button>
         </div>
       </div>

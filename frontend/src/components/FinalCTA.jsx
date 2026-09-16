@@ -1,11 +1,11 @@
 import React from 'react';
 
-export function FinalCTA({ onCreatePoll, onJoinPoll }) {
+export function FinalCTA({ onCreatePoll, onEnterCode }) {
   return (
     <section style={{ padding: '40px 0 80px 0' }}>
       <div className="container">
         <div style={{
-          background: 'radial-gradient(130% 220% at 100% 50%, rgba(10, 214, 82, 0.2), transparent 50%), var(--guvi-navy)',
+          background: 'radial-gradient(130% 220% at 100% 50%, rgba(10, 214, 82, 0.25), transparent 50%), var(--guvi-dark)',
           color: '#ffffff',
           borderRadius: 'var(--radius-lg)',
           padding: '56px 32px',
@@ -19,32 +19,34 @@ export function FinalCTA({ onCreatePoll, onJoinPoll }) {
             marginBottom: '16px',
             color: '#ffffff',
           }}>
-            Ready to see every response live?
+            Ready to create your first poll?
           </h2>
           <p style={{
             fontSize: '1.15rem',
             color: '#94a3b8',
-            maxWidth: '560px',
-            margin: '0 auto 32px auto',
+            maxWidth: '540px',
+            margin: '0 auto 36px auto',
           }}>
-            Launch your first live poll in seconds. Fast, interactive, and completely free for presenters and participants.
+            Start collecting live audience responses in seconds. Share your poll link and watch responses update live.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
+            {/* DOMINANT PRIMARY CTA */}
             <button
               onClick={onCreatePoll}
-              className="btn btn-guvi-primary"
-              style={{ padding: '14px 32px', fontSize: '1.05rem' }}
+              className="btn btn-primary-dominant"
+              style={{ padding: '16px 36px', fontSize: '1.1rem' }}
             >
-              🚀 Create Your Poll Now
+              Create a Poll
             </button>
 
+            {/* SECONDARY SUBTLE CTA */}
             <button
-              onClick={onJoinPoll}
-              className="btn btn-guvi-outline"
-              style={{ padding: '14px 28px', color: '#ffffff', borderColor: 'rgba(255,255,255,0.2)' }}
+              onClick={onEnterCode}
+              className="btn btn-secondary-subtle"
+              style={{ padding: '16px 28px', color: '#ffffff', borderColor: 'rgba(255,255,255,0.25)' }}
             >
-              Enter Room Code
+              Enter Poll Code
             </button>
           </div>
         </div>

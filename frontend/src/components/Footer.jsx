@@ -6,7 +6,7 @@ export function Footer() {
       marginTop: 'auto',
       borderTop: '1px solid var(--guvi-border)',
       backgroundColor: '#ffffff',
-      padding: '32px 0',
+      padding: '28px 0',
       color: 'var(--color-text-muted)',
       fontSize: '0.875rem',
     }}>
@@ -17,18 +17,25 @@ export function Footer() {
         flexWrap: 'wrap',
         gap: '16px',
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        {/* HCL GUVI Logo Brand Mark */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/0/08/GUVI_logo.png"
-            alt="GUVI Logo"
-            style={{ height: '22px', opacity: 0.8 }}
+            alt="HCL GUVI Logo"
+            style={{ height: '22px', width: 'auto' }}
           />
-          <span style={{ color: '#cbd5e1' }}>|</span>
-          <span style={{ fontWeight: 700, color: 'var(--guvi-dark)' }}>PulsePoll</span>
+          <span style={{
+            fontSize: '0.9rem',
+            fontWeight: 800,
+            color: '#0056b3',
+          }}>
+            HCL <span style={{ color: '#00b755' }}>GUVI</span>
+          </span>
         </div>
 
-        <div style={{ color: 'var(--color-text-muted)' }}>
-          © {new Date().getFullYear()} PulsePoll Platform. Inspired by HCL GUVI design standards.
+        {/* Minimal Copyright */}
+        <div style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>
+          © {new Date().getFullYear()} HCL GUVI. All rights reserved.
         </div>
       </div>
     </footer>
