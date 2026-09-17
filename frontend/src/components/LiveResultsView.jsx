@@ -134,8 +134,9 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
             display: 'flex',
             alignItems: 'flex-end',
             justifyContent: 'space-around',
-            height: 'clamp(180px, 25vh, 220px)',
+            height: 'clamp(210px, 30vh, 250px)',
             gap: '12px',
+            paddingTop: '48px',
             paddingBottom: '0px',
             borderBottom: '2px solid var(--guvi-border)',
             overflowX: 'auto',
@@ -160,39 +161,45 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
                     justifyContent: 'flex-end',
                   }}
                 >
-                  {/* Vote Count & Percentage Badge */}
+                  {/* Dynamic Height Bar Wrapper */}
                   <div style={{
-                    fontSize: 'clamp(0.72rem, 1.8vw, 0.825rem)',
-                    fontWeight: 800,
-                    color: isLeader ? '#047857' : 'var(--guvi-dark)',
-                    marginBottom: '8px',
-                    textAlign: 'center',
-                    whiteSpace: 'nowrap',
-                    transition: 'all 0.3s ease',
-                    opacity: totalVotes > 0 ? 1 : 0.65,
-                    flexShrink: 0,
-                  }}>
-                    <div>{count} {count === 1 ? 'vote' : 'votes'}</div>
-                    <div style={{ fontSize: 'clamp(0.68rem, 1.6vw, 0.75rem)', fontWeight: 600, color: 'var(--color-text-muted)', marginTop: '1px' }}>
-                      {percentage}%
-                    </div>
-                  </div>
-
-                  {/* Flexible Bar Track */}
-                  <div style={{
-                    flex: 1,
                     width: '100%',
+                    maxWidth: '44px',
+                    height: `${barHeightPct}%`,
+                    minHeight: '4px',
+                    position: 'relative',
                     display: 'flex',
                     alignItems: 'flex-end',
                     justifyContent: 'center',
+                    transition: 'height 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
                   }}>
+                    {/* Vote Count & Percentage Badge anchored above bar tip */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '100%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      marginBottom: '6px',
+                      fontSize: 'clamp(0.72rem, 1.8vw, 0.825rem)',
+                      fontWeight: 800,
+                      color: isLeader ? '#047857' : 'var(--guvi-dark)',
+                      textAlign: 'center',
+                      whiteSpace: 'nowrap',
+                      transition: 'all 0.3s ease',
+                      opacity: totalVotes > 0 ? 1 : 0.65,
+                      pointerEvents: 'none',
+                    }}>
+                      <div>{count} {count === 1 ? 'vote' : 'votes'}</div>
+                      <div style={{ fontSize: 'clamp(0.68rem, 1.6vw, 0.75rem)', fontWeight: 600, color: 'var(--color-text-muted)', marginTop: '1px' }}>
+                        {percentage}%
+                      </div>
+                    </div>
+
                     {/* Refined Dynamic Tonal Bar Element */}
                     <div style={{
                       width: '100%',
-                      maxWidth: '44px',
-                      height: `${barHeightPct}%`,
+                      height: '100%',
                       borderRadius: '6px 6px 0 0',
-                      transition: 'height 0.45s cubic-bezier(0.16, 1, 0.3, 1), background-image 0.3s ease, box-shadow 0.3s ease',
                       backgroundImage: isLeader
                         ? 'linear-gradient(180deg, #34d399 0%, #059669 100%)'
                         : 'linear-gradient(180deg, #475569 0%, #1e293b 100%)',

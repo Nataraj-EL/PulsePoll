@@ -153,7 +153,8 @@ export function Dashboard() {
                           transition: 'all 0.15s ease',
                         }}
                       >
-                        <span>Code {poll.code}</span>
+                        <span style={{ color: '#64748b', fontWeight: 600, fontSize: '0.8rem' }}>Code :</span>
+                        <span style={{ color: '#0f172a', fontWeight: 700, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace', letterSpacing: '0.04em' }}>{poll.code}</span>
                         <span
                           style={{
                             display: 'inline-flex',
