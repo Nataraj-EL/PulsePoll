@@ -150,7 +150,7 @@ export function PollPage({ pollCode, onNavigate, initialTab }) {
   }
 
   return (
-    <div style={{ padding: '50px 0', minHeight: '80vh' }}>
+    <div style={{ padding: 'clamp(20px, 4vw, 50px) 0', minHeight: '80vh' }}>
       <div className="container">
         <div className="guvi-card" style={{
           maxWidth: '680px',
@@ -165,18 +165,18 @@ export function PollPage({ pollCode, onNavigate, initialTab }) {
           <div style={{
             backgroundColor: 'var(--guvi-navy)',
             color: '#ffffff',
-            padding: '24px 32px',
+            padding: 'clamp(16px, 3.5vw, 24px) clamp(16px, 4vw, 32px)',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             flexWrap: 'wrap',
             gap: '12px',
           }}>
-            <div>
+            <div style={{ flex: '1 1 200px', minWidth: 0 }}>
               <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--guvi-green)', letterSpacing: '0.08em' }}>
                 {poll.status === 'active' ? '● LIVE POLL' : 'DRAFT POLL'} • CODE #{poll.code}
               </div>
-              <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ffffff', marginTop: '6px', lineHeight: 1.3 }}>
+              <h1 style={{ fontSize: 'clamp(1.15rem, 3.5vw, 1.4rem)', fontWeight: 800, color: '#ffffff', marginTop: '6px', lineHeight: 1.3, wordBreak: 'break-word' }}>
                 {poll.question}
               </h1>
             </div>
@@ -192,6 +192,7 @@ export function PollPage({ pollCode, onNavigate, initialTab }) {
                 fontSize: '0.825rem',
                 fontWeight: 600,
                 cursor: 'pointer',
+                whiteSpace: 'nowrap',
               }}
             >
               {copied ? 'Link Copied!' : 'Copy Share Link'}
@@ -199,8 +200,8 @@ export function PollPage({ pollCode, onNavigate, initialTab }) {
           </div>
 
           {/* Progressive Stage Body */}
-          <div style={{ padding: '32px' }}>
-            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--guvi-dark)', marginBottom: '20px', lineHeight: 1.35 }}>
+          <div style={{ padding: 'clamp(16px, 4vw, 32px)' }}>
+            <h2 style={{ fontSize: 'clamp(1.15rem, 3.5vw, 1.4rem)', fontWeight: 800, color: 'var(--guvi-dark)', marginBottom: '20px', lineHeight: 1.35, wordBreak: 'break-word' }}>
               {poll.question}
             </h2>
 
@@ -237,7 +238,7 @@ export function PollPage({ pollCode, onNavigate, initialTab }) {
             ) : (
               /* STAGE 1: Voting Form */
               <>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '8px' }}>
                   <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>
                     {poll.choice_type === 'single' ? 'Select 1 option:' : 'Select any options:'}
                   </span>
@@ -274,15 +275,16 @@ export function PollPage({ pollCode, onNavigate, initialTab }) {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
-                          padding: '16px 20px',
+                          padding: '14px clamp(12px, 3vw, 20px)',
                           borderRadius: 'var(--radius-sm)',
                           border: isChecked ? '2px solid var(--guvi-green)' : '1px solid #cbd5e1',
                           backgroundColor: isChecked ? 'var(--guvi-green-light)' : '#ffffff',
                           cursor: 'pointer',
                           transition: 'all 0.15s ease',
+                          gap: '12px',
                         }}
                       >
-                        <span style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--guvi-dark)' }}>
+                        <span style={{ fontSize: '0.975rem', fontWeight: 600, color: 'var(--guvi-dark)', wordBreak: 'break-word', minWidth: 0, flex: 1 }}>
                           {opt.text}
                         </span>
                         <input
@@ -297,7 +299,7 @@ export function PollPage({ pollCode, onNavigate, initialTab }) {
                               toggleMultipleOption(opt.id);
                             }
                           }}
-                          style={{ accentColor: 'var(--guvi-green)', width: '18px', height: '18px', cursor: 'pointer' }}
+                          style={{ accentColor: 'var(--guvi-green)', width: '18px', height: '18px', cursor: 'pointer', flexShrink: 0 }}
                         />
                       </label>
                     );

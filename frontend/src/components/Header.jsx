@@ -36,10 +36,14 @@ export function Header({ onCreatePoll, onEnterCode, onNavigate, onNavigateDashbo
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: '72px',
+        minHeight: '64px',
+        paddingTop: '10px',
+        paddingBottom: '10px',
+        flexWrap: 'wrap',
+        gap: '12px',
       }}>
         {/* Header Brand Structure: GUVI Logo | HCL Logo | PulsePoll */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
           {/* GUVI Logo */}
           <div
             onClick={handleNavLanding}
@@ -49,24 +53,24 @@ export function Header({ onCreatePoll, onEnterCode, onNavigate, onNavigateDashbo
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/0/08/GUVI_logo.png"
               alt="GUVI Logo"
-              style={{ height: '24px', width: 'auto', display: 'block' }}
+              style={{ height: '22px', width: 'auto', display: 'block' }}
             />
           </div>
 
-          {/* Thin, visually appealing separating bar */}
-          <div style={{ width: '1px', height: '18px', backgroundColor: '#cbd5e1' }}></div>
+          {/* Separating bar */}
+          <div style={{ width: '1px', height: '16px', backgroundColor: '#cbd5e1' }}></div>
 
-          {/* Attached HCL Logo - Sized to 12px so H-C-L matches G-U-V-I letter height */}
+          {/* Attached HCL Logo */}
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <img
               src="/hcl-logo.png"
               alt="HCL Logo"
-              style={{ height: '12px', width: 'auto', display: 'block', objectFit: 'contain' }}
+              style={{ height: '11px', width: 'auto', display: 'block', objectFit: 'contain' }}
             />
           </div>
 
-          {/* Thin, visually appealing separating bar */}
-          <div style={{ width: '1px', height: '18px', backgroundColor: '#cbd5e1' }}></div>
+          {/* Separating bar */}
+          <div style={{ width: '1px', height: '16px', backgroundColor: '#cbd5e1' }}></div>
 
           {/* PulsePoll Product Name */}
           <button
@@ -76,7 +80,7 @@ export function Header({ onCreatePoll, onEnterCode, onNavigate, onNavigateDashbo
               border: 'none',
               padding: 0,
               cursor: 'pointer',
-              fontSize: '1.25rem',
+              fontSize: '1.2rem',
               fontWeight: 800,
               color: 'var(--guvi-dark)',
               letterSpacing: '-0.02em',
@@ -87,40 +91,40 @@ export function Header({ onCreatePoll, onEnterCode, onNavigate, onNavigateDashbo
           </button>
         </div>
 
-        {/* Minimal User Navigation */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-          <button onClick={handleNavLanding} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.925rem' }}>
+        {/* Desktop Navigation Links */}
+        <nav className="header-nav" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <button onClick={handleNavLanding} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.9rem' }}>
             Home
           </button>
-          <a href="#how-it-works" onClick={handleNavLanding} style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.925rem' }}>
+          <a href="#how-it-works" onClick={handleNavLanding} style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.9rem' }}>
             How it Works
           </a>
-          <a href="#features" onClick={handleNavLanding} style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.925rem' }}>
+          <a href="#features" onClick={handleNavLanding} style={{ textDecoration: 'none', color: 'var(--color-text-main)', fontWeight: 600, fontSize: '0.9rem' }}>
             Features
           </a>
         </nav>
 
         {/* Action CTAs */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           {isAuthenticated ? (
             <>
               <button
                 onClick={handleNavDashboard}
                 className="btn btn-secondary-subtle"
-                style={{ fontSize: '0.875rem', padding: '8px 16px' }}
+                style={{ fontSize: '0.85rem', padding: '6px 12px' }}
               >
-                Dashboard ({user?.name?.split(' ')[0]})
+                Dashboard
               </button>
               <button
                 onClick={onCreatePoll}
                 className="btn btn-primary-dominant"
-                style={{ fontSize: '0.875rem', padding: '8px 20px' }}
+                style={{ fontSize: '0.85rem', padding: '6px 14px' }}
               >
                 Create Poll
               </button>
               <button
                 onClick={handleLogout}
-                style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', fontSize: '0.85rem', cursor: 'pointer', fontWeight: 600 }}
+                style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', fontSize: '0.825rem', cursor: 'pointer', fontWeight: 600, padding: '4px 8px' }}
               >
                 Sign Out
               </button>
@@ -129,23 +133,23 @@ export function Header({ onCreatePoll, onEnterCode, onNavigate, onNavigateDashbo
             <>
               <button
                 onClick={handleNavLogin}
-                style={{ background: 'none', border: 'none', color: 'var(--color-text-main)', fontSize: '0.875rem', cursor: 'pointer', fontWeight: 600, padding: '8px 12px' }}
+                style={{ background: 'none', border: 'none', color: 'var(--color-text-main)', fontSize: '0.85rem', cursor: 'pointer', fontWeight: 600, padding: '6px 10px' }}
               >
                 Sign In
               </button>
               <button
                 onClick={onEnterCode}
                 className="btn btn-secondary-subtle"
-                style={{ fontSize: '0.875rem', padding: '8px 16px' }}
+                style={{ fontSize: '0.85rem', padding: '6px 12px' }}
               >
-                Enter Poll Code
+                Poll Code
               </button>
               <button
                 onClick={onCreatePoll}
                 className="btn btn-primary-dominant"
-                style={{ fontSize: '0.875rem', padding: '8px 20px' }}
+                style={{ fontSize: '0.85rem', padding: '6px 14px' }}
               >
-                Create a Poll
+                Create Poll
               </button>
             </>
           )}

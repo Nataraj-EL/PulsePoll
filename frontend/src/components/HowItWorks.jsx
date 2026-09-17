@@ -31,7 +31,7 @@ export function HowItWorks() {
           <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '12px' }}>
             Easy 4-Step Process
           </span>
-          <h2 style={{ fontSize: '2.25rem', fontWeight: 800, color: 'var(--guvi-dark)', letterSpacing: '-0.02em' }}>
+          <h2 style={{ fontSize: 'clamp(1.6rem, 4vw, 2.25rem)', fontWeight: 800, color: 'var(--guvi-dark)', letterSpacing: '-0.02em' }}>
             How It Works
           </h2>
           <p style={{ color: 'var(--color-text-muted)', fontSize: '1.05rem', marginTop: '8px' }}>
@@ -41,7 +41,7 @@ export function HowItWorks() {
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 230px), 1fr))',
           gap: '24px',
         }}>
           {steps.map((s) => (

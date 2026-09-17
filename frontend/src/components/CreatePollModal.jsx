@@ -100,13 +100,13 @@ export function CreatePollModal({ isOpen, onClose, onPollCreated }) {
       alignItems: 'center',
       justifyContent: 'center',
       zIndex: 1000,
-      padding: '20px',
+      padding: 'clamp(12px, 3vw, 24px)',
     }} onClick={resetAndClose}>
       <div className="guvi-card" style={{
         maxWidth: '540px',
         width: '100%',
         backgroundColor: '#ffffff',
-        padding: '32px',
+        padding: 'clamp(20px, 4vw, 32px)',
         maxHeight: '90vh',
         overflowY: 'auto',
       }} onClick={(e) => e.stopPropagation()}>
@@ -118,7 +118,7 @@ export function CreatePollModal({ isOpen, onClose, onPollCreated }) {
               <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '12px' }}>
                 Poll Published Live
               </span>
-              <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--guvi-dark)' }}>
+              <h2 style={{ fontSize: 'clamp(1.3rem, 3.5vw, 1.6rem)', fontWeight: 800, color: 'var(--guvi-dark)' }}>
                 Your Poll is Ready to Share!
               </h2>
               <p style={{ color: 'var(--color-text-muted)', fontSize: '0.925rem', marginTop: '6px' }}>
@@ -130,26 +130,27 @@ export function CreatePollModal({ isOpen, onClose, onPollCreated }) {
               backgroundColor: '#f8fafc',
               border: '1px solid var(--guvi-border)',
               borderRadius: 'var(--radius-sm)',
-              padding: '20px',
+              padding: 'clamp(14px, 3vw, 20px)',
               marginBottom: '24px',
             }}>
               <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
                 Poll Question
               </label>
-              <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--guvi-dark)', marginBottom: '16px' }}>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--guvi-dark)', marginBottom: '16px', wordBreak: 'break-word' }}>
                 {createdPoll.question}
               </h4>
 
               <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
                 Shareable Poll Link
               </label>
-              <div style={{ display: 'flex', gap: '8px' }}>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                 <input
                   type="text"
                   readOnly
                   value={shareableUrl}
                   style={{
-                    flex: 1,
+                    flex: '1 1 200px',
+                    minWidth: 0,
                     padding: '10px 14px',
                     borderRadius: 'var(--radius-sm)',
                     border: '1px solid #cbd5e1',
@@ -163,7 +164,7 @@ export function CreatePollModal({ isOpen, onClose, onPollCreated }) {
                   type="button"
                   onClick={handleCopyLink}
                   className="btn btn-primary-dominant"
-                  style={{ padding: '10px 18px', whiteSpace: 'nowrap' }}
+                  style={{ flex: '0 0 auto', padding: '10px 18px', whiteSpace: 'nowrap' }}
                 >
                   {copied ? 'Copied!' : 'Copy Link'}
                 </button>
@@ -186,7 +187,7 @@ export function CreatePollModal({ isOpen, onClose, onPollCreated }) {
                 <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '6px' }}>
                   New Interactive Poll
                 </span>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--guvi-dark)' }}>
+                <h2 style={{ fontSize: 'clamp(1.25rem, 3.5vw, 1.5rem)', fontWeight: 800, color: 'var(--guvi-dark)' }}>
                   Create a Poll
                 </h2>
               </div>
@@ -257,6 +258,7 @@ export function CreatePollModal({ isOpen, onClose, onPollCreated }) {
                         required
                         style={{
                           flex: 1,
+                          minWidth: 0,
                           padding: '10px 14px',
                           borderRadius: 'var(--radius-sm)',
                           border: '1px solid #cbd5e1',
@@ -311,7 +313,7 @@ export function CreatePollModal({ isOpen, onClose, onPollCreated }) {
                 <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-text-main)', marginBottom: '8px' }}>
                   Choice Type
                 </label>
-                <div style={{ display: 'flex', gap: '16px' }}>
+                <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
                   <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.9rem', cursor: 'pointer' }}>
                     <input
                       type="radio"
@@ -335,12 +337,12 @@ export function CreatePollModal({ isOpen, onClose, onPollCreated }) {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '12px', marginTop: '12px' }}>
+              <div style={{ display: 'flex', gap: '12px', marginTop: '12px', flexWrap: 'wrap' }}>
                 <button
                   type="submit"
                   disabled={submitting}
                   className="btn btn-primary-dominant"
-                  style={{ flex: 1, padding: '14px', fontSize: '1rem' }}
+                  style={{ flex: '1 1 180px', padding: '14px', fontSize: '1rem' }}
                 >
                   {submitting ? 'Publishing...' : 'Publish Poll & Get Link'}
                 </button>
@@ -348,7 +350,7 @@ export function CreatePollModal({ isOpen, onClose, onPollCreated }) {
                   type="button"
                   onClick={resetAndClose}
                   className="btn btn-secondary-subtle"
-                  style={{ padding: '14px 20px', fontSize: '1rem' }}
+                  style={{ flex: '0 1 auto', padding: '14px 20px', fontSize: '1rem' }}
                 >
                   Cancel
                 </button>

@@ -147,7 +147,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
           backgroundColor: '#ffffff',
           borderRadius: 'var(--radius-sm)',
           border: '1px solid var(--guvi-border)',
-          padding: '32px 20px 24px 20px',
+          padding: 'clamp(20px, 4vw, 32px) clamp(12px, 3vw, 20px) clamp(16px, 3vw, 24px) clamp(12px, 3vw, 20px)',
           boxShadow: 'var(--shadow-sm)',
         }}>
           {/* Vertical Bar Chart Container */}
@@ -155,8 +155,8 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
             display: 'flex',
             alignItems: 'flex-end',
             justifyContent: 'space-around',
-            height: '220px',
-            gap: '12px',
+            height: 'clamp(180px, 25vh, 220px)',
+            gap: '8px',
             paddingBottom: '12px',
             borderBottom: '2px solid var(--guvi-border)',
             overflowX: 'auto',
@@ -175,7 +175,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
                   style={{
                     flex: 1,
                     maxWidth: '110px',
-                    minWidth: '60px',
+                    minWidth: 'min(100%, 50px)',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -185,7 +185,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
                 >
                   {/* Vote Count & Percentage Badge */}
                   <div style={{
-                    fontSize: '0.8rem',
+                    fontSize: 'clamp(0.7rem, 1.8vw, 0.8rem)',
                     fontWeight: 800,
                     color: isLeader ? '#15803d' : 'var(--guvi-dark)',
                     marginBottom: '8px',
@@ -194,7 +194,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
                     transition: 'color 0.3s ease',
                   }}>
                     <div>{count} {count === 1 ? 'vote' : 'votes'}</div>
-                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>
+                    <div style={{ fontSize: 'clamp(0.68rem, 1.6vw, 0.75rem)', fontWeight: 600, color: 'var(--color-text-muted)' }}>
                       {percentage}%
                     </div>
                   </div>
@@ -203,7 +203,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
                   <div style={{
                     width: '100%',
                     maxWidth: '52px',
-                    height: '140px',
+                    height: '75%',
                     backgroundColor: '#f1f5f9',
                     borderRadius: '8px 8px 0 0',
                     display: 'flex',
@@ -233,7 +233,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
           <div style={{
             display: 'flex',
             justifyContent: 'space-around',
-            gap: '12px',
+            gap: '8px',
             marginTop: '12px',
             overflowX: 'auto',
           }}>
@@ -247,13 +247,13 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
                   style={{
                     flex: 1,
                     maxWidth: '110px',
-                    minWidth: '60px',
+                    minWidth: 'min(100%, 50px)',
                     textAlign: 'center',
-                    padding: '0 4px',
+                    padding: '0 2px',
                   }}
                 >
                   <div style={{
-                    fontSize: '0.875rem',
+                    fontSize: 'clamp(0.75rem, 2vw, 0.875rem)',
                     fontWeight: 700,
                     color: isLeader ? 'var(--guvi-dark)' : 'var(--color-text-main)',
                     lineHeight: 1.3,
