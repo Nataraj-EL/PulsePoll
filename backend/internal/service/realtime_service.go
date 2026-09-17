@@ -119,12 +119,24 @@ func (s *realtimeService) GetLiveResults(ctx context.Context, poll *models.Poll)
 		}
 	}
 
+	// Calculate total option selections across all options
+	var totalSelections int64 = 0
+	for _, opt := range poll.Options {
+		totalSelections += optionCounts[opt.ID]
+	}
+
+	// Use totalSelections as denominator for multiple choice polls so percentages sum to 100%
+	denom := totalVotes
+	if poll.ChoiceType == models.ChoiceTypeMultiple && totalSelections > 0 {
+		denom = totalSelections
+	}
+
 	results := make([]models.PollResultItem, 0, len(poll.Options))
 	for _, opt := range poll.Options {
 		vCount := optionCounts[opt.ID]
 		var pct float64
-		if totalVotes > 0 {
-			pct = math.Round((float64(vCount)/float64(totalVotes))*1000) / 10
+		if denom > 0 {
+			pct = math.Round((float64(vCount)/float64(denom))*1000) / 10
 		}
 		results = append(results, models.PollResultItem{
 			OptionID:   opt.ID,

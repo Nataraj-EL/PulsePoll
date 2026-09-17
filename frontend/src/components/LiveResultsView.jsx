@@ -84,7 +84,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
     };
   }, [pollCode]);
 
-  const totalVotes = resultsData?.total_votes || 0;
+  const totalVoters = resultsData?.total_votes || 0;
   
   // Map results list to options structure for reliable fallback
   const countMap = {};
@@ -94,12 +94,24 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
     });
   }
 
+  // Calculate sum of all option selections
+  let totalSelections = 0;
+  options.forEach((opt) => {
+    totalSelections += (countMap[opt.id] || 0);
+  });
+
   // Find max votes for highlighting winner/leader
   let maxCount = 0;
   options.forEach((opt) => {
     const c = countMap[opt.id] || 0;
     if (c > maxCount) maxCount = c;
   });
+
+  // Use totalSelections as denominator for multiple choice polls so percentage calculation sums to 100%
+  const isMultipleChoice = resultsData?.choice_type === 'multiple';
+  const denom = isMultipleChoice
+    ? (totalSelections > 0 ? totalSelections : totalVoters)
+    : (totalVoters > 0 ? totalVoters : totalSelections);
 
   return (
     <div>
@@ -126,17 +138,25 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
           padding: 'clamp(20px, 4vw, 28px) clamp(12px, 3vw, 20px) clamp(16px, 3vw, 24px) clamp(12px, 3vw, 20px)',
           boxShadow: 'var(--shadow-sm)',
         }}>
-          {/* Header Row: Simple Single Line Total Votes */}
+          {/* Header Row: Total Voters & Total Selections */}
           <div style={{
             display: 'flex',
-            justify: 'flex-end',
+            justifyContent: 'flex-end',
             alignItems: 'center',
             marginBottom: '16px',
             fontSize: '0.9rem',
             color: 'var(--color-text-muted)',
             fontWeight: 600,
           }}>
-            <span>Total Votes: <strong style={{ color: 'var(--guvi-dark)', fontWeight: 800 }}>{totalVotes}</strong></span>
+            {isMultipleChoice && totalSelections !== totalVoters ? (
+              <span>
+                Total Respondents: <strong style={{ color: 'var(--guvi-dark)', fontWeight: 800 }}>{totalVoters}</strong>
+                <span style={{ margin: '0 6px', color: '#cbd5e1' }}>•</span>
+                Total Selections: <strong style={{ color: 'var(--guvi-dark)', fontWeight: 800 }}>{totalSelections}</strong>
+              </span>
+            ) : (
+              <span>Total Votes: <strong style={{ color: 'var(--guvi-dark)', fontWeight: 800 }}>{totalVoters}</strong></span>
+            )}
           </div>
           {/* Vertical Bar Chart Container */}
           <div style={{
@@ -152,9 +172,9 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
           }}>
             {options.map((opt) => {
               const count = countMap[opt.id] || 0;
-              const percentage = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
+              const percentage = denom > 0 ? Math.round((count / denom) * 100) : 0;
               const isLeader = count > 0 && count === maxCount;
-              const barHeightPct = totalVotes > 0 ? percentage : 0;
+              const barHeightPct = denom > 0 ? percentage : 0;
 
               return (
                 <div
