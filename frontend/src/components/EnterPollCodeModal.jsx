@@ -69,22 +69,6 @@ export function EnterPollCodeModal({ isOpen, onClose, onSubmitCode }) {
         </button>
 
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '50%',
-            backgroundColor: '#f0fdf4',
-            color: 'var(--guvi-green)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 16px auto',
-            fontSize: '1.4rem',
-            fontWeight: 800,
-            border: '1px solid #bbf7d0',
-          }}>
-            #
-          </div>
           <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--guvi-dark)', marginBottom: '8px' }}>
             Enter Poll Code
           </h3>
@@ -111,18 +95,15 @@ export function EnterPollCodeModal({ isOpen, onClose, onSubmitCode }) {
           <div>
             <input
               type="text"
-              placeholder="e.g. 801388"
+              placeholder="Enter poll code (e.g. 801388)"
               value={code}
               onChange={(e) => setCode(e.target.value)}
               maxLength={10}
-              autoFocus
               style={{
                 width: '100%',
-                padding: '14px 16px',
-                fontSize: '1.15rem',
-                fontWeight: 700,
-                letterSpacing: '0.06em',
-                textAlign: 'center',
+                padding: '12px 16px',
+                fontSize: '1rem',
+                fontWeight: 600,
                 borderRadius: 'var(--radius-sm)',
                 border: '1.5px solid var(--guvi-border)',
                 outline: 'none',
