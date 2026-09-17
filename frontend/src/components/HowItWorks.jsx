@@ -16,7 +16,7 @@ export function HowItWorks() {
     {
       step: '03',
       title: 'Collect Votes',
-      desc: 'Participants respond on any smartphone or browser—no signup required.',
+      desc: 'Participants respond on any smartphone or browser–no signup required.',
     },
     {
       step: '04',
