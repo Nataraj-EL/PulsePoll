@@ -8,6 +8,14 @@ export function Dashboard() {
   const [loadingPolls, setLoadingPolls] = useState(true);
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [copiedCode, setCopiedCode] = useState(null);
+  const [copiedCodeOnly, setCopiedCodeOnly] = useState(null);
+
+  const handleCopyCodeOnly = (e, code) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(code);
+    setCopiedCodeOnly(code);
+    setTimeout(() => setCopiedCodeOnly(null), 2000);
+  };
 
   const fetchPolls = async () => {
     setLoadingPolls(true);
@@ -126,9 +134,47 @@ export function Dashboard() {
                       <span className={`guvi-badge ${poll.status === 'active' ? 'guvi-badge-green' : 'guvi-badge-blue'}`}>
                         {poll.status === 'active' ? 'Live Poll' : 'Draft Poll'}
                       </span>
-                      <code style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--guvi-dark)', backgroundColor: '#f1f5f9', padding: '3px 10px', borderRadius: '4px' }}>
-                        Code #{poll.code}
-                      </code>
+                      <div
+                        onClick={(e) => handleCopyCodeOnly(e, poll.code)}
+                        title="Click to copy poll code"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          fontSize: '0.825rem',
+                          fontWeight: 700,
+                          color: 'var(--guvi-dark)',
+                          backgroundColor: '#f1f5f9',
+                          border: '1px solid #e2e8f0',
+                          padding: '4px 10px',
+                          borderRadius: '6px',
+                          cursor: 'pointer',
+                          userSelect: 'none',
+                          transition: 'all 0.15s ease',
+                        }}
+                      >
+                        <span>Code {poll.code}</span>
+                        <span
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: copiedCodeOnly === poll.code ? 'var(--guvi-green)' : '#64748b',
+                            transition: 'color 0.15s ease',
+                          }}
+                        >
+                          {copiedCodeOnly === poll.code ? (
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                          ) : (
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                          )}
+                        </span>
+                      </div>
                     </div>
 
                     <h4 style={{ fontSize: '1.075rem', fontWeight: 700, color: 'var(--guvi-dark)', marginBottom: '8px', lineHeight: 1.35, wordBreak: 'break-word' }}>

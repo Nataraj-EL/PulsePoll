@@ -63,7 +63,7 @@ export function LivePollPreview() {
           }}>
             <div>
               <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: '#0ad652', letterSpacing: '0.08em' }}>
-                🟢 LIVE POLL • ROOM CODE #849201
+                🟢 LIVE POLL • ROOM CODE 849201
               </div>
               <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginTop: '4px', color: '#ffffff' }}>
                 Which tech stack area are you most excited to master?
