@@ -9,23 +9,62 @@ import { Footer } from './components/Footer';
 import { SignupPage } from './components/SignupPage';
 import { LoginPage } from './components/LoginPage';
 import { Dashboard } from './components/Dashboard';
+import { PollPage } from './components/PollPage';
+
+function parseRoute(pathname) {
+  const cleanPath = pathname.replace(/\/+$/, '') || '/';
+  
+  if (cleanPath.startsWith('/p/')) {
+    const code = cleanPath.substring(3).split('/')[0];
+    if (code) {
+      return { view: 'poll', code };
+    }
+  }
+  
+  if (cleanPath === '/login') return { view: 'login', code: '' };
+  if (cleanPath === '/signup') return { view: 'signup', code: '' };
+  if (cleanPath === '/dashboard') return { view: 'dashboard', code: '' };
+  
+  return { view: 'landing', code: '' };
+}
+
+function getRoutePath(view, code = '') {
+  if (view === 'poll' && code) return `/p/${code}`;
+  if (view === 'login') return '/login';
+  if (view === 'signup') return '/signup';
+  if (view === 'dashboard') return '/dashboard';
+  return '/';
+}
 
 function AppContent() {
   const { user, loading } = useAuth();
-  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'signup' | 'login' | 'dashboard'
+  const [routeState, setRouteState] = useState(() => parseRoute(window.location.pathname));
   const [modalState, setModalState] = useState({ open: false, title: '', message: '' });
 
-  const navigateTo = (view) => {
-    setCurrentView(view);
+  // Listen to browser Back/Forward navigation (popstate)
+  useEffect(() => {
+    const handlePopState = () => {
+      setRouteState(parseRoute(window.location.pathname));
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const navigateTo = (view, code = '') => {
+    const targetPath = getRoutePath(view, code);
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({}, '', targetPath);
+    }
+    setRouteState({ view, code });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Automatically redirect away from protected dashboard if unauthenticated after loading finishes
   useEffect(() => {
-    if (!loading && !user && currentView === 'dashboard') {
-      setCurrentView('login');
+    if (!loading && !user && routeState.view === 'dashboard') {
+      navigateTo('login');
     }
-  }, [loading, user, currentView]);
+  }, [loading, user, routeState.view]);
 
   const handleCreatePoll = () => {
     if (user) {
@@ -36,13 +75,15 @@ function AppContent() {
   };
 
   const handleEnterCode = (code = '') => {
-    setModalState({
-      open: true,
-      title: code ? `Poll Code #${code}` : 'Enter Poll Code',
-      message: code
-        ? `Joining poll code #${code}... You can cast votes directly from any smartphone or browser.`
-        : 'Enter your 6-digit poll code to join an active poll directly from any smartphone or browser.',
-    });
+    if (code) {
+      navigateTo('poll', code);
+    } else {
+      setModalState({
+        open: true,
+        title: 'Enter Poll Code',
+        message: 'Enter your 6-digit poll code in your browser address bar (e.g. /p/801388) to join an active poll directly.',
+      });
+    }
   };
 
   if (loading) {
@@ -60,12 +101,21 @@ function AppContent() {
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Header
         onCreatePoll={handleCreatePoll}
-        onEnterCode={handleEnterCode}
+        onEnterCode={() => handleEnterCode('')}
         onNavigate={navigateTo}
       />
       
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        {currentView === 'signup' && (
+        {/* Route Match 1: Dynamic Participant Poll View /p/:code */}
+        {routeState.view === 'poll' && (
+          <PollPage
+            pollCode={routeState.code}
+            onNavigate={navigateTo}
+          />
+        )}
+
+        {/* Route Match 2: Signup */}
+        {routeState.view === 'signup' && (
           <SignupPage
             onNavigateToLogin={() => navigateTo('login')}
             onNavigateLogin={() => navigateTo('login')}
@@ -74,7 +124,8 @@ function AppContent() {
           />
         )}
 
-        {currentView === 'login' && (
+        {/* Route Match 3: Login */}
+        {routeState.view === 'login' && (
           <LoginPage
             onNavigateToSignup={() => navigateTo('signup')}
             onNavigateSignup={() => navigateTo('signup')}
@@ -83,19 +134,13 @@ function AppContent() {
           />
         )}
 
-        {currentView === 'dashboard' && (
-          <Dashboard
-            onCreatePollClick={() => {
-              setModalState({
-                open: true,
-                title: 'Create a Poll',
-                message: 'Poll builder is ready for backend integration! You are authenticated as a creator.',
-              });
-            }}
-          />
+        {/* Route Match 4: Authenticated Creator Dashboard */}
+        {routeState.view === 'dashboard' && user && (
+          <Dashboard />
         )}
 
-        {currentView === 'landing' && (
+        {/* Route Match 5: Landing Page Fallback */}
+        {routeState.view === 'landing' && (
           <>
             <LandingHero
               onCreatePoll={handleCreatePoll}
@@ -163,4 +208,5 @@ export default function App() {
     </AuthProvider>
   );
 }
+
 
