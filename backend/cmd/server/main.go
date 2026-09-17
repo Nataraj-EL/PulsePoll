@@ -70,7 +70,7 @@ func main() {
 	var pollRepo repository.PollRepository
 	var voteRepo repository.VoteRepository
 
-	emailService := service.NewEmailService(cfg.ResendAPIKey)
+	emailService := service.NewEmailService(cfg.ResendAPIKey, cfg.ResendFromEmail, cfg.ResendTestRecipient)
 
 	var authService service.AuthService
 	var pollService service.PollService

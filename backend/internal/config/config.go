@@ -19,7 +19,9 @@ type Config struct {
 	CORSOrigin    string
 	Environment   string
 	JWTSecret     string
-	ResendAPIKey  string
+	ResendAPIKey        string
+	ResendFromEmail     string
+	ResendTestRecipient string
 }
 
 // LoadConfig initializes configuration from environment variables with sensible defaults
@@ -30,16 +32,18 @@ func LoadConfig() *Config {
 	}
 
 	cfg := &Config{
-		Port:          getEnv("PORT", "8080"),
-		MongoURI:      getEnv("MONGO_URI", "mongodb://localhost:27017"),
-		MongoDBName:   getEnv("MONGO_DB", "pulsepoll"),
-		RedisAddr:     getEnv("REDIS_ADDR", "localhost:6379"),
-		RedisPassword: getEnv("REDIS_PASSWORD", ""),
-		RedisURL:      getEnv("REDIS_URL", ""),
-		CORSOrigin:    getEnv("CORS_ORIGIN", "http://localhost:5173"),
-		Environment:   getEnv("ENVIRONMENT", "development"),
-		JWTSecret:     getEnv("JWT_SECRET", "pulsepoll-production-secure-jwt-secret-key-2026"),
-		ResendAPIKey:  getEnv("RESEND_API_KEY", ""),
+		Port:                getEnv("PORT", "8080"),
+		MongoURI:            getEnv("MONGO_URI", "mongodb://localhost:27017"),
+		MongoDBName:         getEnv("MONGO_DB", "pulsepoll"),
+		RedisAddr:           getEnv("REDIS_ADDR", "localhost:6379"),
+		RedisPassword:       getEnv("REDIS_PASSWORD", ""),
+		RedisURL:            getEnv("REDIS_URL", ""),
+		CORSOrigin:          getEnv("CORS_ORIGIN", "http://localhost:5173"),
+		Environment:         getEnv("ENVIRONMENT", "development"),
+		JWTSecret:           getEnv("JWT_SECRET", "pulsepoll-production-secure-jwt-secret-key-2026"),
+		ResendAPIKey:        getEnv("RESEND_API_KEY", ""),
+		ResendFromEmail:     getEnv("RESEND_FROM_EMAIL", "PulsePoll <onboarding@resend.dev>"),
+		ResendTestRecipient: getEnv("RESEND_TEST_RECIPIENT", ""),
 	}
 
 	// Sanitize port

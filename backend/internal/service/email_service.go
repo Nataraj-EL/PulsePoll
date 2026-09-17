@@ -18,9 +18,10 @@ type EmailService interface {
 }
 
 type resendEmailService struct {
-	apiKey string
-	sender string
-	client *http.Client
+	apiKey        string
+	sender        string
+	testRecipient string
+	client        *http.Client
 }
 
 type resendEmailPayload struct {
@@ -30,11 +31,26 @@ type resendEmailPayload struct {
 	HTML    string   `json:"html"`
 }
 
+type resendSuccessResponse struct {
+	ID string `json:"id"`
+}
+
+type resendErrorResponse struct {
+	StatusCode int    `json:"statusCode"`
+	Name       string `json:"name"`
+	Message    string `json:"message"`
+}
+
 // NewEmailService creates a new EmailService instance backed by Resend
-func NewEmailService(apiKey string) EmailService {
+func NewEmailService(apiKey, sender, testRecipient string) EmailService {
+	sender = strings.TrimSpace(sender)
+	if sender == "" {
+		sender = "PulsePoll <onboarding@resend.dev>"
+	}
 	return &resendEmailService{
-		apiKey: strings.TrimSpace(apiKey),
-		sender: "PulsePoll <onboarding@resend.dev>",
+		apiKey:        strings.TrimSpace(apiKey),
+		sender:        sender,
+		testRecipient: strings.TrimSpace(testRecipient),
 		client: &http.Client{
 			Timeout: 10 * time.Second,
 		},
@@ -53,7 +69,42 @@ func (s *resendEmailService) SendWelcomeEmail(ctx context.Context, toEmail, user
 		userName = "Poll Creator"
 	}
 
+	// First attempt to send to the registered user's email
 	subject := "Welcome to PulsePoll! ⚡"
+	err := s.dispatch(ctx, toEmail, subject, userName)
+	if err == nil {
+		return nil
+	}
+
+	// Handle Resend Sandbox restriction (when onboarding@resend.dev is restricted to owner email)
+	errStr := err.Error()
+	if strings.Contains(errStr, "only send testing emails to your own email address") || strings.Contains(errStr, "HTTP 403") {
+		ownerEmail := s.testRecipient
+		if ownerEmail == "" {
+			// Extract owner email inside parentheses from Resend error payload if present
+			if start := strings.Index(errStr, "("); start != -1 {
+				if end := strings.Index(errStr[start:], ")"); end != -1 {
+					ownerEmail = errStr[start+1 : start+end]
+				}
+			}
+		}
+
+		if ownerEmail != "" && !strings.EqualFold(ownerEmail, toEmail) {
+			log.Printf("⚠️ [Resend Sandbox Mode] Cannot deliver directly to %s via onboarding@resend.dev. Rerouting test welcome email to verified owner (%s)...", toEmail, ownerEmail)
+			sandboxSubject := fmt.Sprintf("Welcome to PulsePoll! ⚡ [Test for: %s]", toEmail)
+			fallbackErr := s.dispatch(ctx, ownerEmail, sandboxSubject, userName)
+			if fallbackErr == nil {
+				log.Printf("✅ [Resend Sandbox] Welcome email successfully delivered to owner %s for signup user %s", ownerEmail, toEmail)
+				return nil
+			}
+			return fallbackErr
+		}
+	}
+
+	return err
+}
+
+func (s *resendEmailService) dispatch(ctx context.Context, recipient, subject, userName string) error {
 	htmlBody := fmt.Sprintf(`<!DOCTYPE html>
 <html>
 <head>
@@ -92,7 +143,7 @@ func (s *resendEmailService) SendWelcomeEmail(ctx context.Context, toEmail, user
 
 	payload := resendEmailPayload{
 		From:    s.sender,
-		To:      []string{toEmail},
+		To:      []string{recipient},
 		Subject: subject,
 		HTML:    htmlBody,
 	}
@@ -116,11 +167,23 @@ func (s *resendEmailService) SendWelcomeEmail(ctx context.Context, toEmail, user
 	}
 	defer resp.Body.Close()
 
-	respBody, _ := io.ReadAll(resp.Body)
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("failed to read Resend response body: %w", err)
+	}
+
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		var errResp resendErrorResponse
+		_ = json.Unmarshal(respBody, &errResp)
+		if errResp.Message != "" {
+			return fmt.Errorf("Resend API rejected request (HTTP %d, %s): %s", resp.StatusCode, errResp.Name, errResp.Message)
+		}
 		return fmt.Errorf("Resend API HTTP error %d: %s", resp.StatusCode, string(respBody))
 	}
 
-	log.Printf("Successfully dispatched welcome email to %s via Resend (Status %d)", toEmail, resp.StatusCode)
+	var succResp resendSuccessResponse
+	_ = json.Unmarshal(respBody, &succResp)
+
+	log.Printf("✅ [Resend] Successfully dispatched welcome email to %s (Status %d, Email ID: %s)", recipient, resp.StatusCode, succResp.ID)
 	return nil
 }
