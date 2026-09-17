@@ -1,9 +1,11 @@
 package database
 
 import (
+	"crypto/tls"
 	"context"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/redis/go-redis/v9"
@@ -15,9 +17,16 @@ func ConnectRedis(ctx context.Context, addr, password, redisURL string) (*redis.
 	var err error
 
 	if redisURL != "" {
+		if strings.Contains(redisURL, "<") || strings.Contains(redisURL, ">") {
+			return nil, fmt.Errorf("REDIS_URL contains unreplaced placeholder angle brackets '<...>'; please replace with actual Upstash credentials in Render environment variables")
+		}
 		opts, err = redis.ParseURL(redisURL)
 		if err != nil {
-			return nil, fmt.Errorf("failed to parse REDIS_URL: %w", err)
+			// Fallback: parse custom redis URL if password contains unescaped special characters
+			opts, err = parseCustomRedisURL(redisURL)
+			if err != nil {
+				return nil, fmt.Errorf("failed to parse REDIS_URL: %w", err)
+			}
 		}
 	} else {
 		opts = &redis.Options{
@@ -34,11 +43,41 @@ func ConnectRedis(ctx context.Context, addr, password, redisURL string) (*redis.
 
 	if _, err := rdb.Ping(pingCtx).Result(); err != nil {
 		_ = rdb.Close()
-		return nil, fmt.Errorf("failed to ping Redis: %w", err)
+		return nil, fmt.Errorf("failed to ping Redis at %s: %w", opts.Addr, err)
 	}
 
 	log.Printf("Successfully connected to Redis instance at: %s", opts.Addr)
 	return rdb, nil
+}
+
+func parseCustomRedisURL(raw string) (*redis.Options, error) {
+	isTLS := strings.HasPrefix(raw, "rediss://")
+	trimmed := strings.TrimPrefix(raw, "rediss://")
+	trimmed = strings.TrimPrefix(trimmed, "redis://")
+
+	lastAt := strings.LastIndex(trimmed, "@")
+	if lastAt == -1 {
+		return nil, fmt.Errorf("invalid redis url format (missing @ separator)")
+	}
+
+	userinfo := trimmed[:lastAt]
+	hostPort := trimmed[lastAt+1:]
+
+	password := userinfo
+	if colonIdx := strings.Index(userinfo, ":"); colonIdx != -1 {
+		password = userinfo[colonIdx+1:]
+	}
+
+	opts := &redis.Options{
+		Addr:     hostPort,
+		Password: password,
+	}
+	if isTLS {
+		opts.TLSConfig = &tls.Config{
+			MinVersion: tls.VersionTLS12,
+		}
+	}
+	return opts, nil
 }
 
 // PingRedis checks Redis connectivity and measures latency
