@@ -165,20 +165,15 @@ export function PollPage({ pollCode, onNavigate, initialTab }) {
           <div style={{
             backgroundColor: 'var(--guvi-navy)',
             color: '#ffffff',
-            padding: 'clamp(16px, 3.5vw, 24px) clamp(16px, 4vw, 32px)',
+            padding: 'clamp(14px, 3vw, 18px) clamp(16px, 4vw, 32px)',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             flexWrap: 'wrap',
             gap: '12px',
           }}>
-            <div style={{ flex: '1 1 200px', minWidth: 0 }}>
-              <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--guvi-green)', letterSpacing: '0.08em' }}>
-                {poll.status === 'active' ? '● LIVE POLL' : 'DRAFT POLL'} • CODE #{poll.code}
-              </div>
-              <h1 style={{ fontSize: 'clamp(1.15rem, 3.5vw, 1.4rem)', fontWeight: 800, color: '#ffffff', marginTop: '6px', lineHeight: 1.3, wordBreak: 'break-word' }}>
-                {poll.question}
-              </h1>
+            <div style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--guvi-green)', letterSpacing: '0.08em' }}>
+              {poll.status === 'active' ? '● LIVE POLL' : 'DRAFT POLL'} • CODE #{poll.code}
             </div>
 
             <button
@@ -201,9 +196,9 @@ export function PollPage({ pollCode, onNavigate, initialTab }) {
 
           {/* Progressive Stage Body */}
           <div style={{ padding: 'clamp(16px, 4vw, 32px)' }}>
-            <h2 style={{ fontSize: 'clamp(1.15rem, 3.5vw, 1.4rem)', fontWeight: 800, color: 'var(--guvi-dark)', marginBottom: '20px', lineHeight: 1.35, wordBreak: 'break-word' }}>
+            <h1 style={{ fontSize: 'clamp(1.2rem, 3.5vw, 1.5rem)', fontWeight: 800, color: 'var(--guvi-dark)', marginBottom: '20px', lineHeight: 1.35, wordBreak: 'break-word' }}>
               {poll.question}
-            </h2>
+            </h1>
 
             {/* STAGE 2: Voted / Progressive Transition to Live Results */}
             {voted ? (
