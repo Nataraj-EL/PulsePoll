@@ -134,7 +134,7 @@ func (s *resendEmailService) dispatch(ctx context.Context, recipient, subject, u
     </tr>
     <tr>
       <td style="text-align: center; padding-top: 20px; border-top: 1px solid #21262d; color: #8b949e; font-size: 12px;">
-        <p style="margin: 0;">Sent with ❤️ by the PulsePoll Team</p>
+        <p style="margin: 0;">Sent with ❤️ by Nataraj EL</p>
       </td>
     </tr>
   </table>
