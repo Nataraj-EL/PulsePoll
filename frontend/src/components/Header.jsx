@@ -110,17 +110,10 @@ export function Header({ onCreatePoll, onEnterCode, onNavigate, onNavigateDashbo
             <>
               <button
                 onClick={handleNavDashboard}
-                className="btn btn-secondary-subtle"
-                style={{ fontSize: '0.85rem', padding: '6px 12px' }}
-              >
-                Dashboard
-              </button>
-              <button
-                onClick={onCreatePoll}
                 className="btn btn-primary-dominant"
                 style={{ fontSize: '0.85rem', padding: '6px 14px' }}
               >
-                Create Poll
+                Dashboard
               </button>
               <button
                 onClick={handleLogout}
@@ -139,17 +132,10 @@ export function Header({ onCreatePoll, onEnterCode, onNavigate, onNavigateDashbo
               </button>
               <button
                 onClick={onEnterCode}
-                className="btn btn-secondary-subtle"
-                style={{ fontSize: '0.85rem', padding: '6px 12px' }}
-              >
-                Poll Code
-              </button>
-              <button
-                onClick={onCreatePoll}
                 className="btn btn-primary-dominant"
                 style={{ fontSize: '0.85rem', padding: '6px 14px' }}
               >
-                Create Poll
+                Poll Code
               </button>
             </>
           )}
