@@ -230,11 +230,6 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
                   }}>
                     {opt.text}
                   </div>
-                  {isLeader && totalVotes > 0 && (
-                    <span className="guvi-badge guvi-badge-green" style={{ fontSize: '0.65rem', padding: '1px 6px', marginTop: '4px', display: 'inline-block' }}>
-                      Leader
-                    </span>
-                  )}
                 </div>
               );
             })}
