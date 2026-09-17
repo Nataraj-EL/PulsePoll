@@ -91,25 +91,25 @@ PulsePoll uses a dual-tier storage strategy for fast realtime throughput and lon
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Participant as Participant Browser
+    actor Participant
     participant API as Go Backend API
     participant Mongo as MongoDB Atlas
     participant Redis as Upstash Redis
     participant WS as WebSocket Hub
-    actor Clients as All Live Viewers
+    actor Clients
 
-    Participant->>API: POST /api/v1/polls/:code/votes (OptionIDs + VoterID)
+    Participant->>API: POST /api/v1/polls/:code/votes
     API->>Mongo: Check & Record Vote (Unique Compound Index)
-    Alt Vote Valid & Recorded
+    alt Vote Valid & Recorded
         API->>Redis: HIncrBy Option Counter & _total
-        API->>Redis: Publish Event to pulsepoll:events:<code >
+        API->>Redis: Publish Event to pulsepoll:events:code
         Redis-->>API: Message Received on Subscribed Channel
         API->>WS: Broadcast Payload over WebSockets
         WS-->>Clients: Stream Live Vote JSON ({ results, total_votes })
         API-->>Participant: 201 Created (Vote Recorded)
-    Else Duplicate / Invalid Vote
+    else Duplicate / Invalid Vote
         API-->>Participant: 409 Conflict / 400 Bad Request
-    End
+    end
 ```
 
 1. **Durable Writes**: When a vote is cast, the Go backend writes the vote record to MongoDB to guarantee durability.
