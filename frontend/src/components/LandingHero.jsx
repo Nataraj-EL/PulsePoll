@@ -8,13 +8,6 @@ export function LandingHero({ onCreatePoll, onEnterCode }) {
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         <div style={{ maxWidth: '820px', margin: '0 auto' }}>
           
-          {/* User Badge */}
-          <div style={{ marginBottom: '20px' }}>
-            <span className="guvi-badge guvi-badge-green">
-              Live Audience Polling
-            </span>
-          </div>
-
           {/* Hero Headline */}
           <h1 style={{
             fontSize: 'clamp(2rem, 5vw, 3.5rem)',

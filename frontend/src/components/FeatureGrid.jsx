@@ -30,9 +30,6 @@ export function FeatureGrid() {
       <DotMatrixBackground />
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 48px auto' }}>
-          <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '12px' }}>
-            Key Benefits
-          </span>
           <h2 style={{ fontSize: 'clamp(1.6rem, 4vw, 2.25rem)', fontWeight: 800, color: 'var(--guvi-dark)', letterSpacing: '-0.02em' }}>
             Everything You Need for Audience Polling
           </h2>
