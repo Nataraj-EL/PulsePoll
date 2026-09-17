@@ -135,7 +135,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
             alignItems: 'flex-end',
             justifyContent: 'space-around',
             height: 'clamp(180px, 25vh, 220px)',
-            gap: '8px',
+            gap: '12px',
             paddingBottom: '0px',
             borderBottom: '2px solid var(--guvi-border)',
             overflowX: 'auto',
@@ -162,36 +162,39 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
                 >
                   {/* Vote Count & Percentage Badge */}
                   <div style={{
-                    fontSize: 'clamp(0.7rem, 1.8vw, 0.8rem)',
+                    fontSize: 'clamp(0.72rem, 1.8vw, 0.825rem)',
                     fontWeight: 800,
-                    color: isLeader ? '#15803d' : 'var(--guvi-dark)',
+                    color: isLeader ? '#047857' : 'var(--guvi-dark)',
                     marginBottom: '8px',
                     textAlign: 'center',
                     whiteSpace: 'nowrap',
                     transition: 'all 0.3s ease',
-                    opacity: totalVotes > 0 ? 1 : 0.6,
+                    opacity: totalVotes > 0 ? 1 : 0.65,
                   }}>
                     <div>{count} {count === 1 ? 'vote' : 'votes'}</div>
-                    <div style={{ fontSize: 'clamp(0.68rem, 1.6vw, 0.75rem)', fontWeight: 600, color: 'var(--color-text-muted)' }}>
+                    <div style={{ fontSize: 'clamp(0.68rem, 1.6vw, 0.75rem)', fontWeight: 600, color: 'var(--color-text-muted)', marginTop: '1px' }}>
                       {percentage}%
                     </div>
                   </div>
 
-                  {/* Direct Dynamic Bar Element */}
+                  {/* Refined Tonal Bar Element */}
                   <div style={{
                     width: '100%',
-                    maxWidth: '48px',
+                    maxWidth: '44px',
                     height: `${barHeightPct}%`,
                     maxHeight: '140px',
                     borderRadius: '6px 6px 0 0',
-                    transition: 'height 0.5s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, box-shadow 0.3s ease',
-                    backgroundColor: isLeader ? 'var(--guvi-green)' : 'var(--guvi-navy)',
+                    transition: 'height 0.45s cubic-bezier(0.16, 1, 0.3, 1), background-image 0.3s ease, box-shadow 0.3s ease',
                     backgroundImage: isLeader
-                      ? 'linear-gradient(180deg, #10b981 0%, #059669 100%)'
-                      : 'linear-gradient(180deg, #334155 0%, #0f172a 100%)',
-                    boxShadow: isLeader
-                      ? '0 4px 14px rgba(16, 185, 129, 0.35)'
+                      ? 'linear-gradient(180deg, #34d399 0%, #059669 100%)'
+                      : 'linear-gradient(180deg, #475569 0%, #1e293b 100%)',
+                    borderTop: barHeightPct > 0
+                      ? (isLeader ? '2.5px solid rgba(255, 255, 255, 0.5)' : '2px solid rgba(255, 255, 255, 0.25)')
                       : 'none',
+                    boxShadow: barHeightPct > 0
+                      ? (isLeader ? '0 4px 14px -2px rgba(16, 185, 129, 0.35)' : '0 2px 8px -2px rgba(15, 23, 42, 0.15)')
+                      : 'none',
+                    boxSizing: 'border-box',
                   }} />
                 </div>
               );
@@ -223,7 +226,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
                 >
                   <div style={{
                     fontSize: 'clamp(0.75rem, 2vw, 0.875rem)',
-                    fontWeight: 700,
+                    fontWeight: isLeader ? 800 : 600,
                     color: isLeader ? 'var(--guvi-dark)' : 'var(--color-text-main)',
                     lineHeight: 1.3,
                     wordBreak: 'break-word',
