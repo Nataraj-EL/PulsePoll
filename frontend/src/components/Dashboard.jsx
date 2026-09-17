@@ -63,9 +63,6 @@ export function Dashboard() {
             borderBottom: '1px solid var(--guvi-border)',
           }}>
             <div>
-              <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '8px' }}>
-                Creator Workspace
-              </span>
               <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: 800, color: 'var(--guvi-dark)' }}>
                 Welcome back, {user.name}!
               </h1>
