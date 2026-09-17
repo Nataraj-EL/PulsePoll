@@ -238,12 +238,9 @@ export function PollPage({ pollCode, onNavigate, initialTab }) {
             ) : (
               /* STAGE 1: Voting Form */
               <>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '8px' }}>
+                <div style={{ marginBottom: '20px' }}>
                   <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>
                     {poll.choice_type === 'single' ? 'Select 1 option:' : 'Select any options:'}
-                  </span>
-                  <span className="guvi-badge guvi-badge-blue" style={{ fontSize: '0.75rem' }}>
-                    Public Participant View
                   </span>
                 </div>
 
