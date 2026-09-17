@@ -10,6 +10,7 @@ import { SignupPage } from './components/SignupPage';
 import { LoginPage } from './components/LoginPage';
 import { Dashboard } from './components/Dashboard';
 import { PollPage } from './components/PollPage';
+import { EnterPollCodeModal } from './components/EnterPollCodeModal';
 
 function parseRoute(pathname) {
   const cleanPath = pathname.replace(/\/+$/, '') || '/';
@@ -42,6 +43,7 @@ function AppContent() {
   const { user, loading } = useAuth();
   const [routeState, setRouteState] = useState(() => parseRoute(window.location.pathname));
   const [modalState, setModalState] = useState({ open: false, title: '', message: '' });
+  const [enterCodeModalOpen, setEnterCodeModalOpen] = useState(false);
 
   // Listen to browser Back/Forward navigation (popstate)
   useEffect(() => {
@@ -80,11 +82,7 @@ function AppContent() {
     if (code) {
       navigateTo('poll', code);
     } else {
-      setModalState({
-        open: true,
-        title: 'Enter Poll Code',
-        message: 'Enter your 6-digit poll code in your browser address bar (e.g. /p/801388) to join an active poll directly.',
-      });
+      setEnterCodeModalOpen(true);
     }
   };
 
@@ -201,6 +199,13 @@ function AppContent() {
           </div>
         </div>
       )}
+
+      {/* Enter Poll Code Modal Dialog */}
+      <EnterPollCodeModal
+        isOpen={enterCodeModalOpen}
+        onClose={() => setEnterCodeModalOpen(false)}
+        onSubmitCode={(code) => handleEnterCode(code)}
+      />
     </div>
   );
 }
