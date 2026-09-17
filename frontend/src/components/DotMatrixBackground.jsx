@@ -168,10 +168,11 @@ export function DotMatrixBackground({ targetRef, dotColor = '31, 21, 20', glowCo
     };
 
     const handleClick = (e) => {
+      if (isMobile) return;
       const rect = container.getBoundingClientRect();
       const nx = e.clientX - rect.left;
       const ny = e.clientY - rect.top;
-      spawnCircleRipple(nx, ny, 1.4, isMobile ? 260 : 360);
+      spawnCircleRipple(nx, ny, 1.4, 360);
     };
 
     const handleTouch = (e) => {
@@ -196,6 +197,7 @@ export function DotMatrixBackground({ targetRef, dotColor = '31, 21, 20', glowCo
       mouse.x = -1000;
       mouse.y = -1000;
       lastEmitterPos = { x: -1000, y: -1000 };
+      shockwaves = [];
     };
 
     container.addEventListener('mouseenter', handleMouseEnter, { passive: true });
