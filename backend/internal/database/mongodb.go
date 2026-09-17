@@ -26,7 +26,7 @@ func ConnectMongoDB(ctx context.Context, uri, dbName string) (*mongo.Client, *mo
 
 	if err := client.Ping(pingCtx, readpref.Primary()); err != nil {
 		_ = client.Disconnect(ctx)
-		return nil, nil, fmt.Errorf("failed to ping MongoDB at %s: %w", uri, err)
+		return nil, nil, fmt.Errorf("failed to ping MongoDB: %w", err)
 	}
 
 	log.Printf("Successfully connected to MongoDB database: %s", dbName)
