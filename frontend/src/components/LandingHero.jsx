@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { DotMatrixBackground } from './DotMatrixBackground';
 
 export function LandingHero({ onCreatePoll, onEnterCode }) {
   const [pollCode, setPollCode] = useState('');
@@ -12,8 +13,9 @@ export function LandingHero({ onCreatePoll, onEnterCode }) {
   };
 
   return (
-    <section style={{ padding: 'clamp(40px, 7vw, 72px) 0 clamp(32px, 5vw, 56px) 0', textAlign: 'center' }}>
-      <div className="container">
+    <section style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(40px, 7vw, 72px) 0 clamp(32px, 5vw, 56px) 0', textAlign: 'center' }}>
+      <DotMatrixBackground />
+      <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         <div style={{ maxWidth: '820px', margin: '0 auto' }}>
           
           {/* User Badge */}

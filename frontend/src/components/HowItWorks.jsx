@@ -1,4 +1,5 @@
 import React from 'react';
+import { DotMatrixBackground } from './DotMatrixBackground';
 
 export function HowItWorks() {
   const steps = [
@@ -25,8 +26,9 @@ export function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" style={{ padding: '64px 0', backgroundColor: '#ffffff', borderTop: '1px solid var(--guvi-border)', borderBottom: '1px solid var(--guvi-border)' }}>
-      <div className="container">
+    <section id="how-it-works" style={{ position: 'relative', overflow: 'hidden', padding: '64px 0', backgroundColor: '#ffffff', borderTop: '1px solid var(--guvi-border)', borderBottom: '1px solid var(--guvi-border)' }}>
+      <DotMatrixBackground />
+      <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 48px auto' }}>
           <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '12px' }}>
             Easy 4-Step Process

@@ -1,4 +1,5 @@
 import React from 'react';
+import { DotMatrixBackground } from './DotMatrixBackground';
 
 export function FeatureGrid() {
   const features = [
@@ -25,8 +26,9 @@ export function FeatureGrid() {
   ];
 
   return (
-    <section id="features" style={{ padding: '64px 0' }}>
-      <div className="container">
+    <section id="features" style={{ position: 'relative', overflow: 'hidden', padding: '64px 0' }}>
+      <DotMatrixBackground />
+      <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 48px auto' }}>
           <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '12px' }}>
             Key Benefits
