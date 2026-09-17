@@ -115,9 +115,6 @@ export function CreatePollModal({ isOpen, onClose, onPollCreated }) {
           /* SUCCESS VIEW: Shareable Link */
           <div>
             <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-              <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '12px' }}>
-                Poll Published Live
-              </span>
               <h2 style={{ fontSize: 'clamp(1.3rem, 3.5vw, 1.6rem)', fontWeight: 800, color: 'var(--guvi-dark)' }}>
                 Your Poll is Ready to Share!
               </h2>
