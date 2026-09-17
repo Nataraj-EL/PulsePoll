@@ -1,17 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { DotMatrixBackground } from './DotMatrixBackground';
 
 export function LandingHero({ onCreatePoll, onEnterCode }) {
-  const [pollCode, setPollCode] = useState('');
-  const [showCodeInput, setShowCodeInput] = useState(false);
-
-  const handleCodeSubmit = (e) => {
-    e.preventDefault();
-    if (pollCode.trim()) {
-      onEnterCode(pollCode.trim());
-    }
-  };
-
   return (
     <section style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(40px, 7vw, 72px) 0 clamp(32px, 5vw, 56px) 0', textAlign: 'center' }}>
       <DotMatrixBackground />
@@ -62,7 +52,6 @@ export function LandingHero({ onCreatePoll, onEnterCode }) {
             justifyContent: 'center',
             gap: '14px',
             flexWrap: 'wrap',
-            marginBottom: '28px',
           }}>
             {/* DOMINANT PRIMARY CTA */}
             <button
@@ -75,66 +64,13 @@ export function LandingHero({ onCreatePoll, onEnterCode }) {
             
             {/* SECONDARY SUBTLE CTA */}
             <button
-              onClick={() => {
-                setShowCodeInput(!showCodeInput);
-                if (onEnterCode && !showCodeInput) onEnterCode();
-              }}
+              onClick={() => onEnterCode && onEnterCode()}
               className="btn btn-secondary-subtle"
               style={{ padding: '16px 28px', fontSize: '1.1rem' }}
             >
               Enter Poll Code
             </button>
           </div>
-
-          {/* Secondary Poll Code Input */}
-          {showCodeInput && (
-            <div style={{
-              background: '#ffffff',
-              border: '1.5px solid var(--guvi-green)',
-              borderRadius: 'var(--radius-md)',
-              padding: '16px 20px',
-              maxWidth: '420px',
-              width: '100%',
-              margin: '0 auto 20px auto',
-              boxShadow: 'var(--shadow-md)',
-            }}>
-              <form onSubmit={handleCodeSubmit} style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                <input
-                  type="text"
-                  placeholder="Enter 6-digit poll code"
-                  value={pollCode}
-                  onChange={(e) => setPollCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                  maxLength={6}
-                  style={{
-                    flex: '1 1 180px',
-                    padding: '10px 14px',
-                    borderRadius: 'var(--radius-sm)',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '0.95rem',
-                    fontWeight: 600,
-                    letterSpacing: '0.05em',
-                    outline: 'none',
-                  }}
-                />
-                <button
-                  type="submit"
-                  style={{
-                    padding: '10px 20px',
-                    backgroundColor: 'var(--guvi-dark)',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: 'var(--radius-sm)',
-                    cursor: 'pointer',
-                    fontWeight: 700,
-                    fontSize: '0.95rem',
-                    flexShrink: 0,
-                  }}
-                >
-                  Join
-                </button>
-              </form>
-            </div>
-          )}
         </div>
       </div>
     </section>
