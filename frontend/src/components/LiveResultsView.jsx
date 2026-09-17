@@ -48,14 +48,8 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
         if (!isMounted) return;
         try {
           const payload = JSON.parse(event.data);
-          if (payload.type === 'init' || payload.type === 'vote_updated') {
-            setResultsData({
-              poll_id: payload.poll_id,
-              code: payload.code,
-              question: payload.question || question,
-              total_votes: payload.total_votes,
-              results: payload.results || [],
-            });
+          if (payload && (payload.results || payload.total_votes !== undefined)) {
+            setResultsData(payload);
             setLoading(false);
           }
         } catch (err) {
