@@ -246,3 +246,46 @@ body {
     width: 100%;
   }
 }
+
+/* Click Burst Particle Animation */
+@keyframes clickBurstLine {
+  0% {
+    transform: rotate(var(--angle)) translateY(0px) scaleY(0.4);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(var(--angle)) translateY(var(--dist)) scaleY(1.2);
+    opacity: 0;
+  }
+}
+
+.burst-line {
+  position: absolute;
+  width: 2.5px;
+  height: 10.5px;
+  border-radius: 999px;
+}
+
+.animate-burst-1 {
+  --angle: -50deg;
+  --dist: -20px;
+  animation: clickBurstLine 0.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+.animate-burst-2 {
+  --angle: -18deg;
+  --dist: -22px;
+  animation: clickBurstLine 0.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+.animate-burst-3 {
+  --angle: 18deg;
+  --dist: -22px;
+  animation: clickBurstLine 0.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+.animate-burst-4 {
+  --angle: 50deg;
+  --dist: -20px;
+  animation: clickBurstLine 0.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}

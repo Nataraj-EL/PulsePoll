@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { getUserPolls, publishPoll } from '../services/api';
 import { CreatePollModal } from './CreatePollModal';
+import { ClickBurstProvider } from './ClickBurstProvider';
 
 export function Dashboard() {
   const { user } = useAuth();
@@ -47,151 +48,153 @@ export function Dashboard() {
   };
 
   return (
-    <div style={{ padding: 'clamp(24px, 5vw, 48px) 0', minHeight: '75vh' }}>
-      <div className="container" style={{ maxWidth: '880px' }}>
-        {/* Creator Header Bar */}
-        <div className="dashboard-header" style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '16px',
-          marginBottom: '24px',
-          paddingBottom: '20px',
-          borderBottom: '1px solid var(--guvi-border)',
-        }}>
-          <div>
-            <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '8px' }}>
-              Creator Workspace
-            </span>
-            <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: 800, color: 'var(--guvi-dark)' }}>
-              Welcome back, {user.name}!
-            </h1>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', marginTop: '4px' }}>
-              Manage your active interactive polls and view live audience responses.
-            </p>
-          </div>
-
-          <div className="dashboard-header-cta" style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <button
-              onClick={() => setCreateModalOpen(true)}
-              className="btn btn-primary-dominant"
-              style={{ padding: '10px 20px', fontSize: '0.95rem' }}
-            >
-              Create New Poll
-            </button>
-          </div>
-        </div>
-
-        {/* Poll Management Section */}
-        <div className="guvi-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--guvi-dark)' }}>
-              Your Polls ({polls.length})
-            </h3>
-            <button
-              onClick={() => setCreateModalOpen(true)}
-              className="btn btn-secondary-subtle"
-              style={{ fontSize: '0.85rem', padding: '6px 14px' }}
-            >
-              + New Poll
-            </button>
-          </div>
-
-          {loadingPolls ? (
-            <div style={{ padding: '32px', textAlign: 'center', color: 'var(--color-text-muted)' }}>
-              <div className="pulse-indicator" style={{ margin: '0 auto 12px auto', width: '14px', height: '14px' }}></div>
-              Loading your polls...
-            </div>
-          ) : polls.length === 0 ? (
-            <div style={{
-              padding: '36px 20px',
-              textAlign: 'center',
-              backgroundColor: '#f8fafc',
-              border: '1.5px dashed #cbd5e1',
-              borderRadius: 'var(--radius-sm)',
-            }}>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', marginBottom: '18px', maxWidth: '440px', margin: '0 auto 18px auto' }}>
-                You haven't created any polls yet. Launch your first interactive poll to start collecting live audience feedback.
+    <ClickBurstProvider>
+      <div style={{ padding: 'clamp(24px, 5vw, 48px) 0', minHeight: '75vh' }}>
+        <div className="container" style={{ maxWidth: '880px' }}>
+          {/* Creator Header Bar */}
+          <div className="dashboard-header" style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '16px',
+            marginBottom: '24px',
+            paddingBottom: '20px',
+            borderBottom: '1px solid var(--guvi-border)',
+          }}>
+            <div>
+              <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '8px' }}>
+                Creator Workspace
+              </span>
+              <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: 800, color: 'var(--guvi-dark)' }}>
+                Welcome back, {user.name}!
+              </h1>
+              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', marginTop: '4px' }}>
+                Manage your active interactive polls and view live audience responses.
               </p>
+            </div>
+
+            <div className="dashboard-header-cta" style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
               <button
                 onClick={() => setCreateModalOpen(true)}
                 className="btn btn-primary-dominant"
-                style={{ fontSize: '0.95rem', padding: '12px 24px' }}
+                style={{ padding: '10px 20px', fontSize: '0.95rem' }}
               >
-                Create Your First Poll
+                Create New Poll
               </button>
             </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {polls.map((poll) => (
-                <div key={poll.id} style={{
-                  border: '1px solid var(--guvi-border)',
-                  borderRadius: 'var(--radius-sm)',
-                  padding: '20px',
-                  backgroundColor: '#ffffff',
-                  boxShadow: 'var(--shadow-sm)',
-                  transition: 'border-color 0.2s ease',
-                }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap', gap: '8px' }}>
-                    <span className={`guvi-badge ${poll.status === 'active' ? 'guvi-badge-green' : 'guvi-badge-blue'}`}>
-                      {poll.status === 'active' ? 'Live Poll' : 'Draft Poll'}
-                    </span>
-                    <code style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--guvi-dark)', backgroundColor: '#f1f5f9', padding: '3px 10px', borderRadius: '4px' }}>
-                      Code #{poll.code}
-                    </code>
-                  </div>
+          </div>
 
-                  <h4 style={{ fontSize: '1.075rem', fontWeight: 700, color: 'var(--guvi-dark)', marginBottom: '8px', lineHeight: 1.35, wordBreak: 'break-word' }}>
-                    {poll.question}
-                  </h4>
+          {/* Poll Management Section */}
+          <div className="guvi-card">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--guvi-dark)' }}>
+                Your Polls ({polls.length})
+              </h3>
+              <button
+                onClick={() => setCreateModalOpen(true)}
+                className="btn btn-secondary-subtle"
+                style={{ fontSize: '0.85rem', padding: '6px 14px' }}
+              >
+                + New Poll
+              </button>
+            </div>
 
-                  <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '16px' }}>
-                    {poll.options.length} options • {poll.choice_type === 'single' ? 'Single Choice (1 answer)' : 'Multiple Choice'}
-                  </div>
+            {loadingPolls ? (
+              <div style={{ padding: '32px', textAlign: 'center', color: 'var(--color-text-muted)' }}>
+                <div className="pulse-indicator" style={{ margin: '0 auto 12px auto', width: '14px', height: '14px' }}></div>
+                Loading your polls...
+              </div>
+            ) : polls.length === 0 ? (
+              <div style={{
+                padding: '36px 20px',
+                textAlign: 'center',
+                backgroundColor: '#f8fafc',
+                border: '1.5px dashed #cbd5e1',
+                borderRadius: 'var(--radius-sm)',
+              }}>
+                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', marginBottom: '18px', maxWidth: '440px', margin: '0 auto 18px auto' }}>
+                  You haven't created any polls yet. Launch your first interactive poll to start collecting live audience feedback.
+                </p>
+                <button
+                  onClick={() => setCreateModalOpen(true)}
+                  className="btn btn-primary-dominant"
+                  style={{ fontSize: '0.95rem', padding: '12px 24px' }}
+                >
+                  Create Your First Poll
+                </button>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {polls.map((poll) => (
+                  <div key={poll.id} style={{
+                    border: '1px solid var(--guvi-border)',
+                    borderRadius: 'var(--radius-sm)',
+                    padding: '20px',
+                    backgroundColor: '#ffffff',
+                    boxShadow: 'var(--shadow-sm)',
+                    transition: 'border-color 0.2s ease',
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap', gap: '8px' }}>
+                      <span className={`guvi-badge ${poll.status === 'active' ? 'guvi-badge-green' : 'guvi-badge-blue'}`}>
+                        {poll.status === 'active' ? 'Live Poll' : 'Draft Poll'}
+                      </span>
+                      <code style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--guvi-dark)', backgroundColor: '#f1f5f9', padding: '3px 10px', borderRadius: '4px' }}>
+                        Code #{poll.code}
+                      </code>
+                    </div>
 
-                  <div className="dashboard-poll-actions" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                    <button
-                      onClick={() => handleCopyLink(poll.code)}
-                      className="btn btn-secondary-subtle dashboard-poll-btn"
-                      style={{ fontSize: '0.85rem', padding: '8px 14px' }}
-                    >
-                      {copiedCode === poll.code ? 'Copied!' : 'Copy Share Link'}
-                    </button>
+                    <h4 style={{ fontSize: '1.075rem', fontWeight: 700, color: 'var(--guvi-dark)', marginBottom: '8px', lineHeight: 1.35, wordBreak: 'break-word' }}>
+                      {poll.question}
+                    </h4>
 
-                    <a
-                      href={`/p/${poll.code}/results`}
-                      className="btn btn-secondary-subtle dashboard-poll-btn"
-                      style={{ fontSize: '0.85rem', padding: '8px 14px', textDecoration: 'none' }}
-                    >
-                      View Live Results
-                    </a>
+                    <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '16px' }}>
+                      {poll.options.length} options • {poll.choice_type === 'single' ? 'Single Choice (1 answer)' : 'Multiple Choice'}
+                    </div>
 
-                    {poll.status === 'draft' && (
+                    <div className="dashboard-poll-actions" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                       <button
-                        onClick={() => handlePublishDraft(poll.id)}
-                        className="btn btn-primary-dominant dashboard-poll-btn"
+                        onClick={() => handleCopyLink(poll.code)}
+                        className="btn btn-secondary-subtle dashboard-poll-btn"
                         style={{ fontSize: '0.85rem', padding: '8px 14px' }}
                       >
-                        Publish Live
+                        {copiedCode === poll.code ? 'Copied!' : 'Copy Share Link'}
                       </button>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
 
-      {/* Poll Creation Modal */}
-      <CreatePollModal
-        isOpen={createModalOpen}
-        onClose={() => setCreateModalOpen(false)}
-        onPollCreated={() => {
-          fetchPolls();
-        }}
-      />
-    </div>
+                      <a
+                        href={`/p/${poll.code}/results`}
+                        className="btn btn-secondary-subtle dashboard-poll-btn"
+                        style={{ fontSize: '0.85rem', padding: '8px 14px', textDecoration: 'none' }}
+                      >
+                        View Live Results
+                      </a>
+
+                      {poll.status === 'draft' && (
+                        <button
+                          onClick={() => handlePublishDraft(poll.id)}
+                          className="btn btn-primary-dominant dashboard-poll-btn"
+                          style={{ fontSize: '0.85rem', padding: '8px 14px' }}
+                        >
+                          Publish Live
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Poll Creation Modal */}
+        <CreatePollModal
+          isOpen={createModalOpen}
+          onClose={() => setCreateModalOpen(false)}
+          onPollCreated={() => {
+            fetchPolls();
+          }}
+        />
+      </div>
+    </ClickBurstProvider>
   );
 }
