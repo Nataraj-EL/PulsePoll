@@ -8,7 +8,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 
+	"pulsepoll/backend/internal/models"
 	"pulsepoll/backend/internal/repository"
 	"pulsepoll/backend/internal/service"
 )
@@ -31,6 +33,17 @@ func NewRealtimeHandler(pollRepo repository.PollRepository, realtimeService serv
 	}
 }
 
+func (h *RealtimeHandler) findPoll(ctx context.Context, idOrCode string) (*models.Poll, error) {
+	poll, err := h.pollRepo.FindByCode(ctx, idOrCode)
+	if err == nil && poll != nil {
+		return poll, nil
+	}
+	if objID, err := primitive.ObjectIDFromHex(idOrCode); err == nil {
+		return h.pollRepo.FindByID(ctx, objID)
+	}
+	return nil, err
+}
+
 // GetResults handles GET /api/v1/polls/:code/results (HTTP REST)
 func (h *RealtimeHandler) GetResults(c *gin.Context) {
 	code := c.Param("code")
@@ -47,7 +60,7 @@ func (h *RealtimeHandler) GetResults(c *gin.Context) {
 		return
 	}
 
-	poll, err := h.pollRepo.FindByCode(c.Request.Context(), code)
+	poll, err := h.findPoll(c.Request.Context(), code)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   "Server Error",
@@ -90,7 +103,7 @@ func (h *RealtimeHandler) StreamResults(c *gin.Context) {
 		return
 	}
 
-	poll, err := h.pollRepo.FindByCode(c.Request.Context(), code)
+	poll, err := h.findPoll(c.Request.Context(), code)
 	if err != nil || poll == nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Poll not found"})
 		return
@@ -142,3 +155,4 @@ func (h *RealtimeHandler) StreamResults(c *gin.Context) {
 		}
 	}
 }
+

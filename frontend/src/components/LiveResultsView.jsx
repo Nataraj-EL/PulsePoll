@@ -96,7 +96,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
   const countMap = {};
   if (resultsData?.results) {
     resultsData.results.forEach((item) => {
-      countMap[item.option_id] = item.count;
+      countMap[item.option_id] = item.votes !== undefined ? item.votes : (item.count !== undefined ? item.count : 0);
     });
   }
 
