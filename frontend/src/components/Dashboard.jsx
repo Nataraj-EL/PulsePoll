@@ -96,9 +96,18 @@ export function Dashboard() {
             </div>
 
             {loadingPolls ? (
-              <div style={{ padding: '32px', textAlign: 'center', color: 'var(--color-text-muted)' }}>
-                <div className="pulse-indicator" style={{ margin: '0 auto 12px auto', width: '14px', height: '14px' }}></div>
-                Loading your polls...
+              <div style={{
+                padding: '40px 20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '12px',
+                color: 'var(--color-text-muted)',
+                fontSize: '0.95rem',
+                fontWeight: 600,
+              }}>
+                <span className="pulse-indicator" style={{ width: '12px', height: '12px', flexShrink: 0 }} />
+                <span>Loading your polls...</span>
               </div>
             ) : polls.length === 0 ? (
               <div style={{

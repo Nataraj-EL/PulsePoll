@@ -105,11 +105,17 @@ export function PollPage({ pollCode, onNavigate, initialTab }) {
   if (loading) {
     return (
       <div style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
-        <div style={{ textAlign: 'center' }}>
-          <div className="pulse-indicator" style={{ margin: '0 auto 16px auto', width: '16px', height: '16px' }}></div>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', fontWeight: 600 }}>
-            Loading poll #{pollCode}...
-          </p>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '12px',
+          color: 'var(--color-text-muted)',
+          fontSize: '0.95rem',
+          fontWeight: 600,
+        }}>
+          <span className="pulse-indicator" style={{ width: '14px', height: '14px', flexShrink: 0 }} />
+          <span>Loading poll #{pollCode}...</span>
         </div>
       </div>
     );

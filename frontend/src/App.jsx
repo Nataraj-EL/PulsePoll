@@ -90,9 +90,17 @@ function AppContent() {
   if (loading) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f8fafc' }}>
-        <div style={{ textAlign: 'center' }}>
-          <div className="pulse-indicator" style={{ margin: '0 auto 16px auto', width: '16px', height: '16px' }}></div>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', fontWeight: 600 }}>Loading PulsePoll...</p>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '12px',
+          color: 'var(--color-text-muted)',
+          fontSize: '0.95rem',
+          fontWeight: 600,
+        }}>
+          <span className="pulse-indicator" style={{ width: '14px', height: '14px', flexShrink: 0 }} />
+          <span>Loading PulsePoll...</span>
         </div>
       </div>
     );
