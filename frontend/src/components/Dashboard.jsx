@@ -81,17 +81,10 @@ export function Dashboard() {
 
           {/* Poll Management Section */}
           <div className="guvi-card">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <div style={{ marginBottom: '20px' }}>
               <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--guvi-dark)' }}>
                 Your Polls ({polls.length})
               </h3>
-              <button
-                onClick={() => setCreateModalOpen(true)}
-                className="btn btn-secondary-subtle"
-                style={{ fontSize: '0.85rem', padding: '6px 14px' }}
-              >
-                + New Poll
-              </button>
             </div>
 
             {loadingPolls ? (
