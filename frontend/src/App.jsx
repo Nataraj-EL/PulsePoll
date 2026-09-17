@@ -15,9 +15,11 @@ function parseRoute(pathname) {
   const cleanPath = pathname.replace(/\/+$/, '') || '/';
   
   if (cleanPath.startsWith('/p/')) {
-    const code = cleanPath.substring(3).split('/')[0];
+    const parts = cleanPath.substring(3).split('/');
+    const code = parts[0];
+    const isResults = parts[1] === 'results';
     if (code) {
-      return { view: 'poll', code };
+      return { view: 'poll', code, isResults };
     }
   }
   
@@ -28,8 +30,8 @@ function parseRoute(pathname) {
   return { view: 'landing', code: '' };
 }
 
-function getRoutePath(view, code = '') {
-  if (view === 'poll' && code) return `/p/${code}`;
+function getRoutePath(view, code = '', isResults = false) {
+  if (view === 'poll' && code) return isResults ? `/p/${code}/results` : `/p/${code}`;
   if (view === 'login') return '/login';
   if (view === 'signup') return '/signup';
   if (view === 'dashboard') return '/dashboard';
@@ -109,7 +111,9 @@ function AppContent() {
         {/* Route Match 1: Dynamic Participant Poll View /p/:code */}
         {routeState.view === 'poll' && (
           <PollPage
+            key={`${routeState.code}_${routeState.isResults ? 'results' : 'vote'}`}
             pollCode={routeState.code}
+            initialTab={routeState.isResults ? 'results' : 'vote'}
             onNavigate={navigateTo}
           />
         )}

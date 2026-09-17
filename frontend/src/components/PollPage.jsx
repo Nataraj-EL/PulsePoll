@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getPollByIdOrCode, castVote } from '../services/api';
+import { LiveResultsView } from './LiveResultsView';
 
 function getOrCreateVoterId() {
   let id = localStorage.getItem('pulsepoll_voter_id');
@@ -10,7 +11,7 @@ function getOrCreateVoterId() {
   return id;
 }
 
-export function PollPage({ pollCode, onNavigate }) {
+export function PollPage({ pollCode, onNavigate, initialTab = 'vote' }) {
   const [poll, setPoll] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,6 +21,7 @@ export function PollPage({ pollCode, onNavigate }) {
   const [submitError, setSubmitError] = useState('');
   const [voted, setVoted] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [activeTab, setActiveTab] = useState(initialTab);
 
   useEffect(() => {
     async function loadPoll() {
@@ -78,6 +80,8 @@ export function PollPage({ pollCode, onNavigate }) {
     if (res.ok) {
       localStorage.setItem(`pulsepoll_voted_${pollCode}`, 'true');
       setVoted(true);
+      // Seamlessly switch to live results view after voting
+      setActiveTab('results');
     } else {
       const msg = res.data?.message || 'Failed to submit vote. Please try again.';
       const formatted = msg.charAt(0).toUpperCase() + msg.slice(1);
@@ -86,6 +90,7 @@ export function PollPage({ pollCode, onNavigate }) {
         localStorage.setItem(`pulsepoll_voted_${pollCode}`, 'true');
         setVoted(true);
         setSubmitError(formatted);
+        setActiveTab('results');
       } else {
         setSubmitError(formatted);
       }
@@ -196,112 +201,171 @@ export function PollPage({ pollCode, onNavigate }) {
             </button>
           </div>
 
-          {/* Poll Options Form */}
+          {/* Navigation Tab Bar */}
+          <div style={{
+            display: 'flex',
+            borderBottom: '1px solid var(--guvi-border)',
+            backgroundColor: '#f8fafc',
+          }}>
+            <button
+              onClick={() => setActiveTab('vote')}
+              style={{
+                flex: 1,
+                padding: '14px 20px',
+                fontSize: '0.95rem',
+                fontWeight: 700,
+                border: 'none',
+                borderBottom: activeTab === 'vote' ? '3px solid var(--guvi-green)' : '3px solid transparent',
+                backgroundColor: activeTab === 'vote' ? '#ffffff' : 'transparent',
+                color: activeTab === 'vote' ? 'var(--guvi-dark)' : 'var(--color-text-muted)',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              🗳️ Cast Vote
+            </button>
+            <button
+              onClick={() => setActiveTab('results')}
+              style={{
+                flex: 1,
+                padding: '14px 20px',
+                fontSize: '0.95rem',
+                fontWeight: 700,
+                border: 'none',
+                borderBottom: activeTab === 'results' ? '3px solid var(--guvi-green)' : '3px solid transparent',
+                backgroundColor: activeTab === 'results' ? '#ffffff' : 'transparent',
+                color: activeTab === 'results' ? 'var(--guvi-dark)' : 'var(--color-text-muted)',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              📊 Live Results
+            </button>
+          </div>
+
+          {/* Card Body */}
           <div style={{ padding: '32px' }}>
             {/* Prominent Poll Question */}
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--guvi-dark)', marginBottom: '16px', lineHeight: 1.35 }}>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--guvi-dark)', marginBottom: '16px', lineHeight: 1.35 }}>
               {poll.question}
             </h2>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>
-                {poll.choice_type === 'single' ? 'Select 1 option:' : 'Select any options:'}
-              </span>
-              <span className="guvi-badge guvi-badge-blue" style={{ fontSize: '0.75rem' }}>
-                Public Participant View
-              </span>
-            </div>
-
-            {submitError && (
-              <div style={{
-                backgroundColor: '#fef2f2',
-                border: '1px solid #fecaca',
-                color: '#991b1b',
-                padding: '12px 16px',
-                borderRadius: 'var(--radius-sm)',
-                fontSize: '0.875rem',
-                marginBottom: '20px',
-                fontWeight: 600,
-              }}>
-                {submitError}
-              </div>
-            )}
-
-            {voted ? (
-              <div style={{
-                backgroundColor: '#f0fdf4',
-                border: '1px solid #bbf7d0',
-                borderRadius: 'var(--radius-sm)',
-                padding: '28px 24px',
-                textAlign: 'center',
-              }}>
-                <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '12px' }}>
-                  Response Recorded
-                </span>
-                <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#166534', marginBottom: '8px' }}>
-                  Thank you for participating!
-                </h3>
-                <p style={{ color: '#15803d', fontSize: '0.95rem' }}>
-                  Your vote has been registered for poll #{poll.code}.
-                </p>
-              </div>
+            {activeTab === 'results' ? (
+              <LiveResultsView
+                pollCode={poll.code}
+                question={poll.question}
+                options={poll.options}
+              />
             ) : (
-              <form onSubmit={handleVoteSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                {poll.options.map((opt) => {
-                  const isChecked = poll.choice_type === 'single'
-                    ? selectedOption === opt.id
-                    : selectedMultiple.includes(opt.id);
+              <>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                  <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>
+                    {poll.choice_type === 'single' ? 'Select 1 option:' : 'Select any options:'}
+                  </span>
+                  <span className="guvi-badge guvi-badge-blue" style={{ fontSize: '0.75rem' }}>
+                    Public Participant View
+                  </span>
+                </div>
 
-                  return (
-                    <label
-                      key={opt.id}
+                {submitError && (
+                  <div style={{
+                    backgroundColor: '#fef2f2',
+                    border: '1px solid #fecaca',
+                    color: '#991b1b',
+                    padding: '12px 16px',
+                    borderRadius: 'var(--radius-sm)',
+                    fontSize: '0.875rem',
+                    marginBottom: '20px',
+                    fontWeight: 600,
+                  }}>
+                    {submitError}
+                  </div>
+                )}
+
+                {voted ? (
+                  <div style={{
+                    backgroundColor: '#f0fdf4',
+                    border: '1px solid #bbf7d0',
+                    borderRadius: 'var(--radius-sm)',
+                    padding: '28px 24px',
+                    textAlign: 'center',
+                  }}>
+                    <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '12px' }}>
+                      Response Recorded
+                    </span>
+                    <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#166534', marginBottom: '8px' }}>
+                      Thank you for participating!
+                    </h3>
+                    <p style={{ color: '#15803d', fontSize: '0.95rem', marginBottom: '16px' }}>
+                      Your vote has been registered for poll #{poll.code}.
+                    </p>
+                    <button
+                      onClick={() => setActiveTab('results')}
+                      className="btn btn-primary-dominant"
+                      style={{ fontSize: '0.9rem', padding: '10px 20px' }}
+                    >
+                      View Realtime Live Results
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleVoteSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    {poll.options.map((opt) => {
+                      const isChecked = poll.choice_type === 'single'
+                        ? selectedOption === opt.id
+                        : selectedMultiple.includes(opt.id);
+
+                      return (
+                        <label
+                          key={opt.id}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            padding: '16px 20px',
+                            borderRadius: 'var(--radius-sm)',
+                            border: isChecked ? '2px solid var(--guvi-green)' : '1px solid #cbd5e1',
+                            backgroundColor: isChecked ? 'var(--guvi-green-light)' : '#ffffff',
+                            cursor: 'pointer',
+                            transition: 'all 0.15s ease',
+                          }}
+                        >
+                          <span style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--guvi-dark)' }}>
+                            {opt.text}
+                          </span>
+                          <input
+                            type={poll.choice_type === 'single' ? 'radio' : 'checkbox'}
+                            name="poll_option"
+                            value={opt.id}
+                            checked={isChecked}
+                            onChange={() => {
+                              if (poll.choice_type === 'single') {
+                                setSelectedOption(opt.id);
+                              } else {
+                                toggleMultipleOption(opt.id);
+                              }
+                            }}
+                            style={{ accentColor: 'var(--guvi-green)', width: '18px', height: '18px', cursor: 'pointer' }}
+                          />
+                        </label>
+                      );
+                    })}
+
+                    <button
+                      type="submit"
+                      disabled={submitting || (poll.choice_type === 'single' ? !selectedOption : selectedMultiple.length === 0)}
+                      className="btn btn-primary-dominant"
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '16px 20px',
-                        borderRadius: 'var(--radius-sm)',
-                        border: isChecked ? '2px solid var(--guvi-green)' : '1px solid #cbd5e1',
-                        backgroundColor: isChecked ? 'var(--guvi-green-light)' : '#ffffff',
-                        cursor: 'pointer',
-                        transition: 'all 0.15s ease',
+                        marginTop: '12px',
+                        padding: '14px',
+                        fontSize: '1rem',
+                        opacity: (submitting || (poll.choice_type === 'single' ? !selectedOption : selectedMultiple.length === 0)) ? 0.6 : 1,
                       }}
                     >
-                      <span style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--guvi-dark)' }}>
-                        {opt.text}
-                      </span>
-                      <input
-                        type={poll.choice_type === 'single' ? 'radio' : 'checkbox'}
-                        name="poll_option"
-                        value={opt.id}
-                        checked={isChecked}
-                        onChange={() => {
-                          if (poll.choice_type === 'single') {
-                            setSelectedOption(opt.id);
-                          } else {
-                            toggleMultipleOption(opt.id);
-                          }
-                        }}
-                        style={{ accentColor: 'var(--guvi-green)', width: '18px', height: '18px', cursor: 'pointer' }}
-                      />
-                    </label>
-                  );
-                })}
-
-                <button
-                  type="submit"
-                  disabled={submitting || (poll.choice_type === 'single' ? !selectedOption : selectedMultiple.length === 0)}
-                  className="btn btn-primary-dominant"
-                  style={{
-                    marginTop: '12px',
-                    padding: '14px',
-                    fontSize: '1rem',
-                    opacity: (submitting || (poll.choice_type === 'single' ? !selectedOption : selectedMultiple.length === 0)) ? 0.6 : 1,
-                  }}
-                >
-                  {submitting ? 'Submitting Vote...' : 'Submit Vote'}
-                </button>
-              </form>
+                      {submitting ? 'Submitting Vote...' : 'Submit Vote'}
+                    </button>
+                  </form>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -309,3 +373,4 @@ export function PollPage({ pollCode, onNavigate }) {
     </div>
   );
 }
+

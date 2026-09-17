@@ -147,3 +147,21 @@ export async function castVote(code, { optionIds, voterId }) {
     }),
   });
 }
+
+/**
+ * Fetch live voting results for a poll
+ */
+export async function getPollResults(idOrCode) {
+  return apiFetch(`/polls/${idOrCode}/results`, {
+    method: 'GET',
+  });
+}
+
+/**
+ * Construct WebSocket URL for realtime poll updates
+ */
+export function getPollWebSocketUrl(idOrCode) {
+  const wsBaseUrl = API_BASE_URL.replace(/^http/, 'ws');
+  return `${wsBaseUrl}/polls/${idOrCode}/ws`;
+}
+

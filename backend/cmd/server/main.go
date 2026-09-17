@@ -73,6 +73,7 @@ func main() {
 	var authService service.AuthService
 	var pollService service.PollService
 	var voteService service.VoteService
+	var realtimeService service.RealtimeService
 
 	if mongoDB != nil {
 		userRepo = repository.NewUserRepository(mongoDB)
@@ -91,7 +92,9 @@ func main() {
 		if err := voteRepo.InitIndexes(ctx); err != nil {
 			log.Printf("⚠️ Notice: Vote indexes initialization warning: %v", err)
 		}
-		voteService = service.NewVoteService(pollRepo, voteRepo)
+
+		realtimeService = service.NewRealtimeService(redisClient, pollRepo, voteRepo)
+		voteService = service.NewVoteService(pollRepo, voteRepo, realtimeService)
 	} else {
 		log.Println("⚠️ Notice: Running without active MongoDB connection (DB operations will fail gracefully)")
 	}
@@ -125,7 +128,7 @@ func main() {
 			}
 		}
 
-		// Poll Routes (if PollService & VoteService are available)
+		// Poll Routes (if PollService is available)
 		if pollService != nil {
 			pollHandler := handlers.NewPollHandler(pollService)
 			requireAuth := middleware.RequireAuth(cfg.JWTSecret)
@@ -144,6 +147,13 @@ func main() {
 				if voteService != nil {
 					voteHandler := handlers.NewVoteHandler(voteService)
 					pollsGroup.POST("/:id/votes", voteHandler.CastVote)
+				}
+
+				// Realtime Results & WebSocket Endpoint
+				if realtimeService != nil {
+					realtimeHandler := handlers.NewRealtimeHandler(pollRepo, realtimeService)
+					pollsGroup.GET("/:id/results", realtimeHandler.GetResults)
+					pollsGroup.GET("/:id/ws", realtimeHandler.StreamResults)
 				}
 			}
 		}

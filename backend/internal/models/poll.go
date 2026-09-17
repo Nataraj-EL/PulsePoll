@@ -71,3 +71,21 @@ func (p *Poll) ToResponse() PollResponse {
 		UpdatedAt:  p.UpdatedAt,
 	}
 }
+
+// PollResultItem represents real-time vote count for an option
+type PollResultItem struct {
+	OptionID   string  `json:"option_id"`
+	Text       string  `json:"text"`
+	Votes      int64   `json:"votes"`
+	Percentage float64 `json:"percentage"`
+}
+
+// PollResultsResponse represents live poll results summary
+type PollResultsResponse struct {
+	PollCode   string           `json:"poll_code"`
+	Question   string           `json:"question"`
+	ChoiceType ChoiceType       `json:"choice_type"`
+	Status     PollStatus       `json:"status"`
+	TotalVotes int64            `json:"total_votes"`
+	Results    []PollResultItem `json:"results"`
+}

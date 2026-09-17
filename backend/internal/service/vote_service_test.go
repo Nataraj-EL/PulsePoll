@@ -71,7 +71,7 @@ func setupActivePoll(t *testing.T, pollRepo repository.PollRepository, choiceTyp
 func TestCastVoteSingleChoiceSuccess(t *testing.T) {
 	pollRepo := newMockPollRepo()
 	voteRepo := newMockVoteRepo()
-	svc := NewVoteService(pollRepo, voteRepo)
+	svc := NewVoteService(pollRepo, voteRepo, nil)
 
 	setupActivePoll(t, pollRepo, models.ChoiceTypeSingle, models.PollStatusActive)
 
@@ -88,7 +88,7 @@ func TestCastVoteSingleChoiceSuccess(t *testing.T) {
 func TestCastVoteMultipleChoiceSuccess(t *testing.T) {
 	pollRepo := newMockPollRepo()
 	voteRepo := newMockVoteRepo()
-	svc := NewVoteService(pollRepo, voteRepo)
+	svc := NewVoteService(pollRepo, voteRepo, nil)
 
 	setupActivePoll(t, pollRepo, models.ChoiceTypeMultiple, models.PollStatusActive)
 
@@ -105,7 +105,7 @@ func TestCastVoteMultipleChoiceSuccess(t *testing.T) {
 func TestCastVoteInvalidOption(t *testing.T) {
 	pollRepo := newMockPollRepo()
 	voteRepo := newMockVoteRepo()
-	svc := NewVoteService(pollRepo, voteRepo)
+	svc := NewVoteService(pollRepo, voteRepo, nil)
 
 	setupActivePoll(t, pollRepo, models.ChoiceTypeSingle, models.PollStatusActive)
 
@@ -118,7 +118,7 @@ func TestCastVoteInvalidOption(t *testing.T) {
 func TestCastVoteEmptySubmission(t *testing.T) {
 	pollRepo := newMockPollRepo()
 	voteRepo := newMockVoteRepo()
-	svc := NewVoteService(pollRepo, voteRepo)
+	svc := NewVoteService(pollRepo, voteRepo, nil)
 
 	setupActivePoll(t, pollRepo, models.ChoiceTypeSingle, models.PollStatusActive)
 
@@ -131,7 +131,7 @@ func TestCastVoteEmptySubmission(t *testing.T) {
 func TestCastVoteDraftOrClosedPoll(t *testing.T) {
 	pollRepo := newMockPollRepo()
 	voteRepo := newMockVoteRepo()
-	svc := NewVoteService(pollRepo, voteRepo)
+	svc := NewVoteService(pollRepo, voteRepo, nil)
 
 	// Draft poll
 	setupActivePoll(t, pollRepo, models.ChoiceTypeSingle, models.PollStatusDraft)
@@ -145,7 +145,7 @@ func TestCastVoteDraftOrClosedPoll(t *testing.T) {
 func TestCastVoteDuplicatePrevention(t *testing.T) {
 	pollRepo := newMockPollRepo()
 	voteRepo := newMockVoteRepo()
-	svc := NewVoteService(pollRepo, voteRepo)
+	svc := NewVoteService(pollRepo, voteRepo, nil)
 
 	setupActivePoll(t, pollRepo, models.ChoiceTypeSingle, models.PollStatusActive)
 

@@ -20,14 +20,16 @@ type VoteService interface {
 }
 
 type voteService struct {
-	pollRepo repository.PollRepository
-	voteRepo repository.VoteRepository
+	pollRepo        repository.PollRepository
+	voteRepo        repository.VoteRepository
+	realtimeService RealtimeService
 }
 
-func NewVoteService(pollRepo repository.PollRepository, voteRepo repository.VoteRepository) VoteService {
+func NewVoteService(pollRepo repository.PollRepository, voteRepo repository.VoteRepository, realtimeService RealtimeService) VoteService {
 	return &voteService{
-		pollRepo: pollRepo,
-		voteRepo: voteRepo,
+		pollRepo:        pollRepo,
+		voteRepo:        voteRepo,
+		realtimeService: realtimeService,
 	}
 }
 
@@ -88,7 +90,7 @@ func (s *voteService) CastVote(ctx context.Context, code string, voterID string,
 		return nil, repository.ErrDuplicateVote
 	}
 
-	// 5. Create vote entity
+	// 5. Create vote entity in MongoDB (authoritative durable store)
 	vote := &models.Vote{
 		PollID:    poll.ID,
 		PollCode:  poll.Code,
@@ -98,6 +100,11 @@ func (s *voteService) CastVote(ctx context.Context, code string, voterID string,
 
 	if err := s.voteRepo.Create(ctx, vote); err != nil {
 		return nil, err
+	}
+
+	// 6. Update Redis counters & publish live event to Pub/Sub
+	if s.realtimeService != nil {
+		_ = s.realtimeService.RecordVoteAndPublish(ctx, poll.Code, dedupOptions)
 	}
 
 	resp := vote.ToResponse()

@@ -179,7 +179,7 @@ export function Dashboard() {
                       {poll.options.length} options • {poll.choice_type === 'single' ? 'Single Choice' : 'Multiple Choice'}
                     </div>
 
-                    <div style={{ display: 'flex', gap: '8px' }}>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                       <button
                         onClick={() => handleCopyLink(poll.code)}
                         className="btn btn-secondary-subtle"
@@ -187,6 +187,14 @@ export function Dashboard() {
                       >
                         {copiedCode === poll.code ? 'Copied!' : 'Copy Share Link'}
                       </button>
+
+                      <a
+                        href={`/p/${poll.code}/results`}
+                        className="btn btn-secondary-subtle"
+                        style={{ fontSize: '0.825rem', padding: '6px 12px', textDecoration: 'none' }}
+                      >
+                        📊 View Live Results
+                      </a>
 
                       {poll.status === 'draft' && (
                         <button
