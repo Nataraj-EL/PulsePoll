@@ -47,7 +47,7 @@ export function HowItWorks() {
           gap: '24px',
         }}>
           {steps.map((s) => (
-            <div key={s.step} className="guvi-card" style={{ position: 'relative' }}>
+            <div key={s.step} className="guvi-card guvi-card-interactive" style={{ position: 'relative' }}>
               <div style={{
                 fontSize: '1.5rem',
                 fontWeight: 800,

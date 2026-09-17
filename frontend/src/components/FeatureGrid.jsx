@@ -47,7 +47,7 @@ export function FeatureGrid() {
           gap: '24px',
         }}>
           {features.map((f, i) => (
-            <div key={i} className="guvi-card" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div key={i} className="guvi-card guvi-card-interactive" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <div style={{
                 fontSize: '0.85rem',
                 fontWeight: 800,
