@@ -170,6 +170,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
                     whiteSpace: 'nowrap',
                     transition: 'all 0.3s ease',
                     opacity: totalVotes > 0 ? 1 : 0.65,
+                    flexShrink: 0,
                   }}>
                     <div>{count} {count === 1 ? 'vote' : 'votes'}</div>
                     <div style={{ fontSize: 'clamp(0.68rem, 1.6vw, 0.75rem)', fontWeight: 600, color: 'var(--color-text-muted)', marginTop: '1px' }}>
@@ -177,25 +178,33 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
                     </div>
                   </div>
 
-                  {/* Refined Tonal Bar Element */}
+                  {/* Flexible Bar Track */}
                   <div style={{
+                    flex: 1,
                     width: '100%',
-                    maxWidth: '44px',
-                    height: `${barHeightPct}%`,
-                    maxHeight: '140px',
-                    borderRadius: '6px 6px 0 0',
-                    transition: 'height 0.45s cubic-bezier(0.16, 1, 0.3, 1), background-image 0.3s ease, box-shadow 0.3s ease',
-                    backgroundImage: isLeader
-                      ? 'linear-gradient(180deg, #34d399 0%, #059669 100%)'
-                      : 'linear-gradient(180deg, #475569 0%, #1e293b 100%)',
-                    borderTop: barHeightPct > 0
-                      ? (isLeader ? '2.5px solid rgba(255, 255, 255, 0.5)' : '2px solid rgba(255, 255, 255, 0.25)')
-                      : 'none',
-                    boxShadow: barHeightPct > 0
-                      ? (isLeader ? '0 4px 14px -2px rgba(16, 185, 129, 0.35)' : '0 2px 8px -2px rgba(15, 23, 42, 0.15)')
-                      : 'none',
-                    boxSizing: 'border-box',
-                  }} />
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    justifyContent: 'center',
+                  }}>
+                    {/* Refined Dynamic Tonal Bar Element */}
+                    <div style={{
+                      width: '100%',
+                      maxWidth: '44px',
+                      height: `${barHeightPct}%`,
+                      borderRadius: '6px 6px 0 0',
+                      transition: 'height 0.45s cubic-bezier(0.16, 1, 0.3, 1), background-image 0.3s ease, box-shadow 0.3s ease',
+                      backgroundImage: isLeader
+                        ? 'linear-gradient(180deg, #34d399 0%, #059669 100%)'
+                        : 'linear-gradient(180deg, #475569 0%, #1e293b 100%)',
+                      borderTop: barHeightPct > 0
+                        ? (isLeader ? '2.5px solid rgba(255, 255, 255, 0.5)' : '2px solid rgba(255, 255, 255, 0.25)')
+                        : 'none',
+                      boxShadow: barHeightPct > 0
+                        ? (isLeader ? '0 4px 14px -2px rgba(16, 185, 129, 0.35)' : '0 2px 8px -2px rgba(15, 23, 42, 0.15)')
+                        : 'none',
+                      boxSizing: 'border-box',
+                    }} />
+                  </div>
                 </div>
               );
             })}
