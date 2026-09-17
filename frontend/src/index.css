@@ -170,6 +170,40 @@ body {
   .container {
     padding: 0 12px;
   }
+  .header-container {
+    flex-wrap: nowrap !important;
+    min-height: 56px !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    gap: 6px !important;
+  }
+  .header-brand {
+    gap: 5px !important;
+  }
+  .header-brand-guvi {
+    height: 17px !important;
+  }
+  .header-brand-hcl {
+    height: 9px !important;
+  }
+  .header-brand-sep {
+    height: 12px !important;
+  }
+  .header-brand-title {
+    font-size: 1.05rem !important;
+  }
+  .header-actions {
+    gap: 4px !important;
+    flex-wrap: nowrap !important;
+  }
+  .header-actions .btn {
+    padding: 6px 10px !important;
+    font-size: 0.8rem !important;
+  }
+  .header-actions-link {
+    font-size: 0.8rem !important;
+    padding: 4px 6px !important;
+  }
   .guvi-card {
     padding: 20px 14px;
   }

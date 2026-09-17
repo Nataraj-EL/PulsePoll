@@ -32,7 +32,7 @@ export function Header({ onCreatePoll, onEnterCode, onNavigate, onNavigateDashbo
       zIndex: 100,
       boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
     }}>
-      <div className="container" style={{
+      <div className="container header-container" style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -43,7 +43,7 @@ export function Header({ onCreatePoll, onEnterCode, onNavigate, onNavigateDashbo
         gap: '12px',
       }}>
         {/* Header Brand Structure: GUVI Logo | HCL Logo | PulsePoll */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+        <div className="header-brand" style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
           {/* GUVI Logo */}
           <div
             onClick={handleNavLanding}
@@ -53,28 +53,31 @@ export function Header({ onCreatePoll, onEnterCode, onNavigate, onNavigateDashbo
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/0/08/GUVI_logo.png"
               alt="GUVI Logo"
+              className="header-brand-guvi"
               style={{ height: '22px', width: 'auto', display: 'block' }}
             />
           </div>
 
           {/* Separating bar */}
-          <div style={{ width: '1px', height: '16px', backgroundColor: '#cbd5e1' }}></div>
+          <div className="header-brand-sep" style={{ width: '1px', height: '16px', backgroundColor: '#cbd5e1' }}></div>
 
           {/* Attached HCL Logo */}
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <img
               src="/hcl-logo.png"
               alt="HCL Logo"
+              className="header-brand-hcl"
               style={{ height: '11px', width: 'auto', display: 'block', objectFit: 'contain' }}
             />
           </div>
 
           {/* Separating bar */}
-          <div style={{ width: '1px', height: '16px', backgroundColor: '#cbd5e1' }}></div>
+          <div className="header-brand-sep" style={{ width: '1px', height: '16px', backgroundColor: '#cbd5e1' }}></div>
 
           {/* PulsePoll Product Name */}
           <button
             onClick={handleNavLanding}
+            className="header-brand-title"
             style={{
               background: 'none',
               border: 'none',
@@ -105,7 +108,7 @@ export function Header({ onCreatePoll, onEnterCode, onNavigate, onNavigateDashbo
         </nav>
 
         {/* Action CTAs */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+        <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           {isAuthenticated ? (
             <>
               <button
@@ -117,6 +120,7 @@ export function Header({ onCreatePoll, onEnterCode, onNavigate, onNavigateDashbo
               </button>
               <button
                 onClick={handleLogout}
+                className="header-actions-link"
                 style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', fontSize: '0.825rem', cursor: 'pointer', fontWeight: 600, padding: '4px 8px' }}
               >
                 Sign Out
@@ -126,6 +130,7 @@ export function Header({ onCreatePoll, onEnterCode, onNavigate, onNavigateDashbo
             <>
               <button
                 onClick={handleNavLogin}
+                className="header-actions-link"
                 style={{ background: 'none', border: 'none', color: 'var(--color-text-main)', fontSize: '0.85rem', cursor: 'pointer', fontWeight: 600, padding: '6px 10px' }}
               >
                 Sign In
