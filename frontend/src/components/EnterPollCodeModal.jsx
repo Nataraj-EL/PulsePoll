@@ -95,7 +95,7 @@ export function EnterPollCodeModal({ isOpen, onClose, onSubmitCode }) {
           <div>
             <input
               type="text"
-              placeholder="Enter poll code (e.g. 801388)"
+              placeholder="801388"
               value={code}
               onChange={(e) => setCode(e.target.value)}
               maxLength={10}
