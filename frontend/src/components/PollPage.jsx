@@ -11,7 +11,7 @@ function getOrCreateVoterId() {
   return id;
 }
 
-export function PollPage({ pollCode, onNavigate, initialTab = 'vote' }) {
+export function PollPage({ pollCode, onNavigate, initialTab }) {
   const [poll, setPoll] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,7 +21,6 @@ export function PollPage({ pollCode, onNavigate, initialTab = 'vote' }) {
   const [submitError, setSubmitError] = useState('');
   const [voted, setVoted] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [activeTab, setActiveTab] = useState(initialTab);
 
   useEffect(() => {
     async function loadPoll() {
@@ -34,8 +33,9 @@ export function PollPage({ pollCode, onNavigate, initialTab = 'vote' }) {
       setLoading(true);
       setError(null);
 
-      // Check if user already voted locally
-      if (localStorage.getItem(`pulsepoll_voted_${pollCode}`)) {
+      // Check if user already voted locally or requested results route
+      const alreadyVoted = localStorage.getItem(`pulsepoll_voted_${pollCode}`);
+      if (alreadyVoted || initialTab === 'results') {
         setVoted(true);
       }
 
@@ -50,10 +50,11 @@ export function PollPage({ pollCode, onNavigate, initialTab = 'vote' }) {
     }
 
     loadPoll();
-  }, [pollCode]);
+  }, [pollCode, initialTab]);
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
+    const shareUrl = `${window.location.origin}/p/${pollCode}`;
+    navigator.clipboard.writeText(shareUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -80,8 +81,6 @@ export function PollPage({ pollCode, onNavigate, initialTab = 'vote' }) {
     if (res.ok) {
       localStorage.setItem(`pulsepoll_voted_${pollCode}`, 'true');
       setVoted(true);
-      // Seamlessly switch to live results view after voting
-      setActiveTab('results');
     } else {
       const msg = res.data?.message || 'Failed to submit vote. Please try again.';
       const formatted = msg.charAt(0).toUpperCase() + msg.slice(1);
@@ -89,8 +88,6 @@ export function PollPage({ pollCode, onNavigate, initialTab = 'vote' }) {
       if (res.status === 409 || msg.toLowerCase().includes('already voted')) {
         localStorage.setItem(`pulsepoll_voted_${pollCode}`, 'true');
         setVoted(true);
-        setSubmitError(formatted);
-        setActiveTab('results');
       } else {
         setSubmitError(formatted);
       }
@@ -164,7 +161,7 @@ export function PollPage({ pollCode, onNavigate, initialTab = 'vote' }) {
           boxShadow: 'var(--shadow-lg)',
           border: '1px solid var(--guvi-border)',
         }}>
-          {/* Top Info Bar */}
+          {/* Top Info Header Bar */}
           <div style={{
             backgroundColor: 'var(--guvi-navy)',
             color: '#ffffff',
@@ -201,62 +198,47 @@ export function PollPage({ pollCode, onNavigate, initialTab = 'vote' }) {
             </button>
           </div>
 
-          {/* Navigation Tab Bar */}
-          <div style={{
-            display: 'flex',
-            borderBottom: '1px solid var(--guvi-border)',
-            backgroundColor: '#f8fafc',
-          }}>
-            <button
-              onClick={() => setActiveTab('vote')}
-              style={{
-                flex: 1,
-                padding: '14px 20px',
-                fontSize: '0.95rem',
-                fontWeight: 700,
-                border: 'none',
-                borderBottom: activeTab === 'vote' ? '3px solid var(--guvi-green)' : '3px solid transparent',
-                backgroundColor: activeTab === 'vote' ? '#ffffff' : 'transparent',
-                color: activeTab === 'vote' ? 'var(--guvi-dark)' : 'var(--color-text-muted)',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
-              }}
-            >
-              🗳️ Cast Vote
-            </button>
-            <button
-              onClick={() => setActiveTab('results')}
-              style={{
-                flex: 1,
-                padding: '14px 20px',
-                fontSize: '0.95rem',
-                fontWeight: 700,
-                border: 'none',
-                borderBottom: activeTab === 'results' ? '3px solid var(--guvi-green)' : '3px solid transparent',
-                backgroundColor: activeTab === 'results' ? '#ffffff' : 'transparent',
-                color: activeTab === 'results' ? 'var(--guvi-dark)' : 'var(--color-text-muted)',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
-              }}
-            >
-              📊 Live Results
-            </button>
-          </div>
-
-          {/* Card Body */}
+          {/* Progressive Stage Body */}
           <div style={{ padding: '32px' }}>
-            {/* Prominent Poll Question */}
-            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--guvi-dark)', marginBottom: '16px', lineHeight: 1.35 }}>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--guvi-dark)', marginBottom: '20px', lineHeight: 1.35 }}>
               {poll.question}
             </h2>
 
-            {activeTab === 'results' ? (
-              <LiveResultsView
-                pollCode={poll.code}
-                question={poll.question}
-                options={poll.options}
-              />
+            {/* STAGE 2: Voted / Progressive Transition to Live Results */}
+            {voted ? (
+              <div>
+                {/* Smooth Response Recorded Banner */}
+                <div style={{
+                  backgroundColor: '#f0fdf4',
+                  border: '1px solid #bbf7d0',
+                  color: '#15803d',
+                  padding: '14px 18px',
+                  borderRadius: 'var(--radius-sm)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '24px',
+                  fontWeight: 600,
+                  fontSize: '0.925rem',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '1.1rem' }}>✓</span>
+                    <span>Response Recorded — Thank you for participating!</span>
+                  </div>
+                  <span className="guvi-badge guvi-badge-green" style={{ fontSize: '0.75rem' }}>
+                    Live View
+                  </span>
+                </div>
+
+                {/* Vertical Bar Chart Live Results */}
+                <LiveResultsView
+                  pollCode={poll.code}
+                  question={poll.question}
+                  options={poll.options}
+                />
+              </div>
             ) : (
+              /* STAGE 1: Voting Form */
               <>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                   <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>
@@ -282,89 +264,62 @@ export function PollPage({ pollCode, onNavigate, initialTab = 'vote' }) {
                   </div>
                 )}
 
-                {voted ? (
-                  <div style={{
-                    backgroundColor: '#f0fdf4',
-                    border: '1px solid #bbf7d0',
-                    borderRadius: 'var(--radius-sm)',
-                    padding: '28px 24px',
-                    textAlign: 'center',
-                  }}>
-                    <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '12px' }}>
-                      Response Recorded
-                    </span>
-                    <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#166534', marginBottom: '8px' }}>
-                      Thank you for participating!
-                    </h3>
-                    <p style={{ color: '#15803d', fontSize: '0.95rem', marginBottom: '16px' }}>
-                      Your vote has been registered for poll #{poll.code}.
-                    </p>
-                    <button
-                      onClick={() => setActiveTab('results')}
-                      className="btn btn-primary-dominant"
-                      style={{ fontSize: '0.9rem', padding: '10px 20px' }}
-                    >
-                      View Realtime Live Results
-                    </button>
-                  </div>
-                ) : (
-                  <form onSubmit={handleVoteSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                    {poll.options.map((opt) => {
-                      const isChecked = poll.choice_type === 'single'
-                        ? selectedOption === opt.id
-                        : selectedMultiple.includes(opt.id);
+                <form onSubmit={handleVoteSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                  {poll.options.map((opt) => {
+                    const isChecked = poll.choice_type === 'single'
+                      ? selectedOption === opt.id
+                      : selectedMultiple.includes(opt.id);
 
-                      return (
-                        <label
-                          key={opt.id}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            padding: '16px 20px',
-                            borderRadius: 'var(--radius-sm)',
-                            border: isChecked ? '2px solid var(--guvi-green)' : '1px solid #cbd5e1',
-                            backgroundColor: isChecked ? 'var(--guvi-green-light)' : '#ffffff',
-                            cursor: 'pointer',
-                            transition: 'all 0.15s ease',
+                    return (
+                      <label
+                        key={opt.id}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '16px 20px',
+                          borderRadius: 'var(--radius-sm)',
+                          border: isChecked ? '2px solid var(--guvi-green)' : '1px solid #cbd5e1',
+                          backgroundColor: isChecked ? 'var(--guvi-green-light)' : '#ffffff',
+                          cursor: 'pointer',
+                          transition: 'all 0.15s ease',
+                        }}
+                      >
+                        <span style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--guvi-dark)' }}>
+                          {opt.text}
+                        </span>
+                        <input
+                          type={poll.choice_type === 'single' ? 'radio' : 'checkbox'}
+                          name="poll_option"
+                          value={opt.id}
+                          checked={isChecked}
+                          onChange={() => {
+                            if (poll.choice_type === 'single') {
+                              setSelectedOption(opt.id);
+                            } else {
+                              toggleMultipleOption(opt.id);
+                            }
                           }}
-                        >
-                          <span style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--guvi-dark)' }}>
-                            {opt.text}
-                          </span>
-                          <input
-                            type={poll.choice_type === 'single' ? 'radio' : 'checkbox'}
-                            name="poll_option"
-                            value={opt.id}
-                            checked={isChecked}
-                            onChange={() => {
-                              if (poll.choice_type === 'single') {
-                                setSelectedOption(opt.id);
-                              } else {
-                                toggleMultipleOption(opt.id);
-                              }
-                            }}
-                            style={{ accentColor: 'var(--guvi-green)', width: '18px', height: '18px', cursor: 'pointer' }}
-                          />
-                        </label>
-                      );
-                    })}
+                          style={{ accentColor: 'var(--guvi-green)', width: '18px', height: '18px', cursor: 'pointer' }}
+                        />
+                      </label>
+                    );
+                  })}
 
-                    <button
-                      type="submit"
-                      disabled={submitting || (poll.choice_type === 'single' ? !selectedOption : selectedMultiple.length === 0)}
-                      className="btn btn-primary-dominant"
-                      style={{
-                        marginTop: '12px',
-                        padding: '14px',
-                        fontSize: '1rem',
-                        opacity: (submitting || (poll.choice_type === 'single' ? !selectedOption : selectedMultiple.length === 0)) ? 0.6 : 1,
-                      }}
-                    >
-                      {submitting ? 'Submitting Vote...' : 'Submit Vote'}
-                    </button>
-                  </form>
-                )}
+                  <button
+                    type="submit"
+                    disabled={submitting || (poll.choice_type === 'single' ? !selectedOption : selectedMultiple.length === 0)}
+                    className="btn btn-primary-dominant"
+                    style={{
+                      marginTop: '12px',
+                      padding: '14px',
+                      fontSize: '1rem',
+                      opacity: (submitting || (poll.choice_type === 'single' ? !selectedOption : selectedMultiple.length === 0)) ? 0.6 : 1,
+                    }}
+                  >
+                    {submitting ? 'Submitting Vote...' : 'Submit Vote'}
+                  </button>
+                </form>
               </>
             )}
           </div>
@@ -373,4 +328,3 @@ export function PollPage({ pollCode, onNavigate, initialTab = 'vote' }) {
     </div>
   );
 }
-

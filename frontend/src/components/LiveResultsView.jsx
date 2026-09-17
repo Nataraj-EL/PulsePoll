@@ -108,7 +108,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Realtime Status Indicator Bar */}
       <div style={{
         display: 'flex',
@@ -123,13 +123,13 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
           {connectionStatus === 'connected' && (
             <>
               <span className="pulse-indicator" style={{ width: '10px', height: '10px' }}></span>
-              <span style={{ color: '#15803d' }}>Live & Syncing (Realtime)</span>
+              <span style={{ color: '#15803d' }}>Live Realtime Sync</span>
             </>
           )}
           {connectionStatus === 'connecting' && (
             <>
               <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#f59e0b', display: 'inline-block' }}></span>
-              <span style={{ color: '#b45309' }}>Connecting to Realtime stream...</span>
+              <span style={{ color: '#b45309' }}>Connecting to stream...</span>
             </>
           )}
           {connectionStatus === 'disconnected' && (
@@ -141,71 +141,144 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
         </div>
 
         <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--guvi-navy)' }}>
-          Total Votes: <span style={{ color: 'var(--guvi-green)', fontSize: '1.05rem' }}>{totalVotes}</span>
+          Total Votes: <span style={{ color: 'var(--guvi-green)', fontSize: '1.05rem', marginLeft: '4px' }}>{totalVotes}</span>
         </div>
       </div>
 
-      {/* Results List */}
+      {/* Results Section */}
       {loading ? (
-        <div style={{ padding: '30px', textAlign: 'center', color: 'var(--color-text-muted)' }}>
-          Loading live counts...
+        <div style={{ padding: '40px', textAlign: 'center', color: 'var(--color-text-muted)' }}>
+          <div className="pulse-indicator" style={{ margin: '0 auto 12px auto', width: '14px', height: '14px' }}></div>
+          Loading live results...
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {options.map((opt) => {
-            const count = countMap[opt.id] || 0;
-            const percentage = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
-            const isLeader = count > 0 && count === maxCount;
+        <div style={{
+          backgroundColor: '#ffffff',
+          borderRadius: 'var(--radius-sm)',
+          border: '1px solid var(--guvi-border)',
+          padding: '32px 20px 24px 20px',
+          boxShadow: 'var(--shadow-sm)',
+        }}>
+          {/* Vertical Bar Chart Container */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'space-around',
+            height: '220px',
+            gap: '12px',
+            paddingBottom: '12px',
+            borderBottom: '2px solid var(--guvi-border)',
+            overflowX: 'auto',
+          }}>
+            {options.map((opt) => {
+              const count = countMap[opt.id] || 0;
+              const percentage = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
+              const isLeader = count > 0 && count === maxCount;
 
-            return (
-              <div key={opt.id} style={{
-                border: isLeader ? '2px solid var(--guvi-green)' : '1px solid var(--guvi-border)',
-                borderRadius: 'var(--radius-sm)',
-                padding: '16px 20px',
-                backgroundColor: isLeader ? 'var(--guvi-green-light)' : '#ffffff',
-                boxShadow: 'var(--shadow-sm)',
-                transition: 'all 0.2s ease',
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--guvi-dark)' }}>
-                      {opt.text}
-                    </span>
-                    {isLeader && totalVotes > 0 && (
-                      <span className="guvi-badge guvi-badge-green" style={{ fontSize: '0.7rem', padding: '2px 6px' }}>
-                        Leader
-                      </span>
-                    )}
-                  </div>
+              // Calculate bar height percentage (min 4% if count > 0 for visual presence)
+              const barHeightPct = totalVotes > 0 ? Math.max(percentage, count > 0 ? 6 : 0) : 0;
 
-                  <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--guvi-dark)' }}>
-                    <span>{count} {count === 1 ? 'vote' : 'votes'}</span>
-                    <span style={{ color: 'var(--color-text-muted)', marginLeft: '8px', fontWeight: 600 }}>
-                      ({percentage}%)
-                    </span>
-                  </div>
-                </div>
-
-                {/* Animated Visual Progress Bar */}
-                <div style={{
-                  height: '10px',
-                  width: '100%',
-                  backgroundColor: '#e2e8f0',
-                  borderRadius: '5px',
-                  overflow: 'hidden',
-                  marginTop: '10px',
-                }}>
-                  <div style={{
+              return (
+                <div
+                  key={opt.id}
+                  style={{
+                    flex: 1,
+                    maxWidth: '110px',
+                    minWidth: '60px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
                     height: '100%',
-                    width: `${percentage}%`,
-                    backgroundColor: isLeader ? 'var(--guvi-green)' : 'var(--guvi-navy)',
-                    borderRadius: '5px',
-                    transition: 'width 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                  }} />
+                    justifyContent: 'flex-end',
+                  }}
+                >
+                  {/* Vote Count & Percentage Badge */}
+                  <div style={{
+                    fontSize: '0.8rem',
+                    fontWeight: 800,
+                    color: isLeader ? '#15803d' : 'var(--guvi-dark)',
+                    marginBottom: '8px',
+                    textAlign: 'center',
+                    whiteSpace: 'nowrap',
+                    transition: 'color 0.3s ease',
+                  }}>
+                    <div>{count} {count === 1 ? 'vote' : 'votes'}</div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>
+                      {percentage}%
+                    </div>
+                  </div>
+
+                  {/* Vertical Bar Outer Track */}
+                  <div style={{
+                    width: '100%',
+                    maxWidth: '52px',
+                    height: '140px',
+                    backgroundColor: '#f1f5f9',
+                    borderRadius: '8px 8px 0 0',
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    overflow: 'hidden',
+                    position: 'relative',
+                    border: isLeader ? '1.5px solid var(--guvi-green)' : '1px solid transparent',
+                  }}>
+                    {/* Filled Bar */}
+                    <div style={{
+                      width: '100%',
+                      height: `${barHeightPct}%`,
+                      backgroundColor: isLeader ? 'var(--guvi-green)' : 'var(--guvi-navy)',
+                      borderRadius: '6px 6px 0 0',
+                      transition: 'height 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease',
+                      backgroundImage: isLeader
+                        ? 'linear-gradient(180deg, #10b981 0%, #059669 100%)'
+                        : 'linear-gradient(180deg, #334155 0%, #0f172a 100%)',
+                    }} />
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+
+          {/* Labels Row below axis */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            gap: '12px',
+            marginTop: '12px',
+            overflowX: 'auto',
+          }}>
+            {options.map((opt) => {
+              const count = countMap[opt.id] || 0;
+              const isLeader = count > 0 && count === maxCount;
+
+              return (
+                <div
+                  key={opt.id}
+                  style={{
+                    flex: 1,
+                    maxWidth: '110px',
+                    minWidth: '60px',
+                    textAlign: 'center',
+                    padding: '0 4px',
+                  }}
+                >
+                  <div style={{
+                    fontSize: '0.875rem',
+                    fontWeight: 700,
+                    color: isLeader ? 'var(--guvi-dark)' : 'var(--color-text-main)',
+                    lineHeight: 1.3,
+                    wordBreak: 'break-word',
+                  }}>
+                    {opt.text}
+                  </div>
+                  {isLeader && totalVotes > 0 && (
+                    <span className="guvi-badge guvi-badge-green" style={{ fontSize: '0.65rem', padding: '1px 6px', marginTop: '4px', display: 'inline-block' }}>
+                      Leader
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
