@@ -133,3 +133,17 @@ export async function publishPoll(pollId) {
     method: 'POST',
   });
 }
+
+/**
+ * Submit participant vote for a poll
+ */
+export async function castVote(code, { optionIds, voterId }) {
+  return apiFetch(`/polls/${code}/votes`, {
+    method: 'POST',
+    headers: voterId ? { 'X-Voter-ID': voterId } : {},
+    body: JSON.stringify({
+      option_ids: optionIds,
+      voter_id: voterId,
+    }),
+  });
+}

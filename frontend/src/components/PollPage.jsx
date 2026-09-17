@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { getPollByIdOrCode } from '../services/api';
+import { getPollByIdOrCode, castVote } from '../services/api';
+
+function getOrCreateVoterId() {
+  let id = localStorage.getItem('pulsepoll_voter_id');
+  if (!id) {
+    id = `voter_${Math.random().toString(36).substring(2, 11)}_${Date.now()}`;
+    localStorage.setItem('pulsepoll_voter_id', id);
+  }
+  return id;
+}
 
 export function PollPage({ pollCode, onNavigate }) {
   const [poll, setPoll] = useState(null);
@@ -7,6 +16,8 @@ export function PollPage({ pollCode, onNavigate }) {
   const [error, setError] = useState(null);
   const [selectedOption, setSelectedOption] = useState('');
   const [selectedMultiple, setSelectedMultiple] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [voted, setVoted] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -18,9 +29,13 @@ export function PollPage({ pollCode, onNavigate }) {
         return;
       }
 
-      setLoading(false);
       setLoading(true);
       setError(null);
+
+      // Check if user already voted locally
+      if (localStorage.getItem(`pulsepoll_voted_${pollCode}`)) {
+        setVoted(true);
+      }
 
       const res = await getPollByIdOrCode(pollCode);
       if (res.ok && res.data?.poll) {
@@ -41,9 +56,40 @@ export function PollPage({ pollCode, onNavigate }) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleVoteSubmit = (e) => {
+  const handleVoteSubmit = async (e) => {
     e.preventDefault();
-    setVoted(true);
+    setSubmitError('');
+
+    const optionIds = poll.choice_type === 'single'
+      ? (selectedOption ? [selectedOption] : [])
+      : selectedMultiple;
+
+    if (optionIds.length === 0) {
+      setSubmitError('Please select at least one option to vote.');
+      return;
+    }
+
+    const voterId = getOrCreateVoterId();
+    setSubmitting(true);
+
+    const res = await castVote(pollCode, { optionIds, voterId });
+    setSubmitting(false);
+
+    if (res.ok) {
+      localStorage.setItem(`pulsepoll_voted_${pollCode}`, 'true');
+      setVoted(true);
+    } else {
+      const msg = res.data?.message || 'Failed to submit vote. Please try again.';
+      const formatted = msg.charAt(0).toUpperCase() + msg.slice(1);
+      
+      if (res.status === 409 || msg.toLowerCase().includes('already voted')) {
+        localStorage.setItem(`pulsepoll_voted_${pollCode}`, 'true');
+        setVoted(true);
+        setSubmitError(formatted);
+      } else {
+        setSubmitError(formatted);
+      }
+    }
   };
 
   const toggleMultipleOption = (optionId) => {
@@ -166,21 +212,36 @@ export function PollPage({ pollCode, onNavigate }) {
               </span>
             </div>
 
+            {submitError && (
+              <div style={{
+                backgroundColor: '#fef2f2',
+                border: '1px solid #fecaca',
+                color: '#991b1b',
+                padding: '12px 16px',
+                borderRadius: 'var(--radius-sm)',
+                fontSize: '0.875rem',
+                marginBottom: '20px',
+                fontWeight: 600,
+              }}>
+                {submitError}
+              </div>
+            )}
+
             {voted ? (
               <div style={{
                 backgroundColor: '#f0fdf4',
                 border: '1px solid #bbf7d0',
                 borderRadius: 'var(--radius-sm)',
-                padding: '24px',
+                padding: '28px 24px',
                 textAlign: 'center',
               }}>
-                <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '10px' }}>
+                <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '12px' }}>
                   Response Recorded
                 </span>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#166534', marginBottom: '8px' }}>
+                <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#166534', marginBottom: '8px' }}>
                   Thank you for participating!
                 </h3>
-                <p style={{ color: '#15803d', fontSize: '0.925rem' }}>
+                <p style={{ color: '#15803d', fontSize: '0.95rem' }}>
                   Your vote has been registered for poll #{poll.code}.
                 </p>
               </div>
@@ -229,16 +290,16 @@ export function PollPage({ pollCode, onNavigate }) {
 
                 <button
                   type="submit"
-                  disabled={poll.choice_type === 'single' ? !selectedOption : selectedMultiple.length === 0}
+                  disabled={submitting || (poll.choice_type === 'single' ? !selectedOption : selectedMultiple.length === 0)}
                   className="btn btn-primary-dominant"
                   style={{
                     marginTop: '12px',
                     padding: '14px',
                     fontSize: '1rem',
-                    opacity: (poll.choice_type === 'single' ? !selectedOption : selectedMultiple.length === 0) ? 0.6 : 1,
+                    opacity: (submitting || (poll.choice_type === 'single' ? !selectedOption : selectedMultiple.length === 0)) ? 0.6 : 1,
                   }}
                 >
-                  Submit Vote
+                  {submitting ? 'Submitting Vote...' : 'Submit Vote'}
                 </button>
               </form>
             )}

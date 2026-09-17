@@ -68,8 +68,11 @@ func main() {
 	// 4. Initialize Data Repositories & Services
 	var userRepo repository.UserRepository
 	var pollRepo repository.PollRepository
+	var voteRepo repository.VoteRepository
+
 	var authService service.AuthService
 	var pollService service.PollService
+	var voteService service.VoteService
 
 	if mongoDB != nil {
 		userRepo = repository.NewUserRepository(mongoDB)
@@ -83,6 +86,12 @@ func main() {
 			log.Printf("⚠️ Notice: Poll indexes initialization warning: %v", err)
 		}
 		pollService = service.NewPollService(pollRepo)
+
+		voteRepo = repository.NewVoteRepository(mongoDB)
+		if err := voteRepo.InitIndexes(ctx); err != nil {
+			log.Printf("⚠️ Notice: Vote indexes initialization warning: %v", err)
+		}
+		voteService = service.NewVoteService(pollRepo, voteRepo)
 	} else {
 		log.Println("⚠️ Notice: Running without active MongoDB connection (DB operations will fail gracefully)")
 	}
@@ -116,7 +125,7 @@ func main() {
 			}
 		}
 
-		// Poll Routes (if PollService is available)
+		// Poll Routes (if PollService & VoteService are available)
 		if pollService != nil {
 			pollHandler := handlers.NewPollHandler(pollService)
 			requireAuth := middleware.RequireAuth(cfg.JWTSecret)
@@ -130,6 +139,12 @@ func main() {
 
 				// Public / Creator Access Endpoint
 				pollsGroup.GET("/:id", pollHandler.GetByID)
+
+				// Public Participant Voting Endpoint
+				if voteService != nil {
+					voteHandler := handlers.NewVoteHandler(voteService)
+					pollsGroup.POST("/:id/votes", voteHandler.CastVote)
+				}
 			}
 		}
 	}
