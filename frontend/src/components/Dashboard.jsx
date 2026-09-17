@@ -50,7 +50,7 @@ export function Dashboard() {
     <div style={{ padding: 'clamp(24px, 5vw, 48px) 0', minHeight: '75vh' }}>
       <div className="container">
         {/* Creator Header Bar */}
-        <div style={{
+        <div className="dashboard-header" style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -72,7 +72,7 @@ export function Dashboard() {
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <div className="dashboard-header-cta" style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
             <button
               onClick={() => setCreateModalOpen(true)}
               className="btn btn-primary-dominant"
@@ -165,10 +165,10 @@ export function Dashboard() {
                       {poll.options.length} options • {poll.choice_type === 'single' ? 'Single Choice' : 'Multiple Choice'}
                     </div>
 
-                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <div className="dashboard-poll-actions" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                       <button
                         onClick={() => handleCopyLink(poll.code)}
-                        className="btn btn-secondary-subtle"
+                        className="btn btn-secondary-subtle dashboard-poll-btn"
                         style={{ fontSize: '0.8rem', padding: '6px 12px' }}
                       >
                         {copiedCode === poll.code ? 'Copied!' : 'Copy Share Link'}
@@ -176,7 +176,7 @@ export function Dashboard() {
 
                       <a
                         href={`/p/${poll.code}/results`}
-                        className="btn btn-secondary-subtle"
+                        className="btn btn-secondary-subtle dashboard-poll-btn"
                         style={{ fontSize: '0.8rem', padding: '6px 12px', textDecoration: 'none' }}
                       >
                         View Live Results
@@ -185,7 +185,7 @@ export function Dashboard() {
                       {poll.status === 'draft' && (
                         <button
                           onClick={() => handlePublishDraft(poll.id)}
-                          className="btn btn-primary-dominant"
+                          className="btn btn-primary-dominant dashboard-poll-btn"
                           style={{ fontSize: '0.8rem', padding: '6px 12px' }}
                         >
                           Publish Live

@@ -204,6 +204,33 @@ body {
     font-size: 0.8rem !important;
     padding: 4px 6px !important;
   }
+  .dashboard-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 16px !important;
+  }
+  .dashboard-header-cta {
+    width: 100% !important;
+  }
+  .dashboard-header-cta > .btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 12px 18px !important;
+    font-size: 0.95rem !important;
+  }
+  .dashboard-poll-actions {
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  .dashboard-poll-actions > .dashboard-poll-btn {
+    flex: 1 1 130px !important;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+  }
   .guvi-card {
     padding: 20px 14px;
   }
