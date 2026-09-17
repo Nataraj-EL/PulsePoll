@@ -47,7 +47,7 @@ export function FinalCTA({ onCreatePoll, onEnterCode }) {
 
               {/* SECONDARY SUBTLE CTA */}
               <button
-                onClick={onEnterCode}
+                onClick={() => onEnterCode && onEnterCode()}
                 className="btn btn-secondary-subtle-dark"
                 style={{ padding: '16px 28px', fontSize: '1.1rem' }}
               >

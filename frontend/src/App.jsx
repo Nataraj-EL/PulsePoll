@@ -79,8 +79,8 @@ function AppContent() {
   };
 
   const handleEnterCode = (code = '') => {
-    if (code) {
-      navigateTo('poll', code);
+    if (typeof code === 'string' && code.trim()) {
+      navigateTo('poll', code.trim());
     } else {
       setEnterCodeModalOpen(true);
     }
