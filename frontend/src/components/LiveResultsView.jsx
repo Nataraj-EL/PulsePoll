@@ -215,7 +215,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
                       textAlign: 'center',
                       whiteSpace: 'nowrap',
                       transition: 'all 0.3s ease',
-                      opacity: totalVotes > 0 ? 1 : 0.65,
+                      opacity: denom > 0 ? 1 : 0.65,
                       pointerEvents: 'none',
                     }}>
                       <div>{count} {count === 1 ? 'vote' : 'votes'}</div>
