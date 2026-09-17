@@ -141,19 +141,27 @@ body {
   border: 1px solid #bfdbfe;
 }
 
-/* Pulse Animation */
+/* Pulse & Radiating Ring Animation */
 @keyframes pulse-ring {
-  0% { transform: scale(0.95); opacity: 0.9; }
-  50% { transform: scale(1.15); opacity: 0.5; }
-  100% { transform: scale(0.95); opacity: 0.9; }
+  0% {
+    box-shadow: 0 0 0 0 rgba(10, 214, 82, 0.8);
+    transform: scale(0.95);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(10, 214, 82, 0);
+    transform: scale(1);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(10, 214, 82, 0);
+    transform: scale(0.95);
+  }
 }
 
 .pulse-indicator {
   display: inline-block;
   border-radius: 50%;
   background-color: var(--guvi-green);
-  box-shadow: 0 0 0 0 rgba(10, 214, 82, 0.7);
-  animation: pulse-ring 2s infinite cubic-bezier(0.45, 0, 0.55, 1);
+  animation: pulse-ring 1.8s infinite cubic-bezier(0.45, 0, 0.55, 1);
 }
 
 /* Responsive Utilities */

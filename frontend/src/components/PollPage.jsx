@@ -172,8 +172,17 @@ export function PollPage({ pollCode, onNavigate, initialTab }) {
             flexWrap: 'wrap',
             gap: '12px',
           }}>
-            <div style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--guvi-green)', letterSpacing: '0.08em' }}>
-              {poll.status === 'active' ? '● LIVE POLL' : 'DRAFT POLL'} • CODE #{poll.code}
+            <div style={{ display: 'flex', alignItems: 'center', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--guvi-green)', letterSpacing: '0.08em' }}>
+              {poll.status === 'active' ? (
+                <>
+                  <span className="pulse-indicator" style={{ width: '9px', height: '9px', marginRight: '6px', flexShrink: 0 }} />
+                  <span>LIVE POLL</span>
+                </>
+              ) : (
+                <span>DRAFT POLL</span>
+              )}
+              <span style={{ margin: '0 8px', color: 'rgba(255, 255, 255, 0.4)' }}>•</span>
+              <span style={{ color: '#ffffff' }}>CODE #{poll.code}</span>
             </div>
 
             <button
