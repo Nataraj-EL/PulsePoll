@@ -15,6 +15,7 @@ type Config struct {
 	MongoDBName   string
 	RedisAddr     string
 	RedisPassword string
+	RedisURL      string
 	CORSOrigin    string
 	Environment   string
 	JWTSecret     string
@@ -33,6 +34,7 @@ func LoadConfig() *Config {
 		MongoDBName:   getEnv("MONGO_DB", "pulsepoll"),
 		RedisAddr:     getEnv("REDIS_ADDR", "localhost:6379"),
 		RedisPassword: getEnv("REDIS_PASSWORD", ""),
+		RedisURL:      getEnv("REDIS_URL", ""),
 		CORSOrigin:    getEnv("CORS_ORIGIN", "http://localhost:5173"),
 		Environment:   getEnv("ENVIRONMENT", "development"),
 		JWTSecret:     getEnv("JWT_SECRET", "pulsepoll-production-secure-jwt-secret-key-2026"),

@@ -54,7 +54,7 @@ func main() {
 	}
 
 	// 3. Initialize Redis Connection
-	redisClient, err := database.ConnectRedis(ctx, cfg.RedisAddr, cfg.RedisPassword)
+	redisClient, err := database.ConnectRedis(ctx, cfg.RedisAddr, cfg.RedisPassword, cfg.RedisURL)
 	if err != nil {
 		log.Printf("⚠️ Warning: Initial Redis connection error: %v", err)
 	} else {
