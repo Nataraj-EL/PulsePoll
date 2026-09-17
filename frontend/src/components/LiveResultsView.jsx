@@ -117,39 +117,17 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
           padding: 'clamp(20px, 4vw, 28px) clamp(12px, 3vw, 20px) clamp(16px, 3vw, 24px) clamp(12px, 3vw, 20px)',
           boxShadow: 'var(--shadow-sm)',
         }}>
-          {/* Header Row: Clean Total Votes Indicator */}
+          {/* Header Row: Simple Single Line Total Votes */}
           <div style={{
             display: 'flex',
-            justifyContent: 'flex-end',
+            justify: 'flex-end',
             alignItems: 'center',
-            marginBottom: '20px',
+            marginBottom: '16px',
+            fontSize: '0.9rem',
+            color: 'var(--color-text-muted)',
+            fontWeight: 600,
           }}>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              backgroundColor: '#f8fafc',
-              border: '1px solid var(--guvi-border)',
-              padding: '6px 14px',
-              borderRadius: 'var(--radius-sm)',
-              fontSize: '0.85rem',
-              color: 'var(--color-text-muted)',
-              fontWeight: 600,
-            }}>
-              <span>Total Votes</span>
-              <span style={{
-                color: 'var(--guvi-navy)',
-                fontSize: '0.95rem',
-                fontWeight: 800,
-                backgroundColor: '#ffffff',
-                padding: '2px 10px',
-                borderRadius: '4px',
-                border: '1px solid #cbd5e1',
-                boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
-              }}>
-                {totalVotes}
-              </span>
-            </div>
+            <span>Total Votes: <strong style={{ color: 'var(--guvi-dark)', fontWeight: 800 }}>{totalVotes}</strong></span>
           </div>
           {/* Vertical Bar Chart Container */}
           <div style={{
