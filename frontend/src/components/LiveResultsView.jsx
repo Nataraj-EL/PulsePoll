@@ -102,37 +102,62 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      {/* Realtime Status Indicator Bar */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      {/* Live Status & Intuitive Total Votes Header Row */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#f8fafc',
-        padding: '12px 18px',
-        borderRadius: 'var(--radius-sm)',
-        border: '1px solid var(--guvi-border)',
+        flexWrap: 'wrap',
+        gap: '12px',
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', fontWeight: 600 }}>
+        <div style={{ display: 'flex', alignItems: 'center', fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>
           {connectionStatus === 'connected' && (
-            <span className="pulse-indicator" style={{ width: '8px', height: '8px', marginRight: '8px', flexShrink: 0 }}></span>
+            <>
+              <span className="pulse-indicator" style={{ width: '8px', height: '8px', marginLeft: '2px', marginRight: '10px', flexShrink: 0 }} />
+              <span style={{ color: 'var(--guvi-dark)', fontWeight: 700 }}>Live Results</span>
+            </>
           )}
           {connectionStatus === 'connecting' && (
             <>
-              <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#f59e0b', display: 'inline-block' }}></span>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#f59e0b', marginRight: '8px', display: 'inline-block' }} />
               <span style={{ color: '#b45309' }}>Connecting...</span>
             </>
           )}
           {connectionStatus === 'disconnected' && (
             <>
-              <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ef4444', display: 'inline-block' }}></span>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#ef4444', marginRight: '8px', display: 'inline-block' }} />
               <span style={{ color: '#b91c1c' }}>Reconnecting...</span>
             </>
           )}
         </div>
 
-        <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--guvi-navy)' }}>
-          Total Votes: <span style={{ color: 'var(--guvi-green)', fontSize: '1.05rem', marginLeft: '4px' }}>{totalVotes}</span>
+        {/* Intuitive & User-Friendly Total Votes Badge */}
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '8px',
+          backgroundColor: '#f1f5f9',
+          border: '1px solid #e2e8f0',
+          padding: '5px 14px',
+          borderRadius: '20px',
+          fontSize: '0.85rem',
+          fontWeight: 700,
+          color: 'var(--guvi-dark)',
+        }}>
+          <span>Total Votes:</span>
+          <span style={{
+            color: '#15803d',
+            fontSize: '0.95rem',
+            fontWeight: 800,
+            backgroundColor: '#ffffff',
+            padding: '2px 10px',
+            borderRadius: '12px',
+            boxShadow: '0 1px 2px rgba(0,0,0,0.06)',
+            border: '1px solid #cbd5e1',
+          }}>
+            {totalVotes}
+          </span>
         </div>
       </div>
 
@@ -147,7 +172,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
           backgroundColor: '#ffffff',
           borderRadius: 'var(--radius-sm)',
           border: '1px solid var(--guvi-border)',
-          padding: 'clamp(20px, 4vw, 32px) clamp(12px, 3vw, 20px) clamp(16px, 3vw, 24px) clamp(12px, 3vw, 20px)',
+          padding: 'clamp(20px, 4vw, 28px) clamp(12px, 3vw, 20px) clamp(16px, 3vw, 24px) clamp(12px, 3vw, 20px)',
           boxShadow: 'var(--shadow-sm)',
         }}>
           {/* Vertical Bar Chart Container */}
