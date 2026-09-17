@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { getUserPolls, publishPoll } from '../services/api';
 import { CreatePollModal } from './CreatePollModal';
-import { ClickBurstProvider } from './ClickBurstProvider';
-
 export function Dashboard() {
   const { user } = useAuth();
   const [polls, setPolls] = useState([]);
@@ -48,8 +46,7 @@ export function Dashboard() {
   };
 
   return (
-    <ClickBurstProvider>
-      <div style={{ padding: 'clamp(24px, 5vw, 48px) 0', minHeight: '75vh' }}>
+    <div style={{ padding: 'clamp(24px, 5vw, 48px) 0', minHeight: '75vh' }}>
         <div className="container" style={{ maxWidth: '880px' }}>
           {/* Creator Header Bar */}
           <div className="dashboard-header" style={{
@@ -192,6 +189,5 @@ export function Dashboard() {
           }}
         />
       </div>
-    </ClickBurstProvider>
   );
 }

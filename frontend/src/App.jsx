@@ -11,6 +11,7 @@ import { LoginPage } from './components/LoginPage';
 import { Dashboard } from './components/Dashboard';
 import { PollPage } from './components/PollPage';
 import { EnterPollCodeModal } from './components/EnterPollCodeModal';
+import { ClickBurstProvider } from './components/ClickBurstProvider';
 
 function parseRoute(pathname) {
   const cleanPath = pathname.replace(/\/+$/, '') || '/';
@@ -106,43 +107,45 @@ function AppContent() {
       />
       
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        {/* Route Match 1: Dynamic Participant Poll View /p/:code */}
-        {routeState.view === 'poll' && (
-          <PollPage
-            key={`${routeState.code}_${routeState.isResults ? 'results' : 'vote'}`}
-            pollCode={routeState.code}
-            initialTab={routeState.isResults ? 'results' : 'vote'}
-            onNavigate={navigateTo}
-          />
-        )}
+        {routeState.view !== 'landing' ? (
+          <ClickBurstProvider>
+            {/* Route Match 1: Dynamic Participant Poll View /p/:code */}
+            {routeState.view === 'poll' && (
+              <PollPage
+                key={`${routeState.code}_${routeState.isResults ? 'results' : 'vote'}`}
+                pollCode={routeState.code}
+                initialTab={routeState.isResults ? 'results' : 'vote'}
+                onNavigate={navigateTo}
+              />
+            )}
 
-        {/* Route Match 2: Signup */}
-        {routeState.view === 'signup' && (
-          <SignupPage
-            onNavigateToLogin={() => navigateTo('login')}
-            onNavigateLogin={() => navigateTo('login')}
-            onSignupSuccess={() => navigateTo('dashboard')}
-            onSuccess={() => navigateTo('dashboard')}
-          />
-        )}
+            {/* Route Match 2: Signup */}
+            {routeState.view === 'signup' && (
+              <SignupPage
+                onNavigateToLogin={() => navigateTo('login')}
+                onNavigateLogin={() => navigateTo('login')}
+                onSignupSuccess={() => navigateTo('dashboard')}
+                onSuccess={() => navigateTo('dashboard')}
+              />
+            )}
 
-        {/* Route Match 3: Login */}
-        {routeState.view === 'login' && (
-          <LoginPage
-            onNavigateToSignup={() => navigateTo('signup')}
-            onNavigateSignup={() => navigateTo('signup')}
-            onLoginSuccess={() => navigateTo('dashboard')}
-            onSuccess={() => navigateTo('dashboard')}
-          />
-        )}
+            {/* Route Match 3: Login */}
+            {routeState.view === 'login' && (
+              <LoginPage
+                onNavigateToSignup={() => navigateTo('signup')}
+                onNavigateSignup={() => navigateTo('signup')}
+                onLoginSuccess={() => navigateTo('dashboard')}
+                onSuccess={() => navigateTo('dashboard')}
+              />
+            )}
 
-        {/* Route Match 4: Authenticated Creator Dashboard */}
-        {routeState.view === 'dashboard' && user && (
-          <Dashboard />
-        )}
-
-        {/* Route Match 5: Landing Page Fallback */}
-        {routeState.view === 'landing' && (
+            {/* Route Match 4: Authenticated Creator Dashboard */}
+            {routeState.view === 'dashboard' && user && (
+              <Dashboard />
+            )}
+          </ClickBurstProvider>
+        ) : (
+          /* Route Match 5: Landing Page Fallback (No Click Burst) */
           <>
             <LandingHero
               onCreatePoll={handleCreatePoll}
