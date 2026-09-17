@@ -78,14 +78,7 @@ export function Dashboard() {
               className="btn btn-primary-dominant"
               style={{ padding: '10px 18px', fontSize: '0.9rem' }}
             >
-              + Create New Poll
-            </button>
-            <button
-              onClick={logout}
-              className="btn btn-secondary-subtle"
-              style={{ padding: '10px 16px', fontSize: '0.9rem' }}
-            >
-              Sign Out
+              Create New Poll
             </button>
           </div>
         </div>
