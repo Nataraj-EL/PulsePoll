@@ -91,7 +91,7 @@ func (s *resendEmailService) SendWelcomeEmail(ctx context.Context, toEmail, user
 
 		if ownerEmail != "" && !strings.EqualFold(ownerEmail, toEmail) {
 			log.Printf("⚠️ [Resend Sandbox Mode] Cannot deliver directly to %s via onboarding@resend.dev. Rerouting test welcome email to verified owner (%s)...", toEmail, ownerEmail)
-			sandboxSubject := fmt.Sprintf("Welcome to PulsePoll! ⚡ [Test for: %s]", toEmail)
+			sandboxSubject := "Welcome to PulsePoll! ⚡"
 			fallbackErr := s.dispatch(ctx, ownerEmail, sandboxSubject, userName)
 			if fallbackErr == nil {
 				log.Printf("✅ [Resend Sandbox] Welcome email successfully delivered to owner %s for signup user %s", ownerEmail, toEmail)
