@@ -8,9 +8,11 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080
  * Universal helper for API HTTP requests with credentials (cookies)
  */
 async function apiFetch(endpoint, options = {}) {
+  const token = localStorage.getItem('pulsepoll_token');
   const defaultHeaders = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
+    ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
   };
 
   const config = {
@@ -26,6 +28,10 @@ async function apiFetch(endpoint, options = {}) {
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
     const data = await response.json().catch(() => ({}));
+
+    if (data && data.token) {
+      localStorage.setItem('pulsepoll_token', data.token);
+    }
 
     return {
       ok: response.ok,
@@ -69,6 +75,7 @@ export async function loginUser({ email, password }) {
  * Logout authenticated session
  */
 export async function logoutUser() {
+  localStorage.removeItem('pulsepoll_token');
   return apiFetch('/auth/logout', {
     method: 'POST',
   });

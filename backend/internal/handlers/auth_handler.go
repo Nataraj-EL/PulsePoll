@@ -69,6 +69,7 @@ func (h *AuthHandler) Signup(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "User registered successfully",
 		"user":    user,
+		"token":   token,
 	})
 }
 
@@ -109,6 +110,7 @@ func (h *AuthHandler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Logged in successfully",
 		"user":    user,
+		"token":   token,
 	})
 }
 
@@ -170,8 +172,12 @@ func (h *AuthHandler) Me(c *gin.Context) {
 
 // Helper to set HTTP-Only Session Cookie
 func setAuthCookie(c *gin.Context, token string, maxAge int) {
-	// SameSite Lax allows cross-site top-level navigation while securing credentials
-	c.SetSameSite(http.SameSiteLaxMode)
-	// c.SetCookie(name, value, maxAge, path, domain, secure, httpOnly)
-	c.SetCookie(middleware.CookieName, token, maxAge, "/", "", false, true)
+	isSecure := c.Request.TLS != nil || c.GetHeader("X-Forwarded-Proto") == "https" || gin.Mode() == gin.ReleaseMode
+	if isSecure {
+		c.SetSameSite(http.SameSiteNoneMode)
+		c.SetCookie(middleware.CookieName, token, maxAge, "/", "", true, true)
+	} else {
+		c.SetSameSite(http.SameSiteLaxMode)
+		c.SetCookie(middleware.CookieName, token, maxAge, "/", "", false, true)
+	}
 }
