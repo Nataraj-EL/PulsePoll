@@ -152,6 +152,11 @@ export function PollPage({ pollCode, onNavigate }) {
 
           {/* Poll Options Form */}
           <div style={{ padding: '32px' }}>
+            {/* Prominent Poll Question */}
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--guvi-dark)', marginBottom: '16px', lineHeight: 1.35 }}>
+              {poll.question}
+            </h2>
+
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-muted)' }}>
                 {poll.choice_type === 'single' ? 'Select 1 option:' : 'Select any options:'}
