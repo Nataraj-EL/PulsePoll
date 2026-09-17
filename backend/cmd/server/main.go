@@ -70,6 +70,8 @@ func main() {
 	var pollRepo repository.PollRepository
 	var voteRepo repository.VoteRepository
 
+	emailService := service.NewEmailService(cfg.ResendAPIKey)
+
 	var authService service.AuthService
 	var pollService service.PollService
 	var voteService service.VoteService
@@ -80,7 +82,7 @@ func main() {
 		if err := userRepo.InitIndexes(ctx); err != nil {
 			log.Printf("⚠️ Notice: User indexes initialization warning: %v", err)
 		}
-		authService = service.NewAuthService(userRepo, cfg.JWTSecret)
+		authService = service.NewAuthService(userRepo, cfg.JWTSecret, emailService)
 
 		pollRepo = repository.NewPollRepository(mongoDB)
 		if err := pollRepo.InitIndexes(ctx); err != nil {

@@ -19,6 +19,7 @@ type Config struct {
 	CORSOrigin    string
 	Environment   string
 	JWTSecret     string
+	ResendAPIKey  string
 }
 
 // LoadConfig initializes configuration from environment variables with sensible defaults
@@ -38,6 +39,7 @@ func LoadConfig() *Config {
 		CORSOrigin:    getEnv("CORS_ORIGIN", "http://localhost:5173"),
 		Environment:   getEnv("ENVIRONMENT", "development"),
 		JWTSecret:     getEnv("JWT_SECRET", "pulsepoll-production-secure-jwt-secret-key-2026"),
+		ResendAPIKey:  getEnv("RESEND_API_KEY", ""),
 	}
 
 	// Sanitize port

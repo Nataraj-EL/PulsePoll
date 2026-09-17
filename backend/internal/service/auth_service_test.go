@@ -54,7 +54,7 @@ func (m *mockUserRepo) FindByID(ctx context.Context, id primitive.ObjectID) (*mo
 
 func TestSignupSuccess(t *testing.T) {
 	repo := newMockUserRepo()
-	svc := NewAuthService(repo, "test-secret")
+	svc := NewAuthService(repo, "test-secret", nil)
 
 	user, token, err := svc.Signup(context.Background(), "Test User", "TEST@Example.com", "password123")
 	if err != nil {
@@ -72,7 +72,7 @@ func TestSignupSuccess(t *testing.T) {
 
 func TestSignupDuplicateEmail(t *testing.T) {
 	repo := newMockUserRepo()
-	svc := NewAuthService(repo, "test-secret")
+	svc := NewAuthService(repo, "test-secret", nil)
 
 	ctx := context.Background()
 	_, _, err := svc.Signup(ctx, "User One", "user@example.com", "password123")
@@ -88,7 +88,7 @@ func TestSignupDuplicateEmail(t *testing.T) {
 
 func TestLoginInvalidCredentials(t *testing.T) {
 	repo := newMockUserRepo()
-	svc := NewAuthService(repo, "test-secret")
+	svc := NewAuthService(repo, "test-secret", nil)
 
 	ctx := context.Background()
 	_, _, _ = svc.Signup(ctx, "Test User", "user@example.com", "password123")

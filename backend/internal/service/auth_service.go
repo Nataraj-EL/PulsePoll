@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"regexp"
 	"strings"
 	"time"
@@ -34,15 +35,17 @@ type AuthService interface {
 }
 
 type authService struct {
-	userRepo  repository.UserRepository
-	jwtSecret string
+	userRepo     repository.UserRepository
+	jwtSecret    string
+	emailService EmailService
 }
 
 // NewAuthService creates a new AuthService instance
-func NewAuthService(userRepo repository.UserRepository, jwtSecret string) AuthService {
+func NewAuthService(userRepo repository.UserRepository, jwtSecret string, emailService EmailService) AuthService {
 	return &authService{
-		userRepo:  userRepo,
-		jwtSecret: jwtSecret,
+		userRepo:     userRepo,
+		jwtSecret:    jwtSecret,
+		emailService: emailService,
 	}
 }
 
@@ -90,6 +93,17 @@ func (s *authService) Signup(ctx context.Context, name, email, rawPassword strin
 			return nil, "", ErrDuplicateEmail
 		}
 		return nil, "", fmt.Errorf("failed to save user to database: %w", err)
+	}
+
+	// Dispatch welcome email safely in background (must NOT block or fail account creation)
+	if s.emailService != nil {
+		go func(toEmail, toName string) {
+			asyncCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+			defer cancel()
+			if emailErr := s.emailService.SendWelcomeEmail(asyncCtx, toEmail, toName); emailErr != nil {
+				log.Printf("⚠️ Notice: Non-fatal error sending welcome email to %s: %v", toEmail, emailErr)
+			}
+		}(user.Email, user.Name)
 	}
 
 	token, err := s.GenerateToken(user)
