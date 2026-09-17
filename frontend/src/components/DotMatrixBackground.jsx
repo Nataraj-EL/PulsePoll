@@ -205,6 +205,7 @@ export function DotMatrixBackground({ targetRef, dotColor = '31, 21, 20', glowCo
     container.addEventListener('touchstart', handleTouchStart, { passive: true });
     container.addEventListener('touchmove', handleTouch, { passive: true });
     container.addEventListener('touchend', handleTouchEnd, { passive: true });
+    container.addEventListener('touchcancel', handleTouchEnd, { passive: true });
 
     let ambientTimer = 0;
     let rafId = null;
@@ -365,6 +366,7 @@ export function DotMatrixBackground({ targetRef, dotColor = '31, 21, 20', glowCo
       container.removeEventListener('touchstart', handleTouchStart);
       container.removeEventListener('touchmove', handleTouch);
       container.removeEventListener('touchend', handleTouchEnd);
+      container.removeEventListener('touchcancel', handleTouchEnd);
     };
   }, [targetRef, dotColor, glowColor]);
 
