@@ -121,15 +121,12 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', fontWeight: 600 }}>
           {connectionStatus === 'connected' && (
-            <>
-              <span className="pulse-indicator" style={{ width: '10px', height: '10px' }}></span>
-              <span style={{ color: '#15803d' }}>Live Realtime Sync</span>
-            </>
+            <span className="pulse-indicator" style={{ width: '10px', height: '10px' }}></span>
           )}
           {connectionStatus === 'connecting' && (
             <>
               <span style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#f59e0b', display: 'inline-block' }}></span>
-              <span style={{ color: '#b45309' }}>Connecting to stream...</span>
+              <span style={{ color: '#b45309' }}>Connecting...</span>
             </>
           )}
           {connectionStatus === 'disconnected' && (

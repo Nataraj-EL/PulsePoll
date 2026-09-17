@@ -223,11 +223,8 @@ export function PollPage({ pollCode, onNavigate, initialTab }) {
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ fontSize: '1.1rem' }}>✓</span>
-                    <span>Response Recorded — Thank you for participating!</span>
+                    <span>Response Recorded – Thank you for participating!</span>
                   </div>
-                  <span className="guvi-badge guvi-badge-green" style={{ fontSize: '0.75rem' }}>
-                    Live View
-                  </span>
                 </div>
 
                 {/* Vertical Bar Chart Live Results */}
