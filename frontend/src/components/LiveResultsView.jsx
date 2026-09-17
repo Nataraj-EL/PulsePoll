@@ -115,7 +115,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', fontWeight: 600 }}>
           {connectionStatus === 'connected' && (
-            <span className="pulse-indicator" style={{ width: '10px', height: '10px' }}></span>
+            <span className="pulse-indicator" style={{ width: '8px', height: '8px', marginRight: '8px', flexShrink: 0 }}></span>
           )}
           {connectionStatus === 'connecting' && (
             <>

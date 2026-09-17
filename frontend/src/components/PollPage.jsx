@@ -175,7 +175,7 @@ export function PollPage({ pollCode, onNavigate, initialTab }) {
             <div style={{ display: 'flex', alignItems: 'center', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--guvi-green)', letterSpacing: '0.08em' }}>
               {poll.status === 'active' ? (
                 <>
-                  <span className="pulse-indicator" style={{ width: '9px', height: '9px', marginRight: '6px', flexShrink: 0 }} />
+                  <span className="pulse-indicator" style={{ width: '8px', height: '8px', marginLeft: '4px', marginRight: '12px', flexShrink: 0 }} />
                   <span>LIVE POLL</span>
                 </>
               ) : (
