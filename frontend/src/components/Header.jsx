@@ -40,20 +40,18 @@ export function Header({ onCreatePoll, onEnterCode, onNavigate, onNavigateDashbo
       }}>
         {/* Header Brand Structure: GUVI Logo | HCL Logo | PulsePoll */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          {/* Official GUVI Logo */}
-          <a
-            href="https://www.guvi.in"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="GUVI"
-            style={{ display: 'flex', alignItems: 'center' }}
+          {/* GUVI Logo */}
+          <div
+            onClick={handleNavLanding}
+            title="PulsePoll"
+            style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
           >
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/0/08/GUVI_logo.png"
               alt="GUVI Logo"
               style={{ height: '24px', width: 'auto', display: 'block' }}
             />
-          </a>
+          </div>
 
           {/* Thin, visually appealing separating bar */}
           <div style={{ width: '1px', height: '18px', backgroundColor: '#cbd5e1' }}></div>
