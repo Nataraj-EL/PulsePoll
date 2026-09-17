@@ -184,9 +184,6 @@ export function CreatePollModal({ isOpen, onClose, onPollCreated }) {
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
               <div>
-                <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '6px' }}>
-                  New Interactive Poll
-                </span>
                 <h2 style={{ fontSize: 'clamp(1.25rem, 3.5vw, 1.5rem)', fontWeight: 800, color: 'var(--guvi-dark)' }}>
                   Create a Poll
                 </h2>
