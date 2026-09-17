@@ -158,7 +158,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
             justifyContent: 'space-around',
             height: 'clamp(180px, 25vh, 220px)',
             gap: '8px',
-            paddingBottom: '12px',
+            paddingBottom: '0px',
             borderBottom: '2px solid var(--guvi-border)',
             overflowX: 'auto',
           }}>
@@ -166,9 +166,7 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
               const count = countMap[opt.id] || 0;
               const percentage = totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0;
               const isLeader = count > 0 && count === maxCount;
-
-              // Calculate bar height percentage (min 4% if count > 0 for visual presence)
-              const barHeightPct = totalVotes > 0 ? Math.max(percentage, count > 0 ? 6 : 0) : 0;
+              const barHeightPct = totalVotes > 0 ? percentage : 0;
 
               return (
                 <div
@@ -192,7 +190,8 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
                     marginBottom: '8px',
                     textAlign: 'center',
                     whiteSpace: 'nowrap',
-                    transition: 'color 0.3s ease',
+                    transition: 'all 0.3s ease',
+                    opacity: totalVotes > 0 ? 1 : 0.6,
                   }}>
                     <div>{count} {count === 1 ? 'vote' : 'votes'}</div>
                     <div style={{ fontSize: 'clamp(0.68rem, 1.6vw, 0.75rem)', fontWeight: 600, color: 'var(--color-text-muted)' }}>
@@ -200,31 +199,22 @@ export function LiveResultsView({ pollCode, question, options = [] }) {
                     </div>
                   </div>
 
-                  {/* Vertical Bar Outer Track */}
+                  {/* Direct Dynamic Bar Element */}
                   <div style={{
                     width: '100%',
-                    maxWidth: '52px',
-                    height: '75%',
-                    backgroundColor: '#f1f5f9',
-                    borderRadius: '8px 8px 0 0',
-                    display: 'flex',
-                    alignItems: 'flex-end',
-                    overflow: 'hidden',
-                    position: 'relative',
-                    border: isLeader ? '1.5px solid var(--guvi-green)' : '1px solid transparent',
-                  }}>
-                    {/* Filled Bar */}
-                    <div style={{
-                      width: '100%',
-                      height: `${barHeightPct}%`,
-                      backgroundColor: isLeader ? 'var(--guvi-green)' : 'var(--guvi-navy)',
-                      borderRadius: '6px 6px 0 0',
-                      transition: 'height 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease',
-                      backgroundImage: isLeader
-                        ? 'linear-gradient(180deg, #10b981 0%, #059669 100%)'
-                        : 'linear-gradient(180deg, #334155 0%, #0f172a 100%)',
-                    }} />
-                  </div>
+                    maxWidth: '48px',
+                    height: `${barHeightPct}%`,
+                    maxHeight: '140px',
+                    borderRadius: '6px 6px 0 0',
+                    transition: 'height 0.5s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, box-shadow 0.3s ease',
+                    backgroundColor: isLeader ? 'var(--guvi-green)' : 'var(--guvi-navy)',
+                    backgroundImage: isLeader
+                      ? 'linear-gradient(180deg, #10b981 0%, #059669 100%)'
+                      : 'linear-gradient(180deg, #334155 0%, #0f172a 100%)',
+                    boxShadow: isLeader
+                      ? '0 4px 14px rgba(16, 185, 129, 0.35)'
+                      : 'none',
+                  }} />
                 </div>
               );
             })}
