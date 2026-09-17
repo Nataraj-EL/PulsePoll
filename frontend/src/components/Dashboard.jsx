@@ -120,13 +120,6 @@ export function Dashboard() {
               <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--guvi-dark)' }}>
                 Active Polls ({polls.length})
               </h3>
-              <button
-                onClick={() => setCreateModalOpen(true)}
-                className="btn btn-primary-dominant"
-                style={{ fontSize: '0.85rem', padding: '6px 14px' }}
-              >
-                + Create Poll
-              </button>
             </div>
 
             {loadingPolls ? (

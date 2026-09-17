@@ -116,7 +116,7 @@ export function Header({ onCreatePoll, onEnterCode, onNavigate, onNavigateDashbo
                 className="btn btn-primary-dominant"
                 style={{ fontSize: '0.875rem', padding: '8px 20px' }}
               >
-                + Create Poll
+                Create Poll
               </button>
               <button
                 onClick={handleLogout}
