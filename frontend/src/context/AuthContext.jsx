@@ -31,7 +31,7 @@ export function AuthProvider({ children }) {
     setError(null);
     const res = await signupUser({ name, email, password });
     if (res.ok && res.data?.user) {
-      setUser(res.data.user);
+      setUser({ ...res.data.user, isNewUser: true });
       return { success: true };
     }
     const errorMsg = res.data?.message || 'Failed to create account';

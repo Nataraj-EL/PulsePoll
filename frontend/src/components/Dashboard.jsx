@@ -61,7 +61,7 @@ export function Dashboard() {
           }}>
             <div>
               <h1 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: 800, color: 'var(--guvi-dark)' }}>
-                Welcome back, {user.name}!
+                {user.isNewUser ? `Welcome, ${user.name}!` : `Welcome back, ${user.name}!`}
               </h1>
               <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', marginTop: '4px' }}>
                 Manage your active interactive polls and view live audience responses.
