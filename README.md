@@ -23,14 +23,14 @@ PulsePoll was developed as part of a technical assignment for HCL GUVI, focusing
 ```mermaid
 flowchart TD
     A[Creator Account Creation] --> B[Creator Dashboard]
-    B --> C[Create Poll: Question & Options]
-    C --> D[Publish Poll: Generate 6-Digit Code]
-    D --> E[Share Link / Code to Participants]
-    E --> F[Participant Accesses /p/:code]
-    F --> G[Submit Vote: Server Validates Payload]
-    G --> H[Vote Stored in MongoDB & Incremented in Redis]
-    H --> I[Redis Pub/Sub Broadcasts Event]
-    I --> J[WebSocket Streams Update to Live Results View]
+    B --> C["Create Poll: Question & Options"]
+    C --> D["Publish Poll: Generate 6-Digit Code"]
+    D --> E[Share Link or Code to Participants]
+    E --> F["Participant Accesses /p/:code"]
+    F --> G["Submit Vote: Server Validates Payload"]
+    G --> H["Vote Stored in MongoDB & Incremented in Redis"]
+    H --> I["Redis Pub/Sub Broadcasts Event"]
+    I --> J["WebSocket Streams Update to Live Results View"]
 ```
 
 ---
@@ -52,12 +52,12 @@ graph TD
     end
 
     subgraph Data & Messaging Tier
-        Mongo[("MongoDB Atlas\n(Durable State)")]
-        Redis[("Upstash Redis\n(Atomic Counters & Pub/Sub)")]
+        Mongo[("MongoDB Atlas (Durable State)")]
+        Redis[("Upstash Redis (Atomic Counters & Pub/Sub)")]
     end
 
     UI -->|"HTTP REST Requests"| API
-    UI <-->|"WebSockets (wss://)"| WS
+    UI -->|"WebSockets (wss://)"| WS
     API -->|"Persist Users, Polls & Votes"| Mongo
     API -->|"HIncrBy & Publish Events"| Redis
     Redis -->|"Subscribers Fan-out"| WS
@@ -114,7 +114,7 @@ sequenceDiagram
 
 1. **Durable Writes**: When a vote is cast, the Go backend writes the vote record to MongoDB to guarantee durability.
 2. **Atomic Counters**: Option counters are incremented in Redis using `HIncrBy`, ensuring fast concurrent tallying.
-3. **Pub/Sub Broadcast**: An event is published to the Redis channel `pulsepoll:events:<code >`.
+3. **Pub/Sub Broadcast**: An event is published to the Redis channel `pulsepoll:events:<code>`.
 4. **WebSocket Fan-out**: The Go backend goroutine listening to the Redis Pub/Sub channel broadcasts updated JSON payloads to all connected WebSocket clients (`/api/v1/polls/:code/ws`).
 5. **MongoDB Reconciliation**: If Redis counts are missing or cold upon startup, the backend automatically reconciles counts from MongoDB and populates Redis.
 
