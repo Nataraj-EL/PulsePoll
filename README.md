@@ -91,23 +91,23 @@ PulsePoll uses a dual-tier storage strategy for fast realtime throughput and lon
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Participant
+    participant Participant as Participant Browser
     participant API as Go Backend API
     participant Mongo as MongoDB Atlas
     participant Redis as Upstash Redis
     participant WS as WebSocket Hub
-    actor Clients
+    participant Clients as Live Viewers
 
-    Participant->>API: POST /api/v1/polls/:code/votes
-    API->>Mongo: Check & Record Vote (Unique Compound Index)
-    alt Vote Valid & Recorded
-        API->>Redis: HIncrBy Option Counter & _total
-        API->>Redis: Publish Event to pulsepoll:events:code
-        Redis-->>API: Message Received on Subscribed Channel
-        API->>WS: Broadcast Payload over WebSockets
-        WS-->>Clients: Stream Live Vote JSON ({ results, total_votes })
-        API-->>Participant: 201 Created (Vote Recorded)
-    else Duplicate / Invalid Vote
+    Participant->>API: POST /api/v1/polls/code/votes
+    API->>Mongo: Check and Record Vote
+    alt Vote Valid
+        API->>Redis: Increment Option Counter
+        API->>Redis: Publish Event
+        Redis-->>API: PubSub Message Received
+        API->>WS: Broadcast Update
+        WS-->>Clients: Stream Live Results
+        API-->>Participant: 201 Created
+    else Duplicate or Invalid
         API-->>Participant: 409 Conflict / 400 Bad Request
     end
 ```
