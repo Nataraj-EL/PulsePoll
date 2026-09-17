@@ -132,7 +132,7 @@ body {
   color: #ffffff;
 }
 
-/* Badge & Eyebrow System */
+/* Badge System */
 .guvi-badge {
   display: inline-flex;
   align-items: center;
@@ -142,59 +142,6 @@ body {
   font-size: 0.825rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-}
-
-.eyebrow-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  border-radius: 999px;
-  font-size: 0.825rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  transition: all 0.3s ease;
-}
-
-.eyebrow-chip-hero {
-  background: linear-gradient(135deg, rgba(10, 214, 82, 0.12) 0%, rgba(16, 185, 129, 0.05) 100%);
-  border: 1px solid rgba(10, 214, 82, 0.3);
-  color: #0d542b;
-  box-shadow: 0 2px 10px rgba(10, 214, 82, 0.08);
-}
-
-.eyebrow-chip-process {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.04) 0%, rgba(10, 214, 82, 0.08) 100%);
-  border: 1px solid rgba(10, 214, 82, 0.25);
-  color: #0f172a;
-}
-
-.eyebrow-chip-features {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.06) 0%, rgba(10, 214, 82, 0.08) 100%);
-  border: 1px solid rgba(10, 214, 82, 0.25);
-  color: #0f172a;
-}
-
-/* Feature & Step Card Enhancements */
-.feature-card-hover {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.feature-card-hover:hover {
-  transform: translateY(-4px);
-  border-color: rgba(10, 214, 82, 0.4) !important;
-  box-shadow: 0 12px 28px -6px rgba(10, 214, 82, 0.15), 0 4px 12px rgba(15, 23, 42, 0.04) !important;
-}
-
-.step-card-hover {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.step-card-hover:hover {
-  transform: translateY(-4px);
-  border-color: rgba(10, 214, 82, 0.4) !important;
-  box-shadow: 0 12px 28px -6px rgba(10, 214, 82, 0.12) !important;
 }
 
 .guvi-badge-green {

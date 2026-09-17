@@ -10,10 +10,9 @@ export function LandingHero({ onCreatePoll, onEnterCode }) {
           
           {/* User Badge */}
           <div style={{ marginBottom: '20px' }}>
-            <div className="eyebrow-chip eyebrow-chip-hero">
-              <span className="pulse-indicator" style={{ width: '8px', height: '8px', flexShrink: 0 }} />
-              <span>Live Audience Polling</span>
-            </div>
+            <span className="guvi-badge guvi-badge-green">
+              Live Audience Polling
+            </span>
           </div>
 
           {/* Hero Headline */}
