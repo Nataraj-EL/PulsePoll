@@ -62,7 +62,7 @@ export function Dashboard() {
         }}>
           <div>
             <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '8px' }}>
-              Authenticated Creator Console
+              Creator Workspace
             </span>
             <h1 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--guvi-dark)' }}>
               Welcome back, {user.name}!
@@ -193,7 +193,7 @@ export function Dashboard() {
                         className="btn btn-secondary-subtle"
                         style={{ fontSize: '0.825rem', padding: '6px 12px', textDecoration: 'none' }}
                       >
-                        📊 View Live Results
+                        View Live Results
                       </a>
 
                       {poll.status === 'draft' && (
