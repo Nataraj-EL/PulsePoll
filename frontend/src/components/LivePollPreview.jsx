@@ -34,9 +34,6 @@ export function LivePollPreview() {
     <section id="live-demo" style={{ padding: '40px 0 60px 0' }}>
       <div className="container">
         <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-          <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '12px' }}>
-            📊 Interactive Preview
-          </span>
           <h2 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--guvi-dark)' }}>
             Experience Live Polling in Action
           </h2>

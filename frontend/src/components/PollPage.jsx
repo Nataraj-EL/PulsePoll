@@ -127,9 +127,6 @@ export function PollPage({ pollCode, onNavigate, initialTab }) {
             backgroundColor: '#ffffff',
             boxShadow: 'var(--shadow-lg)',
           }}>
-            <span className="guvi-badge" style={{ backgroundColor: '#fef2f2', color: '#991b1b', marginBottom: '16px' }}>
-              Poll Not Available
-            </span>
             <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--guvi-dark)', marginBottom: '12px' }}>
               Poll Code #{pollCode} Not Found
             </h2>

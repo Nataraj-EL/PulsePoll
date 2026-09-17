@@ -51,9 +51,6 @@ export function SignupPage({ onNavigateLogin, onNavigateToLogin, onSuccess, onSi
           boxShadow: 'var(--shadow-lg)',
         }}>
           <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-            <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '12px' }}>
-              Creator Account
-            </span>
             <h2 style={{ fontSize: '1.85rem', fontWeight: 800, color: 'var(--guvi-dark)' }}>
               Create Your Account
             </h2>

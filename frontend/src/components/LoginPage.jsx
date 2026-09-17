@@ -46,9 +46,6 @@ export function LoginPage({ onNavigateSignup, onNavigateToSignup, onSuccess, onL
           boxShadow: 'var(--shadow-lg)',
         }}>
           <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-            <span className="guvi-badge guvi-badge-green" style={{ marginBottom: '12px' }}>
-              Welcome Back
-            </span>
             <h2 style={{ fontSize: '1.85rem', fontWeight: 800, color: 'var(--guvi-dark)' }}>
               Sign In to PulsePoll
             </h2>
