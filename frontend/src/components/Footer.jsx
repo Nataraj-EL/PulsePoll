@@ -17,7 +17,7 @@ export function Footer() {
         justifyContent: 'center',
       }}>
         <div style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', fontWeight: 500 }}>
-          © {new Date().getFullYear()} HCL GUVI. All rights reserved.
+          © {new Date().getFullYear()} HCL GUVI x Nataraj EL. All rights reserved.
         </div>
       </div>
     </footer>
