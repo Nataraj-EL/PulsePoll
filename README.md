@@ -89,27 +89,14 @@ graph TD
 PulsePoll uses a dual-tier storage strategy for fast realtime throughput and long-term data durability:
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    participant Participant as Participant Browser
-    participant API as Go Backend API
-    participant Mongo as MongoDB Atlas
-    participant Redis as Upstash Redis
-    participant WS as WebSocket Hub
-    participant Clients as Live Viewers
-
-    Participant->>API: POST /api/v1/polls/code/votes
-    API->>Mongo: Check and Record Vote
-    alt Vote Valid
-        API->>Redis: Increment Option Counter
-        API->>Redis: Publish Event
-        Redis-->>API: PubSub Message Received
-        API->>WS: Broadcast Update
-        WS-->>Clients: Stream Live Results
-        API-->>Participant: 201 Created
-    else Duplicate or Invalid
-        API-->>Participant: 409 Conflict / 400 Bad Request
-    end
+flowchart TD
+    A["Participant Submits Vote (POST /api/v1/polls/code/votes)"] --> B["Go Backend API Validates Payload & Voter ID"]
+    B --> C["Write Vote Record to MongoDB Atlas (Unique Compound Index)"]
+    C --> D["Atomically Increment Option Counter in Redis (HIncrBy)"]
+    D --> E["Publish Real-Time Event to Redis Pub/Sub"]
+    E --> F["Go Backend Subscriber Receives Pub/Sub Event"]
+    F --> G["Gorilla WebSocket Handler Fans-Out Updated JSON Payload"]
+    G --> H["Live Results View Renders Animated Bar Chart Update"]
 ```
 
 1. **Durable Writes**: When a vote is cast, the Go backend writes the vote record to MongoDB to guarantee durability.
